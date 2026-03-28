@@ -1,46 +1,33 @@
 #!/usr/bin/env node
-/**
- * setup-crm-schema.mjs
- *
- * Builds the complete nightclub/hospitality CRM schema in Twenty via the Metadata API.
- * Run with: node setup-crm-schema.mjs
- * Requires Node.js 18+ (native fetch).
- */
-
-// ─── CONFIG ─────────────────────────────────────────────────────────────────
+// setup-crm-schema.mjs
+// Builds a complete nightclub/hospitality CRM schema in Twenty via Metadata API
+// Run with: node setup-crm-schema.mjs
 
 const BASE_URL = 'https://ant-silver-rhino.twenty.com';
 const API_KEY =
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyOTYyZTM0Mi1kNDVjLTRiN2YtODdkOS1mNmE0NDhkMzE3NWYiLCJ0eXBlIjoiQVBJX0tFWSIsIndvcmtzcGFjZUlkIjoiMjk2MmUzNDItZDQ1Yy00YjdmLTg3ZDktZjZhNDQ4ZDMxNzVmIiwiaWF0IjoxNzc0Njg5MTI1LCJleHAiOjQ5MjgyOTI3MjQsImp0aSI6IjNjNmFmOTJkLTM0ZWQtNDQwMS04Y2ExLTZhOTBiYWUyM2U5NSJ9.KQhUTVy2J7wie9EMk_XiXMB4VkgXxTgpYw-ghSDBE0E';
 
-// ─── COLOR ROTATION ──────────────────────────────────────────────────────────
+// ─── Helpers ──────────────────────────────────────────────────────────────────
 
-const TAG_COLORS = [
+const COLORS = [
   'green', 'turquoise', 'sky', 'blue', 'purple',
   'pink', 'red', 'orange', 'yellow', 'gray',
 ];
-const c = (i) => TAG_COLORS[i % TAG_COLORS.length];
+const color = (i) => COLORS[i % COLORS.length];
 
-// Build SELECT/MULTI_SELECT options from a labels array.
-// Each label is mapped to a SCREAMING_SNAKE_CASE value safe for GraphQL enums.
+// Convert a human-readable label into a valid GraphQL enum value
 function opts(labels) {
   return labels.map((label, i) => ({
-    value: toEnumValue(label),
+    value: label
+      .toUpperCase()
+      .replace(/[^A-Z0-9]+/g, '_')
+      .replace(/^_|_$/g, '')
+      .replace(/^\d/, 'N$&'), // prefix leading digit with N
     label,
-    color: c(i),
+    color: color(i),
     position: i,
   }));
 }
-
-function toEnumValue(label) {
-  return label
-    .toUpperCase()
-    .replace(/[^A-Z0-9]+/g, '_')
-    .replace(/^_+|_+$/g, '')
-    .replace(/^([0-9])/, 'N$1'); // enum values cannot start with digit
-}
-
-// ─── API HELPERS ─────────────────────────────────────────────────────────────
 
 async function metadataRequest(query, variables = {}) {
   const res = await fetch(`${BASE_URL}/metadata`, {
@@ -59,715 +46,693 @@ async function metadataRequest(query, variables = {}) {
 
   const json = await res.json();
 
-  if (json.errors?.length) {
-    throw new Error(JSON.stringify(json.errors, null, 2));
+  if (json.errors) {
+    const msg = json.errors.map((e) => e.message).join('\n');
+    throw new Error(msg);
   }
 
   return json.data;
 }
 
-async function createObject({ nameSingular, namePlural, labelSingular, labelPlural, icon = 'IconStar', description }) {
-  process.stdout.write(`  Creating object: ${labelSingular}... `);
+async function createObject(obj) {
+  console.log(`\n[Object] Creating "${obj.labelSingular}"...`);
   const data = await metadataRequest(
     `mutation CreateOneObjectMetadataItem($input: CreateOneObjectInput!) {
-       createOneObject(input: $input) { id nameSingular }
-     }`,
-    { input: { object: { nameSingular, namePlural, labelSingular, labelPlural, icon, description } } },
+      createOneObject(input: $input) { id nameSingular labelSingular }
+    }`,
+    { input: { object: obj } },
   );
-  console.log(`✓ (${data.createOneObject.id})`);
-  return data.createOneObject;
+  const created = data.createOneObject;
+  console.log(`  ✓ ${created.labelSingular}  id: ${created.id}`);
+  return created;
 }
 
-async function createField(objectMetadataId, { name, label, type, options, settings, description, isNullable = true, defaultValue }) {
-  process.stdout.write(`    Field: ${label} (${type})... `);
-  const fieldInput = {
-    objectMetadataId,
-    name,
-    label,
-    type,
-    isNullable,
-    ...(description !== undefined && { description }),
-    ...(options !== undefined && { options }),
-    ...(settings !== undefined && { settings }),
-    ...(defaultValue !== undefined && { defaultValue }),
-  };
-
-  const data = await metadataRequest(
-    `mutation CreateOneFieldMetadataItem($input: CreateOneFieldMetadataInput!) {
-       createOneField(input: $input) { id name label type }
-     }`,
-    { input: { field: fieldInput } },
-  );
-  console.log(`✓`);
-  return data.createOneField;
-}
-
-async function createFields(objectMetadataId, fieldDefs) {
-  const result = {};
-  for (const def of fieldDefs) {
-    try {
-      const field = await createField(objectMetadataId, def);
-      result[def.name] = field;
-    } catch (err) {
-      console.error(`\n    ✗ FAILED field "${def.label}": ${err.message}\n`);
-    }
+async function createField(field) {
+  process.stdout.write(`  [field] ${field.label} (${field.type}) ... `);
+  try {
+    const data = await metadataRequest(
+      `mutation CreateOneFieldMetadataItem($input: CreateOneFieldMetadataInput!) {
+        createOneField(input: $input) { id name label type }
+      }`,
+      { input: { field } },
+    );
+    const f = data.createOneField;
+    console.log(`✓ (${f.id})`);
+    return f;
+  } catch (err) {
+    console.log(`✗ ERROR: ${err.message}`);
+    return null;
   }
-  return result;
 }
 
-async function createRelation({ sourceObjectId, targetObjectId, fieldName, fieldLabel, targetFieldLabel, targetFieldIcon = 'IconList' }) {
-  process.stdout.write(`    Relation: ${fieldLabel} → ${targetFieldLabel}... `);
-  const data = await metadataRequest(
-    `mutation CreateOneFieldMetadataItem($input: CreateOneFieldMetadataInput!) {
-       createOneField(input: $input) { id name label type }
-     }`,
-    {
-      input: {
-        field: {
-          objectMetadataId: sourceObjectId,
-          name: fieldName,
-          label: fieldLabel,
-          type: 'RELATION',
-          isNullable: true,
-          relationCreationPayload: {
-            targetObjectMetadataId: targetObjectId,
-            targetFieldLabel,
-            targetFieldIcon,
-            type: 'MANY_TO_ONE',
+async function createRelation({
+  sourceObjectId,
+  targetObjectId,
+  fieldName,
+  fieldLabel,
+  targetFieldLabel,
+  targetFieldIcon = 'IconList',
+}) {
+  process.stdout.write(`  [relation] ${fieldLabel} → ${targetFieldLabel} ... `);
+  try {
+    const data = await metadataRequest(
+      `mutation CreateOneFieldMetadataItem($input: CreateOneFieldMetadataInput!) {
+        createOneField(input: $input) { id name label type }
+      }`,
+      {
+        input: {
+          field: {
+            objectMetadataId: sourceObjectId,
+            name: fieldName,
+            label: fieldLabel,
+            type: 'RELATION',
+            isNullable: true,
+            relationCreationPayload: {
+              targetObjectMetadataId: targetObjectId,
+              targetFieldLabel,
+              targetFieldIcon,
+              type: 'MANY_TO_ONE',
+            },
           },
         },
       },
-    },
-  );
-  console.log(`✓`);
-  return data.createOneField;
+    );
+    const f = data.createOneField;
+    console.log(`✓ (${f.id})`);
+    return f;
+  } catch (err) {
+    console.log(`✗ ERROR: ${err.message}`);
+    return null;
+  }
 }
 
-async function createView({ objectMetadataId, name, type = 'KANBAN', icon = 'IconLayoutKanban', mainGroupByFieldMetadataId, position = 1 }) {
-  process.stdout.write(`  View: "${name}"... `);
-  const data = await metadataRequest(
-    `mutation CreateView($input: CreateViewInput!) {
-       createView(input: $input) { id name type }
-     }`,
+async function createView(view) {
+  process.stdout.write(`  [view] ${view.name} (${view.type}) ... `);
+  try {
+    const data = await metadataRequest(
+      `mutation CreateView($input: CreateViewInput!) {
+        createView(input: $input) { id name type }
+      }`,
+      { input: view },
+    );
+    const v = data.createView;
+    console.log(`✓ (${v.id})`);
+    return v;
+  } catch (err) {
+    console.log(`✗ ERROR: ${err.message}`);
+    return null;
+  }
+}
+
+async function createManyViewGroups(inputs) {
+  try {
+    const data = await metadataRequest(
+      `mutation CreateManyViewGroups($inputs: [CreateViewGroupInput!]!) {
+        createManyViewGroups(inputs: $inputs) { id fieldValue position }
+      }`,
+      { inputs },
+    );
+    const groups = data.createManyViewGroups;
+    groups.forEach((g) => console.log(`    ✓ stage: ${g.fieldValue}`));
+    return groups;
+  } catch (err) {
+    console.log(`    ✗ ERROR creating view groups: ${err.message}`);
+    return [];
+  }
+}
+
+// ─── Object Definitions ───────────────────────────────────────────────────────
+
+const OBJECTS = [
+  {
+    key: 'vipGuest',
+    nameSingular: 'vipGuest',
+    namePlural: 'vipGuests',
+    labelSingular: 'VIP Guest',
+    labelPlural: 'VIP Guests',
+    icon: 'IconStar',
+    description: 'High-value nightclub guests',
+  },
+  {
+    key: 'hostPromoter',
+    nameSingular: 'hostPromoter',
+    namePlural: 'hostPromoters',
+    labelSingular: 'Host Promoter',
+    labelPlural: 'Hosts and Promoters',
+    icon: 'IconUser',
+    description: 'In-house hosts, independent promoters, and external agencies',
+  },
+  {
+    key: 'conciergeContact',
+    nameSingular: 'conciergeContact',
+    namePlural: 'conciergeContacts',
+    labelSingular: 'Concierge Contact',
+    labelPlural: 'Concierge and FDL Contacts',
+    icon: 'IconBuildingHotel',
+    description: 'Hotel concierge and FDL contacts who send guests',
+  },
+  {
+    key: 'tableBooking',
+    nameSingular: 'tableBooking',
+    namePlural: 'tableBookings',
+    labelSingular: 'Table Booking',
+    labelPlural: 'Table Bookings',
+    icon: 'IconTable',
+    description: 'Nightclub table reservation records',
+  },
+  {
+    key: 'bottleOrder',
+    nameSingular: 'bottleOrder',
+    namePlural: 'bottleOrders',
+    labelSingular: 'Bottle Order',
+    labelPlural: 'Bottle Orders',
+    icon: 'IconBottle',
+    description: 'Individual bottle line items within a table booking',
+  },
+  {
+    key: 'eventNight',
+    nameSingular: 'eventNight',
+    namePlural: 'eventNights',
+    labelSingular: 'Event Night',
+    labelPlural: 'Events and Nights',
+    icon: 'IconCalendarEvent',
+    description: 'Nightly events and special occasions',
+  },
+  {
+    key: 'communicationLog',
+    nameSingular: 'communicationLog',
+    namePlural: 'communicationLogs',
+    labelSingular: 'Communication Log',
+    labelPlural: 'Communication Logs',
+    icon: 'IconMessage',
+    description: 'All outreach and inbound communication records',
+  },
+];
+
+// ─── Field Definitions per Object ─────────────────────────────────────────────
+
+function vipGuestFields(objectMetadataId) {
+  return [
+    // Contact
+    { objectMetadataId, name: 'phones', label: 'Phones', type: 'PHONES', isNullable: true },
+    { objectMetadataId, name: 'email', label: 'Email', type: 'EMAILS', isNullable: true },
+    { objectMetadataId, name: 'instagramHandle', label: 'Instagram Handle', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'address', label: 'Address', type: 'ADDRESS', isNullable: true },
+    { objectMetadataId, name: 'profilePhoto', label: 'Profile Photo', type: 'FILES', isNullable: true },
+    // Profile
+    { objectMetadataId, name: 'nationality', label: 'Nationality', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'languagePreference', label: 'Language Preference', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'dateOfBirth', label: 'Date of Birth', type: 'DATE', isNullable: true },
+    { objectMetadataId, name: 'birthdayMonth', label: 'Birthday Month', type: 'NUMBER', isNullable: true },
+    // Classification
     {
-      input: {
-        objectMetadataId,
-        name,
-        type,
-        icon,
-        position,
-        ...(mainGroupByFieldMetadataId && { mainGroupByFieldMetadataId }),
-      },
+      objectMetadataId, name: 'hotelResidency', label: 'Hotel Residency', type: 'SELECT', isNullable: true,
+      options: opts(['Cosmopolitan', 'Wynn', 'Aria', 'Bellagio', 'MGM', 'Venetian', 'Encore', 'Other']),
     },
-  );
-  console.log(`✓ (${data.createView.id})`);
-  return data.createView;
+    {
+      objectMetadataId, name: 'tier', label: 'Tier', type: 'SELECT', isNullable: true,
+      options: opts(['Bronze', 'Silver', 'Gold', 'VIP', 'VVIP', 'Whale']),
+    },
+    {
+      objectMetadataId, name: 'tags', label: 'Tags', type: 'MULTI_SELECT', isNullable: true,
+      options: opts([
+        'Celebrity', 'Athlete', 'VVIP', 'Millionaire', 'Billionaire', 'Industry',
+        'Local', 'Bachelor Party', 'Bachelorette', 'Wedding', 'Boys Trip',
+        'Birthday', 'Conference', 'Hotel Guest', 'FDL',
+      ]),
+    },
+    {
+      objectMetadataId, name: 'guestOrigin', label: 'Guest Origin', type: 'SELECT', isNullable: true,
+      options: opts(['Host Referral', 'Lead', 'Concierge', 'FDL', 'Referral', 'Walk-Up']),
+    },
+    // Spend metrics
+    { objectMetadataId, name: 'lifetimeTotalSpend', label: 'Lifetime Total Spend', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'averageSpendPerVisit', label: 'Average Spend Per Visit', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'averagePctOverMinimum', label: 'Average Pct Over Minimum', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'visitCount', label: 'Visit Count', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'prestigeBottleSpend', label: 'Prestige Bottle Spend', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'standardBottleSpend', label: 'Standard Bottle Spend', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'addOnSpend', label: 'Add-On Spend', type: 'CURRENCY', isNullable: true },
+    {
+      objectMetadataId, name: 'milestoneTier', label: 'Milestone Tier', type: 'SELECT', isNullable: true,
+      options: opts(['First Visit', '$10K Club', '$50K Club', '$100K Club', '$250K+']),
+    },
+    // Preferences
+    { objectMetadataId, name: 'preferredSection', label: 'Preferred Section', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'preferredTableNumber', label: 'Preferred Table Number', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'bottlePreferences', label: 'Bottle Preferences', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'specialNotes', label: 'Special Notes', type: 'TEXT', isNullable: true },
+    // Reliability
+    { objectMetadataId, name: 'noShowCount', label: 'No-Show Count', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'cancellationCount', label: 'Cancellation Count', type: 'NUMBER', isNullable: true },
+    {
+      objectMetadataId, name: 'reliabilityFlag', label: 'Reliability Flag', type: 'SELECT', isNullable: true,
+      options: opts(['Reliable', 'Watch', 'Unreliable']),
+    },
+    // Dates
+    { objectMetadataId, name: 'firstVisitDate', label: 'First Visit Date', type: 'DATE', isNullable: true },
+    { objectMetadataId, name: 'lastVisitDate', label: 'Last Visit Date', type: 'DATE', isNullable: true },
+    { objectMetadataId, name: 'lastContactDate', label: 'Last Contact Date', type: 'DATE', isNullable: true },
+    // Blacklist
+    { objectMetadataId, name: 'blacklisted', label: 'Blacklisted', type: 'BOOLEAN', isNullable: true },
+    {
+      objectMetadataId, name: 'blacklistReason', label: 'Blacklist Reason', type: 'SELECT', isNullable: true,
+      options: opts(['Chargeback', 'Violence', 'Theft', 'Behavior', 'Management Ban']),
+    },
+    { objectMetadataId, name: 'blacklistDate', label: 'Blacklist Date', type: 'DATE', isNullable: true },
+    // Flags & alerts
+    { objectMetadataId, name: 'flaggedForReview', label: 'Flagged For Review', type: 'BOOLEAN', isNullable: true },
+    { objectMetadataId, name: 'alertNote', label: 'Alert Note', type: 'TEXT', isNullable: true },
+    // Sentiment & follow-up
+    {
+      objectMetadataId, name: 'guestSentiment', label: 'Guest Sentiment', type: 'SELECT', isNullable: true,
+      options: opts(['5-Star', '4-Star', '3-Star', 'Had Issues']),
+    },
+    { objectMetadataId, name: 'followUpDate', label: 'Follow-Up Date', type: 'DATE', isNullable: true },
+    { objectMetadataId, name: 'followUpNote', label: 'Follow-Up Note', type: 'TEXT', isNullable: true },
+    // Status
+    {
+      objectMetadataId, name: 'status', label: 'Status', type: 'SELECT', isNullable: true,
+      options: opts(['Active', 'Dormant', 'Blacklisted']),
+    },
+    // Pipeline stage — used as the group-by field for VIP Relationship Pipeline
+    {
+      objectMetadataId, name: 'relationshipStage', label: 'Relationship Stage', type: 'SELECT', isNullable: true,
+      options: opts(['New Guest', 'One-Time', 'Returning', 'VIP Regular', 'VVIP', 'Whale']),
+    },
+  ];
 }
 
-async function createManyViewGroups(viewId, stages) {
-  process.stdout.write(`  View groups: [${stages.map((s) => s.fieldValue).join(', ')}]... `);
-  const inputs = stages.map((s, i) => ({
-    viewId,
-    fieldValue: s.fieldValue,
-    position: i,
-    isVisible: true,
-  }));
-  const data = await metadataRequest(
-    `mutation CreateManyViewGroups($inputs: [CreateViewGroupInput!]!) {
-       createManyViewGroups(inputs: $inputs) { id fieldValue }
-     }`,
-    { inputs },
-  );
-  console.log(`✓`);
-  return data.createManyViewGroups;
+function hostPromoterFields(objectMetadataId) {
+  return [
+    { objectMetadataId, name: 'phones', label: 'Phones', type: 'PHONES', isNullable: true },
+    { objectMetadataId, name: 'email', label: 'Email', type: 'EMAILS', isNullable: true },
+    { objectMetadataId, name: 'instagramHandle', label: 'Instagram Handle', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'mailingAddress', label: 'Mailing Address', type: 'ADDRESS', isNullable: true },
+    { objectMetadataId, name: 'profilePhoto', label: 'Profile Photo', type: 'FILES', isNullable: true },
+    {
+      objectMetadataId, name: 'hostType', label: 'Type', type: 'SELECT', isNullable: true,
+      options: opts(['In-House Host', 'Independent Promoter', 'External Agency', 'Concierge', 'FDL']),
+    },
+    { objectMetadataId, name: 'totalClientsReferred', label: 'Total Clients Referred', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'totalRevenueAttributed', label: 'Total Revenue Attributed', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'averageClientSpend', label: 'Average Client Spend', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'averageClientPctOverMinimum', label: 'Average Client Pct Over Minimum', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'commissionRate', label: 'Commission Rate', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'compValueOwed', label: 'Comp Value Owed', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'followUpDate', label: 'Follow-Up Date', type: 'DATE', isNullable: true },
+    { objectMetadataId, name: 'followUpNote', label: 'Follow-Up Note', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'lastContactDate', label: 'Last Contact Date', type: 'DATE', isNullable: true },
+    {
+      objectMetadataId, name: 'status', label: 'Status', type: 'SELECT', isNullable: true,
+      options: opts(['Active', 'Inactive']),
+    },
+  ];
 }
 
-// ─── FIELD DEFINITIONS ───────────────────────────────────────────────────────
+function conciergeContactFields(objectMetadataId) {
+  return [
+    { objectMetadataId, name: 'phones', label: 'Phones', type: 'PHONES', isNullable: true },
+    { objectMetadataId, name: 'email', label: 'Email', type: 'EMAILS', isNullable: true },
+    { objectMetadataId, name: 'instagramHandle', label: 'Instagram Handle', type: 'TEXT', isNullable: true },
+    {
+      objectMetadataId, name: 'hotelCompany', label: 'Hotel Company', type: 'SELECT', isNullable: true,
+      options: opts(['Cosmopolitan', 'Wynn', 'Aria', 'Bellagio', 'MGM', 'Venetian', 'Encore', 'Independent']),
+    },
+    { objectMetadataId, name: 'roleTitle', label: 'Role Title', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'totalGuestsSent', label: 'Total Guests Sent', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'totalRevenueGenerated', label: 'Total Revenue Generated', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'averageGuestSpend', label: 'Average Guest Spend', type: 'CURRENCY', isNullable: true },
+    {
+      objectMetadataId, name: 'relationshipQuality', label: 'Relationship Quality', type: 'SELECT', isNullable: true,
+      options: opts(['Priority', 'Warm', 'Cold', 'Inactive']),
+    },
+    { objectMetadataId, name: 'lastOutreachDate', label: 'Last Outreach Date', type: 'DATE', isNullable: true },
+    { objectMetadataId, name: 'followUpDate', label: 'Follow-Up Date', type: 'DATE', isNullable: true },
+    { objectMetadataId, name: 'followUpNote', label: 'Follow-Up Note', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'notes', label: 'Notes', type: 'TEXT', isNullable: true },
+    // Pipeline stage — used as the group-by field for Concierge Relationship Pipeline
+    {
+      objectMetadataId, name: 'conciergeStage', label: 'Concierge Stage', type: 'SELECT', isNullable: true,
+      options: opts(['Cold', 'Warm', 'Priority', 'Strategic Partner']),
+    },
+  ];
+}
 
-// VIP Guests fields (FULL_NAME "name" field is auto-created with the object)
-const VIP_GUEST_FIELDS = [
-  { name: 'phones',                label: 'Phones',                 type: 'PHONES'      },
-  { name: 'email',                 label: 'Email',                  type: 'EMAILS'      },
-  { name: 'instagramHandle',       label: 'Instagram Handle',       type: 'TEXT'        },
-  { name: 'address',               label: 'Address',                type: 'ADDRESS'     },
-  { name: 'profilePhoto',          label: 'Profile Photo',          type: 'FILES'       },
-  { name: 'nationality',           label: 'Nationality',            type: 'TEXT'        },
-  { name: 'languagePreference',    label: 'Language Preference',    type: 'TEXT'        },
-  {
-    name: 'hotelResidency', label: 'Hotel / Residency', type: 'SELECT',
-    options: opts(['Cosmopolitan', 'Wynn', 'Aria', 'Bellagio', 'MGM', 'Venetian', 'Encore', 'Other']),
-  },
-  {
-    name: 'tier', label: 'Tier', type: 'SELECT',
-    options: opts(['Bronze', 'Silver', 'Gold', 'VIP', 'VVIP', 'Whale']),
-  },
-  {
-    name: 'tags', label: 'Tags', type: 'MULTI_SELECT',
-    options: opts(['Celebrity', 'Athlete', 'VVIP', 'Millionaire', 'Billionaire', 'Industry',
-                   'Local', 'Bachelor Party', 'Bachelorette', 'Wedding', 'Boys Trip', 'Birthday',
-                   'Conference', 'Hotel Guest', 'FDL']),
-  },
-  {
-    name: 'guestOrigin', label: 'Guest Origin', type: 'SELECT',
-    options: opts(['Host Referral', 'Lead', 'Concierge', 'FDL', 'Referral', 'Walk-Up']),
-  },
-  { name: 'lifetimeTotalSpend',    label: 'Lifetime Total Spend',   type: 'CURRENCY'    },
-  { name: 'averageSpendPerVisit',  label: 'Average Spend Per Visit',type: 'CURRENCY'    },
-  { name: 'averagePctOverMinimum', label: 'Average % Over Minimum', type: 'NUMBER'      },
-  { name: 'visitCount',            label: 'Visit Count',            type: 'NUMBER'      },
-  { name: 'prestigeBottleSpend',   label: 'Prestige Bottle Spend',  type: 'CURRENCY'    },
-  { name: 'standardBottleSpend',   label: 'Standard Bottle Spend',  type: 'CURRENCY'    },
-  { name: 'addOnSpend',            label: 'Add-On Spend',           type: 'CURRENCY'    },
-  {
-    name: 'milestoneTier', label: 'Milestone Tier', type: 'SELECT',
-    options: opts(['First Visit', '$10K Club', '$50K Club', '$100K Club', '$250K+']),
-  },
-  { name: 'preferredSection',      label: 'Preferred Section',      type: 'TEXT'        },
-  { name: 'preferredTableNumber',  label: 'Preferred Table Number', type: 'TEXT'        },
-  { name: 'bottlePreferences',     label: 'Bottle Preferences',     type: 'TEXT'        },
-  { name: 'specialNotes',          label: 'Special Notes',          type: 'TEXT'        },
-  { name: 'noShowCount',           label: 'No-Show Count',          type: 'NUMBER'      },
-  { name: 'cancellationCount',     label: 'Cancellation Count',     type: 'NUMBER'      },
-  {
-    name: 'reliabilityFlag', label: 'Reliability Flag', type: 'SELECT',
-    options: opts(['Reliable', 'Watch', 'Unreliable']),
-  },
-  { name: 'dateOfBirth',           label: 'Date of Birth',          type: 'DATE'        },
-  { name: 'birthdayMonth',         label: 'Birthday Month',         type: 'NUMBER'      },
-  { name: 'firstVisitDate',        label: 'First Visit Date',       type: 'DATE'        },
-  { name: 'lastVisitDate',         label: 'Last Visit Date',        type: 'DATE'        },
-  { name: 'lastContactDate',       label: 'Last Contact Date',      type: 'DATE'        },
-  { name: 'blacklisted',           label: 'Blacklisted',            type: 'BOOLEAN', defaultValue: false },
-  {
-    name: 'blacklistReason', label: 'Blacklist Reason', type: 'SELECT',
-    options: opts(['Chargeback', 'Violence', 'Theft', 'Behavior', 'Management Ban']),
-  },
-  { name: 'blacklistDate',         label: 'Blacklist Date',         type: 'DATE'        },
-  { name: 'flaggedForReview',      label: 'Flagged For Review',     type: 'BOOLEAN', defaultValue: false },
-  { name: 'alertNote',             label: 'Alert Note',             type: 'TEXT'        },
-  {
-    name: 'guestSentiment', label: 'Guest Sentiment', type: 'SELECT',
-    options: opts(['5-Star', '4-Star', '3-Star', 'Had Issues']),
-  },
-  { name: 'followUpDate',          label: 'Follow-Up Date',         type: 'DATE'        },
-  { name: 'followUpNote',          label: 'Follow-Up Note',         type: 'TEXT'        },
-  {
-    name: 'status', label: 'Status', type: 'SELECT',
-    options: opts(['Active', 'Dormant', 'Blacklisted']),
-  },
-  // Used as the groupBy field for the VIP Relationship Pipeline
-  {
-    name: 'relationshipStage', label: 'Relationship Stage', type: 'SELECT',
-    options: opts(['New Guest', 'One-Time', 'Returning', 'VIP Regular', 'VVIP', 'Whale']),
-  },
-];
+function tableBookingFields(objectMetadataId) {
+  return [
+    { objectMetadataId, name: 'bookingName', label: 'Booking Name', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'bookingDate', label: 'Date', type: 'DATE', isNullable: true },
+    { objectMetadataId, name: 'tableNumber', label: 'Table Number', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'section', label: 'Section', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'partySize', label: 'Party Size', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'minimumSpend', label: 'Minimum Spend', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'actualSpend', label: 'Actual Spend', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'dollarOverMinimum', label: 'Dollar Over Minimum', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'percentOverMinimum', label: 'Percent Over Minimum', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'prestigeBottleSpend', label: 'Prestige Bottle Spend', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'standardBottleSpend', label: 'Standard Bottle Spend', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'addOnSpend', label: 'Add-On Spend', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'compItems', label: 'Comp Items', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'compValue', label: 'Comp Value', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'netRevenue', label: 'Net Revenue', type: 'CURRENCY', isNullable: true },
+    {
+      objectMetadataId, name: 'paymentMethod', label: 'Payment Method', type: 'SELECT', isNullable: true,
+      options: opts(['Card', 'Cash', 'Comped', 'Split']),
+    },
+    // Used as the group-by field for the Booking Pipeline kanban view
+    {
+      objectMetadataId, name: 'bookingStatus', label: 'Booking Status', type: 'SELECT', isNullable: true,
+      options: opts(['Inquiry', 'Deposit Received', 'Confirmed', 'Night Of', 'Completed', 'No-Show', 'Cancelled']),
+    },
+    {
+      objectMetadataId, name: 'guestSentiment', label: 'Guest Sentiment', type: 'SELECT', isNullable: true,
+      options: opts(['5-Star', '4-Star', '3-Star', 'Had Issues']),
+    },
+    { objectMetadataId, name: 'issueNotes', label: 'Issue Notes', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'specialRequests', label: 'Special Requests', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'postVisitFollowUpDate', label: 'Post-Visit Follow-Up Date', type: 'DATE', isNullable: true },
+    { objectMetadataId, name: 'followUpNote', label: 'Follow-Up Note', type: 'TEXT', isNullable: true },
+  ];
+}
 
-// Hosts and Promoters
-const HOST_PROMOTER_FIELDS = [
-  { name: 'phones',                   label: 'Phones',                      type: 'PHONES'   },
-  { name: 'email',                    label: 'Email',                       type: 'EMAILS'   },
-  { name: 'instagramHandle',          label: 'Instagram Handle',            type: 'TEXT'     },
-  { name: 'mailingAddress',           label: 'Mailing Address',             type: 'TEXT'     },
-  { name: 'profilePhoto',             label: 'Profile Photo',               type: 'FILES'    },
-  {
-    name: 'hostType', label: 'Type', type: 'SELECT',
-    options: opts(['In-House Host', 'Independent Promoter', 'External Agency', 'Concierge', 'FDL']),
-  },
-  { name: 'totalClientsReferred',     label: 'Total Clients Referred',      type: 'NUMBER'   },
-  { name: 'totalRevenueAttributed',   label: 'Total Revenue Attributed',    type: 'CURRENCY' },
-  { name: 'averageClientSpend',       label: 'Average Client Spend',        type: 'CURRENCY' },
-  { name: 'averageClientPctOverMin',  label: 'Average Client % Over Minimum', type: 'NUMBER' },
-  { name: 'commissionRate',           label: 'Commission Rate',             type: 'TEXT'     },
-  { name: 'compValueOwed',            label: 'Comp Value Owed',             type: 'CURRENCY' },
-  { name: 'followUpDate',             label: 'Follow-Up Date',              type: 'DATE'     },
-  { name: 'followUpNote',             label: 'Follow-Up Note',              type: 'TEXT'     },
-  { name: 'lastContactDate',          label: 'Last Contact Date',           type: 'DATE'     },
-  {
-    name: 'status', label: 'Status', type: 'SELECT',
-    options: opts(['Active', 'Inactive']),
-  },
-];
+function bottleOrderFields(objectMetadataId) {
+  return [
+    { objectMetadataId, name: 'bottleName', label: 'Bottle Name', type: 'TEXT', isNullable: true },
+    {
+      objectMetadataId, name: 'category', label: 'Category', type: 'SELECT', isNullable: true,
+      options: opts(['Champagne', 'Vodka', 'Tequila', 'Whiskey', 'Cognac', 'Add-On', 'Experience']),
+    },
+    { objectMetadataId, name: 'brand', label: 'Brand', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'quantity', label: 'Quantity', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'pricePerBottle', label: 'Price Per Bottle', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'lineTotal', label: 'Line Total', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'comped', label: 'Comped', type: 'BOOLEAN', isNullable: true },
+    { objectMetadataId, name: 'compValue', label: 'Comp Value', type: 'CURRENCY', isNullable: true },
+  ];
+}
 
-// Concierge and FDL Contacts
-const CONCIERGE_FIELDS = [
-  { name: 'phones',              label: 'Primary Phone',          type: 'PHONES'   },
-  { name: 'email',               label: 'Email',                  type: 'EMAILS'   },
-  { name: 'instagramHandle',     label: 'Instagram Handle',       type: 'TEXT'     },
-  {
-    name: 'hotelCompany', label: 'Hotel / Company', type: 'SELECT',
-    options: opts(['Cosmopolitan', 'Wynn', 'Aria', 'Bellagio', 'MGM', 'Venetian', 'Encore', 'Independent']),
-  },
-  { name: 'roleTitle',           label: 'Role / Title',           type: 'TEXT'     },
-  { name: 'totalGuestsSent',     label: 'Total Guests Sent',      type: 'NUMBER'   },
-  { name: 'totalRevenueGenerated', label: 'Total Revenue Generated', type: 'CURRENCY' },
-  { name: 'averageGuestSpend',   label: 'Average Guest Spend',    type: 'CURRENCY' },
-  {
-    name: 'relationshipQuality', label: 'Relationship Quality', type: 'SELECT',
-    options: opts(['Priority', 'Warm', 'Cold', 'Inactive']),
-  },
-  { name: 'lastOutreachDate',    label: 'Last Outreach Date',     type: 'DATE'     },
-  { name: 'followUpDate',        label: 'Follow-Up Date',         type: 'DATE'     },
-  { name: 'followUpNote',        label: 'Follow-Up Note',         type: 'TEXT'     },
-  { name: 'notes',               label: 'Notes',                  type: 'TEXT'     },
-  // Used as the groupBy field for the Concierge Pipeline
-  {
-    name: 'conciergeStage', label: 'Concierge Stage', type: 'SELECT',
-    options: opts(['Cold', 'Warm', 'Priority', 'Strategic Partner']),
-  },
-];
+function eventNightFields(objectMetadataId) {
+  return [
+    { objectMetadataId, name: 'eventName', label: 'Event Name', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'eventDate', label: 'Date', type: 'DATE', isNullable: true },
+    { objectMetadataId, name: 'dayOfWeek', label: 'Day of Week', type: 'TEXT', isNullable: true },
+    {
+      objectMetadataId, name: 'eventType', label: 'Type', type: 'SELECT', isNullable: true,
+      options: opts(['DJ Night', 'Special Event', 'Holiday', 'Buyout', 'Residency']),
+    },
+    { objectMetadataId, name: 'expectedCapacity', label: 'Expected Capacity', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'totalTablesAvailable', label: 'Total Tables Available', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'notes', label: 'Notes', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'totalBookings', label: 'Total Bookings', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'totalRevenue', label: 'Total Revenue', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'averageTableSpend', label: 'Average Table Spend', type: 'CURRENCY', isNullable: true },
+    { objectMetadataId, name: 'averagePctOverMinimum', label: 'Average Pct Over Minimum', type: 'NUMBER', isNullable: true },
+    { objectMetadataId, name: 'noShowCount', label: 'No-Show Count', type: 'NUMBER', isNullable: true },
+  ];
+}
 
-// Table Bookings (skipNameField: true — bookingName is a plain TEXT field)
-const TABLE_BOOKING_FIELDS = [
-  { name: 'bookingName',         label: 'Booking Name',           type: 'TEXT'     },
-  { name: 'bookingDate',         label: 'Date',                   type: 'DATE'     },
-  { name: 'tableNumber',         label: 'Table Number',           type: 'TEXT'     },
-  { name: 'section',             label: 'Section',                type: 'TEXT'     },
-  { name: 'partySize',           label: 'Party Size',             type: 'NUMBER'   },
-  { name: 'minimumSpend',        label: 'Minimum Spend',          type: 'CURRENCY' },
-  { name: 'actualSpend',         label: 'Actual Spend',           type: 'CURRENCY' },
-  { name: 'dollarOverMinimum',   label: 'Dollar Over Minimum',    type: 'CURRENCY' },
-  { name: 'percentOverMinimum',  label: 'Percent Over Minimum',   type: 'NUMBER'   },
-  { name: 'prestigeBottleSpend', label: 'Prestige Bottle Spend',  type: 'CURRENCY' },
-  { name: 'standardBottleSpend', label: 'Standard Bottle Spend',  type: 'CURRENCY' },
-  { name: 'addOnSpend',          label: 'Add-On Spend',           type: 'CURRENCY' },
-  { name: 'compItems',           label: 'Comp Items',             type: 'TEXT'     },
-  { name: 'compValue',           label: 'Comp Value',             type: 'CURRENCY' },
-  { name: 'netRevenue',          label: 'Net Revenue',            type: 'CURRENCY' },
-  {
-    name: 'paymentMethod', label: 'Payment Method', type: 'SELECT',
-    options: opts(['Card', 'Cash', 'Comped', 'Split']),
-  },
-  // Used as the groupBy field for the Booking Pipeline
-  {
-    name: 'bookingStatus', label: 'Booking Status', type: 'SELECT',
-    options: opts(['Inquiry', 'Deposit Received', 'Confirmed', 'Night Of', 'Completed', 'No-Show', 'Cancelled']),
-  },
-  {
-    name: 'guestSentiment', label: 'Guest Sentiment', type: 'SELECT',
-    options: opts(['5-Star', '4-Star', '3-Star', 'Had Issues']),
-  },
-  { name: 'issueNotes',          label: 'Issue Notes',            type: 'TEXT'     },
-  { name: 'specialRequests',     label: 'Special Requests',       type: 'TEXT'     },
-  { name: 'postVisitFollowUpDate', label: 'Post-Visit Follow-Up Date', type: 'DATE' },
-  { name: 'followUpNote',        label: 'Follow-Up Note',         type: 'TEXT'     },
-];
+function communicationLogFields(objectMetadataId) {
+  return [
+    { objectMetadataId, name: 'dateAndTime', label: 'Date and Time', type: 'DATE_TIME', isNullable: true },
+    {
+      objectMetadataId, name: 'channel', label: 'Channel', type: 'SELECT', isNullable: true,
+      options: opts(['SMS', 'Call', 'Instagram DM', 'In-Person']),
+    },
+    {
+      objectMetadataId, name: 'direction', label: 'Direction', type: 'SELECT', isNullable: true,
+      options: opts(['Outbound', 'Inbound']),
+    },
+    { objectMetadataId, name: 'summary', label: 'Summary', type: 'TEXT', isNullable: true },
+    { objectMetadataId, name: 'followUpRequired', label: 'Follow-Up Required', type: 'BOOLEAN', isNullable: true },
+  ];
+}
 
-// Bottle Orders
-const BOTTLE_ORDER_FIELDS = [
-  { name: 'bottleName',     label: 'Bottle Name',          type: 'TEXT'     },
-  {
-    name: 'category', label: 'Category', type: 'SELECT',
-    options: opts(['Champagne', 'Vodka', 'Tequila', 'Whiskey', 'Cognac', 'Add-On', 'Experience']),
-  },
-  { name: 'brand',          label: 'Brand',                type: 'TEXT'     },
-  { name: 'quantity',       label: 'Quantity',             type: 'NUMBER'   },
-  { name: 'pricePerBottle', label: 'Price Per Bottle',     type: 'CURRENCY' },
-  { name: 'lineTotal',      label: 'Line Total',           type: 'CURRENCY' },
-  { name: 'comped',         label: 'Comped',               type: 'BOOLEAN', defaultValue: false },
-  { name: 'compValue',      label: 'Comp Value',           type: 'CURRENCY' },
-];
-
-// Events and Nights
-const EVENT_NIGHT_FIELDS = [
-  { name: 'eventName',            label: 'Event Name',             type: 'TEXT'     },
-  { name: 'eventDate',            label: 'Date',                   type: 'DATE'     },
-  { name: 'dayOfWeek',            label: 'Day of Week',            type: 'TEXT'     },
-  {
-    name: 'eventType', label: 'Type', type: 'SELECT',
-    options: opts(['DJ Night', 'Special Event', 'Holiday', 'Buyout', 'Residency']),
-  },
-  { name: 'expectedCapacity',     label: 'Expected Capacity',      type: 'NUMBER'   },
-  { name: 'totalTablesAvailable', label: 'Total Tables Available', type: 'NUMBER'   },
-  { name: 'notes',                label: 'Notes',                  type: 'TEXT'     },
-  { name: 'totalBookings',        label: 'Total Bookings',         type: 'NUMBER'   },
-  { name: 'totalRevenue',         label: 'Total Revenue',          type: 'CURRENCY' },
-  { name: 'averageTableSpend',    label: 'Average Table Spend',    type: 'CURRENCY' },
-  { name: 'averagePctOverMin',    label: 'Average % Over Minimum', type: 'NUMBER'   },
-  { name: 'noShowCount',          label: 'No-Show Count',          type: 'NUMBER'   },
-];
-
-// Communication Log
-const COMM_LOG_FIELDS = [
-  { name: 'logDateTime',     label: 'Date and Time',     type: 'DATE_TIME' },
-  {
-    name: 'channel', label: 'Channel', type: 'SELECT',
-    options: opts(['SMS', 'Call', 'Instagram DM', 'In-Person']),
-  },
-  {
-    name: 'direction', label: 'Direction', type: 'SELECT',
-    options: opts(['Outbound', 'Inbound']),
-  },
-  { name: 'summary',         label: 'Summary',           type: 'TEXT'      },
-  { name: 'followUpRequired', label: 'Follow-Up Required', type: 'BOOLEAN', defaultValue: false },
-];
-
-// ─── MAIN ─────────────────────────────────────────────────────────────────────
+// ─── Main ─────────────────────────────────────────────────────────────────────
 
 async function main() {
-  console.log('═══════════════════════════════════════════════════════════');
-  console.log('  Twenty CRM — Nightclub Schema Setup');
-  console.log('═══════════════════════════════════════════════════════════\n');
+  console.log('═══════════════════════════════════════════════════');
+  console.log('  Twenty CRM – Nightclub Schema Builder');
+  console.log('═══════════════════════════════════════════════════\n');
 
-  // ── Phase 1: Create Objects ──────────────────────────────────────────────
+  // ── Phase 1: Create Objects ─────────────────────────────────────────────
+  console.log('▶ PHASE 1: Creating Objects\n');
 
-  console.log('PHASE 1: Creating objects...\n');
-
-  const objects = {};
-
-  try {
-    objects.vipGuest = await createObject({
-      nameSingular: 'vipGuest',
-      namePlural: 'vipGuests',
-      labelSingular: 'VIP Guest',
-      labelPlural: 'VIP Guests',
-      icon: 'IconStar',
-      description: 'High-value nightclub guests',
-    });
-  } catch (e) { console.error(`✗ vipGuest: ${e.message}`); }
-
-  try {
-    objects.hostPromoter = await createObject({
-      nameSingular: 'hostPromoter',
-      namePlural: 'hostPromoters',
-      labelSingular: 'Host / Promoter',
-      labelPlural: 'Hosts and Promoters',
-      icon: 'IconUserStar',
-      description: 'In-house hosts, independent promoters, and external agencies',
-    });
-  } catch (e) { console.error(`✗ hostPromoter: ${e.message}`); }
-
-  try {
-    objects.conciergeContact = await createObject({
-      nameSingular: 'conciergeContact',
-      namePlural: 'conciergeContacts',
-      labelSingular: 'Concierge Contact',
-      labelPlural: 'Concierge and FDL Contacts',
-      icon: 'IconBuildingSkyscraper',
-      description: 'Hotel concierge and FDL contacts',
-    });
-  } catch (e) { console.error(`✗ conciergeContact: ${e.message}`); }
-
-  try {
-    objects.tableBooking = await createObject({
-      nameSingular: 'tableBooking',
-      namePlural: 'tableBookings',
-      labelSingular: 'Table Booking',
-      labelPlural: 'Table Bookings',
-      icon: 'IconTable',
-      description: 'VIP table reservations and spend tracking',
-    });
-  } catch (e) { console.error(`✗ tableBooking: ${e.message}`); }
-
-  try {
-    objects.bottleOrder = await createObject({
-      nameSingular: 'bottleOrder',
-      namePlural: 'bottleOrders',
-      labelSingular: 'Bottle Order',
-      labelPlural: 'Bottle Orders',
-      icon: 'IconBottle',
-      description: 'Individual bottle orders within a table booking',
-    });
-  } catch (e) { console.error(`✗ bottleOrder: ${e.message}`); }
-
-  try {
-    objects.eventNight = await createObject({
-      nameSingular: 'eventNight',
-      namePlural: 'eventNights',
-      labelSingular: 'Event / Night',
-      labelPlural: 'Events and Nights',
-      icon: 'IconCalendarEvent',
-      description: 'Nightclub events, DJ nights, and special occasions',
-    });
-  } catch (e) { console.error(`✗ eventNight: ${e.message}`); }
-
-  try {
-    objects.communicationLog = await createObject({
-      nameSingular: 'communicationLog',
-      namePlural: 'communicationLogs',
-      labelSingular: 'Communication Log',
-      labelPlural: 'Communication Logs',
-      icon: 'IconMessage',
-      description: 'Outbound and inbound guest communications',
-    });
-  } catch (e) { console.error(`✗ communicationLog: ${e.message}`); }
-
-  console.log('\nObjects created:\n', Object.fromEntries(
-    Object.entries(objects).map(([k, v]) => [k, v?.id ?? 'FAILED']),
-  ), '\n');
-
-  // ── Phase 2: Create Fields ───────────────────────────────────────────────
-
-  console.log('PHASE 2: Creating fields...\n');
-
-  const fields = {};
-
-  if (objects.vipGuest) {
-    console.log('  → VIP Guests');
-    fields.vipGuest = await createFields(objects.vipGuest.id, VIP_GUEST_FIELDS);
+  const ids = {};
+  for (const obj of OBJECTS) {
+    const { key, ...input } = obj;
+    const created = await createObject(input);
+    ids[key] = created.id;
   }
 
-  if (objects.hostPromoter) {
-    console.log('\n  → Hosts and Promoters');
-    fields.hostPromoter = await createFields(objects.hostPromoter.id, HOST_PROMOTER_FIELDS);
+  console.log('\n✅ All objects created.\n');
+
+  // ── Phase 2: Create Fields ──────────────────────────────────────────────
+  console.log('▶ PHASE 2: Creating Fields\n');
+
+  const fieldIds = {};
+
+  async function addFields(key, fields) {
+    console.log(`\n  ── ${key} ──`);
+    fieldIds[key] = {};
+    for (const f of fields) {
+      const created = await createField(f);
+      if (created) fieldIds[key][f.name] = created.id;
+    }
   }
 
-  if (objects.conciergeContact) {
-    console.log('\n  → Concierge and FDL Contacts');
-    fields.conciergeContact = await createFields(objects.conciergeContact.id, CONCIERGE_FIELDS);
-  }
+  await addFields('vipGuest', vipGuestFields(ids.vipGuest));
+  await addFields('hostPromoter', hostPromoterFields(ids.hostPromoter));
+  await addFields('conciergeContact', conciergeContactFields(ids.conciergeContact));
+  await addFields('tableBooking', tableBookingFields(ids.tableBooking));
+  await addFields('bottleOrder', bottleOrderFields(ids.bottleOrder));
+  await addFields('eventNight', eventNightFields(ids.eventNight));
+  await addFields('communicationLog', communicationLogFields(ids.communicationLog));
 
-  if (objects.tableBooking) {
-    console.log('\n  → Table Bookings');
-    fields.tableBooking = await createFields(objects.tableBooking.id, TABLE_BOOKING_FIELDS);
-  }
+  console.log('\n✅ All fields created.\n');
 
-  if (objects.bottleOrder) {
-    console.log('\n  → Bottle Orders');
-    fields.bottleOrder = await createFields(objects.bottleOrder.id, BOTTLE_ORDER_FIELDS);
-  }
-
-  if (objects.eventNight) {
-    console.log('\n  → Events and Nights');
-    fields.eventNight = await createFields(objects.eventNight.id, EVENT_NIGHT_FIELDS);
-  }
-
-  if (objects.communicationLog) {
-    console.log('\n  → Communication Log');
-    fields.communicationLog = await createFields(objects.communicationLog.id, COMM_LOG_FIELDS);
-  }
-
-  // ── Phase 3: Create Relationships ────────────────────────────────────────
-
-  console.log('\nPHASE 3: Creating relationships...\n');
+  // ── Phase 3: Create Relationships ──────────────────────────────────────
+  console.log('▶ PHASE 3: Creating Relationships\n');
 
   const relations = [
-    // VIP Guest → Referred By → Host/Promoter (many-to-one)
-    objects.vipGuest && objects.hostPromoter && {
-      sourceObjectId: objects.vipGuest.id,
-      targetObjectId: objects.hostPromoter.id,
+    // VIP Guest → Referred By → Host/Promoter
+    {
+      sourceObjectId: ids.vipGuest,
+      targetObjectId: ids.hostPromoter,
       fieldName: 'referredBy',
       fieldLabel: 'Referred By',
       targetFieldLabel: 'Referred VIP Guests',
-      targetFieldIcon: 'IconStar',
+      targetFieldIcon: 'IconUsers',
     },
-    // VIP Guest → Host Owner → Host/Promoter (many-to-one)
-    objects.vipGuest && objects.hostPromoter && {
-      sourceObjectId: objects.vipGuest.id,
-      targetObjectId: objects.hostPromoter.id,
+    // VIP Guest → Host Owner → Host/Promoter
+    {
+      sourceObjectId: ids.vipGuest,
+      targetObjectId: ids.hostPromoter,
       fieldName: 'hostOwner',
       fieldLabel: 'Host Owner',
       targetFieldLabel: 'Owned VIP Guests',
-      targetFieldIcon: 'IconUserStar',
+      targetFieldIcon: 'IconUsers',
     },
-    // VIP Guest → Referral Chain → VIP Guest (self many-to-one)
-    objects.vipGuest && {
-      sourceObjectId: objects.vipGuest.id,
-      targetObjectId: objects.vipGuest.id,
+    // VIP Guest → Referral Chain (self many-to-one)
+    {
+      sourceObjectId: ids.vipGuest,
+      targetObjectId: ids.vipGuest,
       fieldName: 'referralSource',
       fieldLabel: 'Referral Source',
       targetFieldLabel: 'Referred Guests',
-      targetFieldIcon: 'IconArrowRight',
+      targetFieldIcon: 'IconGitMerge',
     },
-    // VIP Guest → Known Associate → VIP Guest (self many-to-one, approximation of many-to-many)
-    objects.vipGuest && {
-      sourceObjectId: objects.vipGuest.id,
-      targetObjectId: objects.vipGuest.id,
+    // VIP Guest → Known Associates (self, first direction; approximates many-to-many)
+    {
+      sourceObjectId: ids.vipGuest,
+      targetObjectId: ids.vipGuest,
       fieldName: 'knownAssociate',
       fieldLabel: 'Known Associate',
       targetFieldLabel: 'Associated With',
-      targetFieldIcon: 'IconUsers',
+      targetFieldIcon: 'IconUsersGroup',
     },
-    // Table Booking → VIP Guest (many-to-one)
-    objects.tableBooking && objects.vipGuest && {
-      sourceObjectId: objects.tableBooking.id,
-      targetObjectId: objects.vipGuest.id,
+    // Table Booking → VIP Guest
+    {
+      sourceObjectId: ids.tableBooking,
+      targetObjectId: ids.vipGuest,
       fieldName: 'vipGuest',
       fieldLabel: 'VIP Guest',
       targetFieldLabel: 'Table Bookings',
       targetFieldIcon: 'IconTable',
     },
-    // Table Booking → Host/Promoter (many-to-one)
-    objects.tableBooking && objects.hostPromoter && {
-      sourceObjectId: objects.tableBooking.id,
-      targetObjectId: objects.hostPromoter.id,
+    // Table Booking → Host/Promoter
+    {
+      sourceObjectId: ids.tableBooking,
+      targetObjectId: ids.hostPromoter,
       fieldName: 'hostPromoter',
-      fieldLabel: 'Host / Promoter',
+      fieldLabel: 'Host Promoter',
       targetFieldLabel: 'Table Bookings',
       targetFieldIcon: 'IconTable',
     },
-    // Table Booking → Concierge Contact (many-to-one)
-    objects.tableBooking && objects.conciergeContact && {
-      sourceObjectId: objects.tableBooking.id,
-      targetObjectId: objects.conciergeContact.id,
+    // Table Booking → Concierge Contact
+    {
+      sourceObjectId: ids.tableBooking,
+      targetObjectId: ids.conciergeContact,
       fieldName: 'conciergeContact',
       fieldLabel: 'Concierge Contact',
       targetFieldLabel: 'Table Bookings',
       targetFieldIcon: 'IconTable',
     },
-    // Table Booking → Event/Night (many-to-one)
-    objects.tableBooking && objects.eventNight && {
-      sourceObjectId: objects.tableBooking.id,
-      targetObjectId: objects.eventNight.id,
+    // Table Booking → Event/Night
+    {
+      sourceObjectId: ids.tableBooking,
+      targetObjectId: ids.eventNight,
       fieldName: 'eventNight',
-      fieldLabel: 'Event / Night',
+      fieldLabel: 'Event Night',
       targetFieldLabel: 'Table Bookings',
       targetFieldIcon: 'IconTable',
     },
-    // Bottle Order → Table Booking (many-to-one)
-    objects.bottleOrder && objects.tableBooking && {
-      sourceObjectId: objects.bottleOrder.id,
-      targetObjectId: objects.tableBooking.id,
+    // Bottle Order → Table Booking
+    {
+      sourceObjectId: ids.bottleOrder,
+      targetObjectId: ids.tableBooking,
       fieldName: 'tableBooking',
       fieldLabel: 'Table Booking',
       targetFieldLabel: 'Bottle Orders',
       targetFieldIcon: 'IconBottle',
     },
-    // Communication Log → VIP Guest (many-to-one)
-    objects.communicationLog && objects.vipGuest && {
-      sourceObjectId: objects.communicationLog.id,
-      targetObjectId: objects.vipGuest.id,
+    // Communication Log → VIP Guest
+    {
+      sourceObjectId: ids.communicationLog,
+      targetObjectId: ids.vipGuest,
       fieldName: 'vipGuest',
       fieldLabel: 'VIP Guest',
-      targetFieldLabel: 'Communications',
+      targetFieldLabel: 'Communication Logs',
       targetFieldIcon: 'IconMessage',
     },
-    // Communication Log → Host/Promoter (many-to-one)
-    objects.communicationLog && objects.hostPromoter && {
-      sourceObjectId: objects.communicationLog.id,
-      targetObjectId: objects.hostPromoter.id,
+    // Communication Log → Host/Promoter
+    {
+      sourceObjectId: ids.communicationLog,
+      targetObjectId: ids.hostPromoter,
       fieldName: 'hostPromoter',
-      fieldLabel: 'Host / Promoter',
-      targetFieldLabel: 'Communications',
+      fieldLabel: 'Host Promoter',
+      targetFieldLabel: 'Communication Logs',
       targetFieldIcon: 'IconMessage',
     },
-    // Communication Log → Concierge Contact (many-to-one)
-    objects.communicationLog && objects.conciergeContact && {
-      sourceObjectId: objects.communicationLog.id,
-      targetObjectId: objects.conciergeContact.id,
+    // Communication Log → Concierge Contact
+    {
+      sourceObjectId: ids.communicationLog,
+      targetObjectId: ids.conciergeContact,
       fieldName: 'conciergeContact',
       fieldLabel: 'Concierge Contact',
-      targetFieldLabel: 'Communications',
+      targetFieldLabel: 'Communication Logs',
       targetFieldIcon: 'IconMessage',
     },
-  ].filter(Boolean);
+  ];
 
   for (const rel of relations) {
-    try {
-      await createRelation(rel);
-    } catch (err) {
-      console.error(`\n    ✗ FAILED relation "${rel.fieldLabel}": ${err.message}\n`);
-    }
+    await createRelation(rel);
   }
 
-  // ── Phase 4: Create Pipelines (Kanban Views) ─────────────────────────────
+  console.log('\n✅ All relationships created.\n');
 
-  console.log('\nPHASE 4: Creating pipelines (Kanban views)...\n');
+  // ── Phase 4: Create Pipelines (Kanban Views + Stages) ──────────────────
+  console.log('▶ PHASE 4: Creating Pipelines\n');
 
-  // 1. Booking Pipeline on Table Bookings — group by bookingStatus
-  const bookingStatusFieldId = fields.tableBooking?.bookingStatus?.id;
-  if (objects.tableBooking && bookingStatusFieldId) {
-    console.log('  → Booking Pipeline');
-    try {
-      const bookingView = await createView({
-        objectMetadataId: objects.tableBooking.id,
-        name: 'Booking Pipeline',
-        type: 'KANBAN',
-        icon: 'IconLayoutKanban',
-        mainGroupByFieldMetadataId: bookingStatusFieldId,
-        position: 1,
-      });
-      await createManyViewGroups(bookingView.id, [
-        { fieldValue: 'INQUIRY' },
-        { fieldValue: 'DEPOSIT_RECEIVED' },
-        { fieldValue: 'CONFIRMED' },
-        { fieldValue: 'NIGHT_OF' },
-        { fieldValue: 'COMPLETED' },
-        { fieldValue: 'NO_SHOW' },
-        { fieldValue: 'CANCELLED' },
+  // Pipeline 1: Booking Pipeline → tableBooking.bookingStatus
+  const bookingStatusFieldId = fieldIds?.tableBooking?.bookingStatus;
+  if (bookingStatusFieldId) {
+    console.log('\n  → Booking Pipeline');
+    const bookingView = await createView({
+      name: 'Booking Pipeline',
+      objectMetadataId: ids.tableBooking,
+      type: 'KANBAN',
+      icon: 'IconLayoutKanban',
+      position: 1,
+      mainGroupByFieldMetadataId: bookingStatusFieldId,
+    });
+    if (bookingView) {
+      const stages = opts([
+        'Inquiry', 'Deposit Received', 'Confirmed',
+        'Night Of', 'Completed', 'No-Show', 'Cancelled',
       ]);
-    } catch (err) {
-      console.error(`  ✗ Booking Pipeline: ${err.message}`);
+      await createManyViewGroups(
+        stages.map((s) => ({
+          viewId: bookingView.id,
+          fieldValue: s.value,
+          position: s.position,
+          isVisible: true,
+        })),
+      );
     }
   } else {
-    console.warn('  ⚠ Skipping Booking Pipeline — tableBooking object or bookingStatus field not available');
+    console.log('  ⚠ Skipping Booking Pipeline: bookingStatus field ID not found');
   }
 
-  // 2. VIP Relationship Pipeline on VIP Guests — group by relationshipStage
-  const relationshipStageFieldId = fields.vipGuest?.relationshipStage?.id;
-  if (objects.vipGuest && relationshipStageFieldId) {
+  // Pipeline 2: VIP Relationship Pipeline → vipGuest.relationshipStage
+  const relationshipStageFieldId = fieldIds?.vipGuest?.relationshipStage;
+  if (relationshipStageFieldId) {
     console.log('\n  → VIP Relationship Pipeline');
-    try {
-      const vipView = await createView({
-        objectMetadataId: objects.vipGuest.id,
-        name: 'VIP Relationship Pipeline',
-        type: 'KANBAN',
-        icon: 'IconLayoutKanban',
-        mainGroupByFieldMetadataId: relationshipStageFieldId,
-        position: 1,
-      });
-      await createManyViewGroups(vipView.id, [
-        { fieldValue: 'NEW_GUEST' },
-        { fieldValue: 'ONE_TIME' },
-        { fieldValue: 'RETURNING' },
-        { fieldValue: 'VIP_REGULAR' },
-        { fieldValue: 'VVIP' },
-        { fieldValue: 'WHALE' },
+    const vipView = await createView({
+      name: 'VIP Relationship Pipeline',
+      objectMetadataId: ids.vipGuest,
+      type: 'KANBAN',
+      icon: 'IconLayoutKanban',
+      position: 1,
+      mainGroupByFieldMetadataId: relationshipStageFieldId,
+    });
+    if (vipView) {
+      const stages = opts([
+        'New Guest', 'One-Time', 'Returning',
+        'VIP Regular', 'VVIP', 'Whale',
       ]);
-    } catch (err) {
-      console.error(`  ✗ VIP Relationship Pipeline: ${err.message}`);
+      await createManyViewGroups(
+        stages.map((s) => ({
+          viewId: vipView.id,
+          fieldValue: s.value,
+          position: s.position,
+          isVisible: true,
+        })),
+      );
     }
   } else {
-    console.warn('  ⚠ Skipping VIP Relationship Pipeline — vipGuest object or relationshipStage field not available');
+    console.log('  ⚠ Skipping VIP Relationship Pipeline: relationshipStage field ID not found');
   }
 
-  // 3. Concierge Relationship Pipeline on Concierge Contacts — group by conciergeStage
-  const conciergeStageFieldId = fields.conciergeContact?.conciergeStage?.id;
-  if (objects.conciergeContact && conciergeStageFieldId) {
+  // Pipeline 3: Concierge Relationship Pipeline → conciergeContact.conciergeStage
+  const conciergeStageFieldId = fieldIds?.conciergeContact?.conciergeStage;
+  if (conciergeStageFieldId) {
     console.log('\n  → Concierge Relationship Pipeline');
-    try {
-      const conciergeView = await createView({
-        objectMetadataId: objects.conciergeContact.id,
-        name: 'Concierge Relationship Pipeline',
-        type: 'KANBAN',
-        icon: 'IconLayoutKanban',
-        mainGroupByFieldMetadataId: conciergeStageFieldId,
-        position: 1,
-      });
-      await createManyViewGroups(conciergeView.id, [
-        { fieldValue: 'COLD' },
-        { fieldValue: 'WARM' },
-        { fieldValue: 'PRIORITY' },
-        { fieldValue: 'STRATEGIC_PARTNER' },
-      ]);
-    } catch (err) {
-      console.error(`  ✗ Concierge Relationship Pipeline: ${err.message}`);
+    const conciergeView = await createView({
+      name: 'Concierge Relationship Pipeline',
+      objectMetadataId: ids.conciergeContact,
+      type: 'KANBAN',
+      icon: 'IconLayoutKanban',
+      position: 1,
+      mainGroupByFieldMetadataId: conciergeStageFieldId,
+    });
+    if (conciergeView) {
+      const stages = opts(['Cold', 'Warm', 'Priority', 'Strategic Partner']);
+      await createManyViewGroups(
+        stages.map((s) => ({
+          viewId: conciergeView.id,
+          fieldValue: s.value,
+          position: s.position,
+          isVisible: true,
+        })),
+      );
     }
   } else {
-    console.warn('  ⚠ Skipping Concierge Pipeline — conciergeContact object or conciergeStage field not available');
+    console.log('  ⚠ Skipping Concierge Pipeline: conciergeStage field ID not found');
   }
 
-  // ── Summary ──────────────────────────────────────────────────────────────
-
-  console.log('\n═══════════════════════════════════════════════════════════');
-  console.log('  Setup complete!');
-  console.log('═══════════════════════════════════════════════════════════');
-  console.log('\nVerification checklist:');
-  console.log('  1. Open Twenty → Settings → Data model');
-  console.log('     Confirm all 7 objects appear: VIP Guests, Hosts/Promoters,');
-  console.log('     Concierge Contacts, Table Bookings, Bottle Orders,');
-  console.log('     Events/Nights, Communication Logs');
-  console.log('  2. Open each object — verify all fields are present');
-  console.log('  3. Open Table Bookings → check for related VIP Guest,');
-  console.log('     Host/Promoter, Concierge, Event sections');
-  console.log('  4. Open each object\'s view switcher — confirm Kanban pipelines');
-  console.log('     appear with correct stage columns');
-  console.log('\nObjects summary:');
-  for (const [key, obj] of Object.entries(objects)) {
-    console.log(`  ${obj ? '✓' : '✗'} ${key}: ${obj?.id ?? 'FAILED'}`);
+  // ── Summary ─────────────────────────────────────────────────────────────
+  console.log('\n═══════════════════════════════════════════════════');
+  console.log('  DONE — Schema build complete!');
+  console.log('═══════════════════════════════════════════════════');
+  console.log('\nCreated Object IDs:');
+  for (const [key, id] of Object.entries(ids)) {
+    console.log(`  ${key.padEnd(22)} ${id}`);
   }
+  console.log('\nVerify at: https://ant-silver-rhino.twenty.com/settings/data-model\n');
 }
 
 main().catch((err) => {
-  console.error('\n\nFATAL ERROR:', err.message);
+  console.error('\n❌ Fatal error:', err.message);
   process.exit(1);
 });
