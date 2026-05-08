@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="color-scheme" content="dark">
+  <meta name="format-detection" content="telephone=no">
+  <title>LIV Nightclub &amp; Beach — May 2026 VIP</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+
+    /* ── Reset ─────────────────────────────────────────────── */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #141210;
+      color: #f5f1eb;
+      font-family: 'Montserrat', Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; border: 0; }
+
+    /* ── Wrapper ────────────────────────────────────────────── */
+    .email-wrapper {
+      max-width: 680px;
+      margin: 0 auto;
+      background-color: #1e1c18;
+    }
+
+    /* ── Utility ────────────────────────────────────────────── */
+    .gold-rule {
+      display: block;
+      width: 100%;
+      height: 1px;
+      border: none;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(154,126,74,0.4) 10%,
+        #9a7e4a 25%,
+        #c4a96e 50%,
+        #9a7e4a 75%,
+        rgba(154,126,74,0.4) 90%,
+        transparent 100%
+      );
+    }
+
+    .gold-rule-narrow {
+      display: block;
+      width: 40px;
+      height: 1px;
+      border: none;
+      background-color: #9a7e4a;
+      margin: 0 auto;
+    }
+
+    /* ── Header ─────────────────────────────────────────────── */
+    .header {
+      padding: 76px 48px 60px;
+      text-align: center;
+      background-color: #1e1c18;
+      background-image:
+        radial-gradient(ellipse 65% 55% at 50% 0%, rgba(154,126,74,0.20) 0%, rgba(154,126,74,0.06) 45%, transparent 72%);
+    }
+
+    .eyebrow {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 4.5px;
+      color: #9a7e4a;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .wordmark {
+      font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
+      font-size: 104px;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      color: #f5f1eb;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .header-sub {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 5px;
+      color: #9a7e4a;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .month-display {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 16px;
+      font-weight: 300;
+      color: #6b6355;
+      letter-spacing: 0.14em;
+      margin-top: 28px;
+    }
+
+    /* ── Intro ──────────────────────────────────────────────── */
+    .intro {
+      padding: 64px 96px;
+      text-align: center;
+      background-color: #1e1c18;
+    }
+
+    .intro-text {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 23px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: #f5f1eb;
+    }
+
+    /* ── Section Header ─────────────────────────────────────── */
+    .section-header {
+      text-align: center;
+      margin-bottom: 44px;
+    }
+
+    .section-overline {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 5.5px;
+      color: #9a7e4a;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 38px;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: #f5f1eb;
+    }
+
+    /* ── Event Sections ─────────────────────────────────────── */
+    .event-section {
+      padding: 60px 52px;
+      background-color: #1e1c18;
+    }
+
+    .event-section-alt {
+      padding: 60px 52px;
+      background-color: #1b1914;
+    }
+
+    /* ── Event: Featured ────────────────────────────────────── */
+    .event-featured {
+      background-color: #231f18;
+      border-left: 1px solid #9a7e4a;
+      border-right: 1px solid #9a7e4a;
+      border-bottom: 1px solid #9a7e4a;
+      border-top: 2px solid #c4a96e;
+      padding: 36px 40px;
+      margin-bottom: 12px;
+    }
+
+    /* ── Event: Standard ────────────────────────────────────── */
+    .event-card {
+      background-color: #2e2b25;
+      border: 1px solid #3a3628;
+      border-top: 1px solid rgba(154,126,74,0.5);
+      padding: 22px 26px;
+      margin-bottom: 10px;
+    }
+
+    .event-spacer { margin-top: 28px; }
+
+    /* ── Event Typography ───────────────────────────────────── */
+    .event-date-tag {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: #9a7e4a;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .event-artist-lg {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 46px;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      color: #f5f1eb;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .event-artist-md {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 28px;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      color: #f5f1eb;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .event-artist-sm {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 20px;
+      font-weight: 300;
+      letter-spacing: 0.02em;
+      color: #f5f1eb;
+      line-height: 1.25;
+      margin-bottom: 7px;
+    }
+
+    .event-venue-tag {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      color: #6b6355;
+      text-transform: uppercase;
+    }
+
+    .event-venue-note {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      color: #4a4438;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    /* ── Event Grid ─────────────────────────────────────────── */
+    .event-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .event-grid .event-card { margin-bottom: 0; }
+
+    /* ── Venue Divider ──────────────────────────────────────── */
+    .venue-divider-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 40px 0 20px;
+    }
+
+    .venue-divider-label-left {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: #9a7e4a;
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding-right: 16px;
+      vertical-align: middle;
+    }
+
+    .venue-divider-label-right {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 400;
+      letter-spacing: 2px;
+      color: #6b6355;
+      text-transform: uppercase;
+      white-space: nowrap;
+      padding-left: 16px;
+      vertical-align: middle;
+    }
+
+    .venue-divider-line {
+      width: 100%;
+      vertical-align: middle;
+    }
+
+    .venue-divider-line-inner {
+      height: 1px;
+      background: linear-gradient(to right, rgba(154,126,74,0.8), transparent);
+    }
+
+    /* ── EDC Week ───────────────────────────────────────────── */
+    .edc-section {
+      background-color: #141210;
+      border-top: 1px solid #9a7e4a;
+      border-bottom: 1px solid #9a7e4a;
+      padding: 72px 52px 80px;
+    }
+
+    .edc-banner {
+      text-align: center;
+      padding-bottom: 52px;
+      border-bottom: 1px solid #252219;
+      margin-bottom: 52px;
+    }
+
+    .edc-overline {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 6px;
+      color: #9a7e4a;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+
+    .edc-wordmark {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 84px;
+      font-weight: 300;
+      letter-spacing: 0.16em;
+      color: #f5f1eb;
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+
+    .edc-dates {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 5px;
+      color: #9a7e4a;
+      text-transform: uppercase;
+    }
+
+    /* ── Book Weekend Strip ─────────────────────────────────── */
+    .book-strip {
+      background-color: #252219;
+      border-top: 1px solid #9a7e4a;
+      border-bottom: 1px solid #9a7e4a;
+      padding: 36px 52px;
+    }
+
+    .book-strip-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .book-strip-copy-cell {
+      vertical-align: middle;
+    }
+
+    .book-strip-action-cell {
+      vertical-align: middle;
+      text-align: right;
+      white-space: nowrap;
+      padding-left: 32px;
+    }
+
+    .book-strip-overline {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: #9a7e4a;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .book-strip-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 26px;
+      font-weight: 300;
+      color: #f5f1eb;
+      margin-bottom: 5px;
+    }
+
+    .book-strip-sub {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 400;
+      color: #6b6355;
+      letter-spacing: 1.5px;
+    }
+
+    .btn-ghost {
+      display: inline-block;
+      padding: 14px 30px;
+      border: 1px solid #9a7e4a;
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 3.5px;
+      color: #9a7e4a;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    /* ── Dining ─────────────────────────────────────────────── */
+    .dining-section {
+      padding: 76px 52px 80px;
+      background-color: #191710;
+      text-align: center;
+    }
+
+    .dining-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+      margin-top: 52px;
+    }
+
+    .dining-card {
+      background-color: #2a2720;
+      border: 1px solid #3a3628;
+      border-top: 1px solid #9a7e4a;
+      padding: 44px 22px 36px;
+      text-align: center;
+    }
+
+    .dining-crest {
+      width: 76px;
+      height: 76px;
+      border: 1px solid rgba(154,126,74,0.40);
+      border-radius: 50%;
+      margin: 0 auto 24px;
+      line-height: 76px;
+      text-align: center;
+    }
+
+    .dining-monogram {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 30px;
+      font-weight: 400;
+      color: #9a7e4a;
+      letter-spacing: 0.04em;
+      line-height: 76px;
+    }
+
+    .dining-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 19px;
+      font-weight: 400;
+      color: #f5f1eb;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .dining-desc {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 400;
+      color: #6b6355;
+      letter-spacing: 0.5px;
+      line-height: 2;
+      margin-bottom: 24px;
+    }
+
+    .btn-reserve {
+      display: inline-block;
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 3.5px;
+      color: #c4a96e;
+      text-transform: uppercase;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(196,169,110,0.35);
+      padding-bottom: 3px;
+    }
+
+    /* ── VIP CTA ────────────────────────────────────────────── */
+    .vip-section {
+      padding: 80px 52px;
+      background-color: #1e1c18;
+    }
+
+    .vip-outer {
+      border: 1px solid #9a7e4a;
+      padding: 2px;
+    }
+
+    .vip-inner {
+      padding: 76px 68px;
+      text-align: center;
+      background-color: #1a1815;
+      background-image:
+        radial-gradient(ellipse 90% 55% at 50% 110%, rgba(154,126,74,0.10) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 30% at 50% 0%, rgba(154,126,74,0.05) 0%, transparent 60%);
+      border: 1px solid rgba(154,126,74,0.12);
+    }
+
+    .vip-overline {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 6px;
+      color: #9a7e4a;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .vip-headline {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 54px;
+      font-weight: 300;
+      color: #f5f1eb;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      margin-bottom: 36px;
+    }
+
+    .vip-amenities {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      color: #6b6355;
+      text-transform: uppercase;
+      line-height: 2.8;
+      margin-bottom: 48px;
+    }
+
+    .btn-gold {
+      display: inline-block;
+      padding: 18px 64px;
+      background-color: #9a7e4a;
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 5px;
+      color: #1a1612;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    /* ── Footer ─────────────────────────────────────────────── */
+    .footer {
+      background-color: #141210;
+      padding: 60px 52px 48px;
+      text-align: center;
+      border-top: 1px solid #1e1c18;
+    }
+
+    .footer-wordmark {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 36px;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      color: #3a3628;
+      margin-bottom: 28px;
+    }
+
+    .footer-info {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      color: #4a4438;
+      letter-spacing: 1px;
+      line-height: 2.1;
+      margin-bottom: 14px;
+    }
+
+    .footer-hours {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 400;
+      color: #3a3628;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 32px;
+    }
+
+    .footer-social {
+      margin-bottom: 32px;
+    }
+
+    .footer-social a {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: #6b6355;
+      text-transform: uppercase;
+      text-decoration: none;
+      margin: 0 16px;
+    }
+
+    .footer-legal {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 400;
+      color: #2e2b25;
+      letter-spacing: 1px;
+      line-height: 2.4;
+    }
+
+    .footer-legal a {
+      color: #3a3628;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    /* ── Mobile ─────────────────────────────────────────────── */
+    @media only screen and (max-width: 480px) {
+      .wordmark         { font-size: 72px !important; letter-spacing: 0.16em !important; }
+      .header           { padding: 52px 28px 48px !important; }
+      .intro            { padding: 44px 28px !important; }
+      .intro-text       { font-size: 20px !important; }
+
+      .event-section,
+      .event-section-alt,
+      .edc-section      { padding: 44px 24px !important; }
+
+      .event-artist-lg  { font-size: 36px !important; }
+      .edc-wordmark     { font-size: 56px !important; }
+
+      .event-featured   { padding: 28px 24px !important; }
+
+      .event-grid       { display: block !important; }
+      .event-grid .event-card { margin-bottom: 10px !important; }
+
+      .book-strip       { padding: 28px 24px !important; }
+      .book-strip-table { display: block !important; }
+      .book-strip-copy-cell   { display: block !important; margin-bottom: 20px; }
+      .book-strip-action-cell { display: block !important; text-align: left !important; padding-left: 0 !important; }
+
+      .dining-section   { padding: 52px 24px 60px !important; }
+      .dining-grid      { display: block !important; }
+      .dining-card      { margin-bottom: 14px !important; }
+
+      .vip-section      { padding: 52px 24px !important; }
+      .vip-inner        { padding: 48px 28px !important; }
+      .vip-headline     { font-size: 38px !important; }
+      .btn-gold         { padding: 16px 40px !important; }
+
+      .footer           { padding: 48px 24px 40px !important; }
+      .footer-social a  { margin: 0 10px !important; }
+    }
+
+  </style>
+</head>
+<body>
+
+<div class="email-wrapper">
+
+
+  <!-- ════════════════════════════════════════════════════════
+       HEADER
+  ════════════════════════════════════════════════════════ -->
+  <header class="header">
+    <p class="eyebrow">Fontainebleau Las Vegas</p>
+    <h1 class="wordmark">LIV</h1>
+    <p class="header-sub">Nightclub &times; Beach</p>
+    <hr class="gold-rule">
+    <p class="month-display">May &nbsp;2026</p>
+  </header>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       INTRO
+  ════════════════════════════════════════════════════════ -->
+  <section class="intro">
+    <p class="intro-text">
+      The season opens with intention.<br>
+      Five weekends. The world&#8217;s finest talent. One address.
+    </p>
+  </section>
+
+  <hr class="gold-rule">
+
+
+  <!-- ════════════════════════════════════════════════════════
+       OPENING WEEKEND — MAY 8–9
+  ════════════════════════════════════════════════════════ -->
+  <section class="event-section">
+    <div class="section-header">
+      <p class="section-overline">Opening Weekend</p>
+      <h2 class="section-title">May 8 &ndash; 9</h2>
+    </div>
+
+    <div class="event-featured">
+      <p class="event-date-tag">Friday, May 8 &nbsp;&middot;&nbsp; LIV Nightclub</p>
+      <p class="event-artist-lg">Ti&euml;sto</p>
+      <p class="event-venue-tag">Nightclub &nbsp;&middot;&nbsp; 10:00 PM</p>
+    </div>
+
+    <div class="event-card">
+      <p class="event-date-tag">Friday, May 8 &nbsp;&middot;&nbsp; LIV Beach</p>
+      <p class="event-artist-md">Sommer Ray</p>
+      <p class="event-venue-tag">Beach &nbsp;&middot;&nbsp; 11:30 AM</p>
+    </div>
+
+    <div class="event-featured event-spacer">
+      <p class="event-date-tag">Saturday, May 9 &nbsp;&middot;&nbsp; LIV Nightclub</p>
+      <p class="event-artist-lg">Dom Dolla</p>
+      <p class="event-venue-tag">Nightclub &nbsp;&middot;&nbsp; 10:00 PM</p>
+    </div>
+
+    <div class="event-card">
+      <p class="event-date-tag">Saturday, May 9 &nbsp;&middot;&nbsp; LIV Beach</p>
+      <p class="event-artist-md">David Guetta</p>
+      <p class="event-venue-tag">Beach &nbsp;&middot;&nbsp; 11:00 AM</p>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       EDC WEEK — MAY 13–18
+  ════════════════════════════════════════════════════════ -->
+  <section class="edc-section">
+
+    <div class="edc-banner">
+      <p class="edc-overline">The World&#8217;s Largest Electronic Music Festival</p>
+      <h2 class="edc-wordmark">EDC Week</h2>
+      <hr class="gold-rule" style="margin-bottom: 18px;">
+      <p class="edc-dates">May 13 &ndash; 18, 2026 &nbsp;&middot;&nbsp; Las Vegas</p>
+    </div>
+
+    <!-- Night -->
+    <table class="venue-divider-table">
+      <tr>
+        <td class="venue-divider-label-left">LIV Nightclub</td>
+        <td class="venue-divider-line"><div class="venue-divider-line-inner"></div></td>
+        <td class="venue-divider-label-right">10:00 PM</td>
+      </tr>
+    </table>
+
+    <div class="event-featured">
+      <p class="event-date-tag">Friday, May 15</p>
+      <p class="event-artist-lg">Ti&euml;sto</p>
+      <p class="event-venue-tag">LIV Nightclub &nbsp;&middot;&nbsp; EDC Week</p>
+    </div>
+
+    <div class="event-featured">
+      <p class="event-date-tag">Monday, May 18 &nbsp;&middot;&nbsp; Closing Night</p>
+      <p class="event-artist-lg">David Guetta</p>
+      <p class="event-venue-tag">LIV Nightclub &nbsp;&middot;&nbsp; EDC Week</p>
+    </div>
+
+    <div class="event-grid" style="margin-top: 10px;">
+      <div class="event-card">
+        <p class="event-date-tag">Wed, May 13</p>
+        <p class="event-artist-sm">Josh Baker B2B<br>Kettama B2B Prospa</p>
+        <p class="event-venue-note">w/ Cole Knight</p>
+        <p class="event-venue-tag" style="margin-top:8px;">LIV Nightclub</p>
+      </div>
+      <div class="event-card">
+        <p class="event-date-tag">Thu, May 14</p>
+        <p class="event-artist-md">Dom Dolla</p>
+        <p class="event-venue-tag">LIV Nightclub</p>
+      </div>
+      <div class="event-card">
+        <p class="event-date-tag">Sat, May 16</p>
+        <p class="event-artist-md">Four Color Zack</p>
+        <p class="event-venue-tag">LIV Nightclub</p>
+      </div>
+    </div>
+
+    <!-- Beach -->
+    <table class="venue-divider-table" style="margin-top: 52px;">
+      <tr>
+        <td class="venue-divider-label-left">LIV Beach</td>
+        <td class="venue-divider-line"><div class="venue-divider-line-inner"></div></td>
+        <td class="venue-divider-label-right">11:00 AM</td>
+      </tr>
+    </table>
+
+    <div class="event-grid">
+      <div class="event-card">
+        <p class="event-date-tag">Thu, May 14</p>
+        <p class="event-artist-md">Knock2</p>
+        <p class="event-venue-tag">LIV Beach</p>
+      </div>
+      <div class="event-card">
+        <p class="event-date-tag">Fri, May 15</p>
+        <p class="event-artist-md">Disco Lines</p>
+        <p class="event-venue-tag">LIV Beach</p>
+      </div>
+      <div class="event-card">
+        <p class="event-date-tag">Sat, May 16</p>
+        <p class="event-artist-md">David Guetta</p>
+        <p class="event-venue-tag">LIV Beach</p>
+      </div>
+      <div class="event-card">
+        <p class="event-date-tag">Sun, May 17</p>
+        <p class="event-artist-md">John Summit</p>
+        <p class="event-venue-tag">LIV Beach</p>
+      </div>
+    </div>
+
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       MEMORIAL DAY WEEKEND — MAY 22–24
+  ════════════════════════════════════════════════════════ -->
+  <section class="event-section-alt">
+    <div class="section-header">
+      <p class="section-overline">Memorial Day Weekend</p>
+      <h2 class="section-title">May 22 &ndash; 24</h2>
+    </div>
+
+    <div class="event-featured">
+      <p class="event-date-tag">Friday, May 22 &nbsp;&middot;&nbsp; LIV Nightclub</p>
+      <p class="event-artist-lg">John Summit</p>
+      <p class="event-venue-tag">Nightclub &nbsp;&middot;&nbsp; 10:00 PM</p>
+    </div>
+
+    <div class="event-grid" style="margin-top: 10px;">
+      <div class="event-card">
+        <p class="event-date-tag">Fri, May 22</p>
+        <p class="event-artist-md">Disco Lines</p>
+        <p class="event-venue-tag">LIV Beach &nbsp;&middot;&nbsp; 11:00 AM</p>
+      </div>
+      <div class="event-card">
+        <p class="event-date-tag">Sat, May 23</p>
+        <p class="event-artist-md">Dom Dolla</p>
+        <p class="event-venue-tag">LIV Nightclub &nbsp;&middot;&nbsp; 10:00 PM</p>
+      </div>
+      <div class="event-card">
+        <p class="event-date-tag">Sat, May 23</p>
+        <p class="event-artist-md">David Guetta</p>
+        <p class="event-venue-tag">LIV Beach &nbsp;&middot;&nbsp; 11:00 AM</p>
+      </div>
+      <div class="event-card">
+        <p class="event-date-tag">Sun, May 24</p>
+        <p class="event-artist-md">Knock2</p>
+        <p class="event-venue-tag">LIV Nightclub &nbsp;&middot;&nbsp; 10:00 PM</p>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <p class="event-date-tag">Sunday, May 24 &nbsp;&middot;&nbsp; LIV Beach</p>
+      <p class="event-artist-md">John Summit</p>
+      <p class="event-venue-tag">Beach &nbsp;&middot;&nbsp; 11:00 AM</p>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       END OF MONTH — MAY 29–31
+  ════════════════════════════════════════════════════════ -->
+  <section class="event-section">
+    <div class="section-header">
+      <p class="section-overline">End of May</p>
+      <h2 class="section-title">May 29 &ndash; 31</h2>
+    </div>
+
+    <div class="event-featured">
+      <p class="event-date-tag">Friday, May 29 &nbsp;&middot;&nbsp; LIV Nightclub</p>
+      <p class="event-artist-lg">Metro Boomin</p>
+      <p class="event-venue-tag">Nightclub &nbsp;&middot;&nbsp; 10:00 PM</p>
+    </div>
+
+    <div class="event-grid" style="margin-top: 10px;">
+      <div class="event-card">
+        <p class="event-date-tag">Fri, May 29</p>
+        <p class="event-artist-md">LINSKA</p>
+        <p class="event-venue-tag">LIV Beach &nbsp;&middot;&nbsp; 11:30 AM</p>
+      </div>
+      <div class="event-card">
+        <p class="event-date-tag">Sat, May 30</p>
+        <p class="event-artist-md">Crankdat</p>
+        <p class="event-venue-tag">LIV Nightclub &nbsp;&middot;&nbsp; 10:00 PM</p>
+      </div>
+      <div class="event-card">
+        <p class="event-date-tag">Sat, May 30</p>
+        <p class="event-artist-md">David Guetta</p>
+        <p class="event-venue-tag">LIV Beach &nbsp;&middot;&nbsp; 11:00 AM</p>
+      </div>
+      <div class="event-card">
+        <p class="event-date-tag">Sun, May 31</p>
+        <p class="event-artist-md">Matroda</p>
+        <p class="event-venue-tag">LIV Nightclub &nbsp;&middot;&nbsp; 10:00 PM</p>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <p class="event-date-tag">Sunday, May 31 &nbsp;&middot;&nbsp; LIV Beach</p>
+      <p class="event-artist-md">SIDEPIECE</p>
+      <p class="event-venue-tag">Beach &nbsp;&middot;&nbsp; 11:30 AM</p>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       BOOK THE FULL WEEKEND STRIP
+  ════════════════════════════════════════════════════════ -->
+  <div class="book-strip">
+    <table class="book-strip-table">
+      <tr>
+        <td class="book-strip-copy-cell">
+          <p class="book-strip-overline">The Complete Experience</p>
+          <p class="book-strip-title">Night &nbsp;&middot;&nbsp; Day &nbsp;&middot;&nbsp; Dinner</p>
+          <p class="book-strip-sub">VIP Table &nbsp;&middot;&nbsp; Beach Daybed &nbsp;&middot;&nbsp; Restaurant Reservation</p>
+        </td>
+        <td class="book-strip-action-cell">
+          <a href="https://booketing.com/microsite/brianaltmann/" class="btn-ghost">Inquire Now</a>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <hr class="gold-rule">
+
+
+  <!-- ════════════════════════════════════════════════════════
+       DINING
+  ════════════════════════════════════════════════════════ -->
+  <section class="dining-section">
+    <p class="section-overline">Curated Dining</p>
+    <h2 class="section-title" style="margin-top: 10px;">Complete the Experience</h2>
+
+    <div class="dining-grid">
+
+      <div class="dining-card">
+        <div class="dining-crest">
+          <span class="dining-monogram">PS</span>
+        </div>
+        <p class="dining-name">Papi Steak</p>
+        <p class="dining-desc">Miami-born steakhouse.<br>Tableside theatrics &amp; prime cuts.</p>
+        <a href="https://booketing.com/microsite/brianaltmann/" class="btn-reserve">Reserve</a>
+      </div>
+
+      <div class="dining-card">
+        <div class="dining-crest">
+          <span class="dining-monogram">K</span>
+        </div>
+        <p class="dining-name">Komodo</p>
+        <p class="dining-desc">Pan-Asian dining.<br>Bold flavor, elevated atmosphere.</p>
+        <a href="https://booketing.com/microsite/brianaltmann/" class="btn-reserve">Reserve</a>
+      </div>
+
+      <div class="dining-card">
+        <div class="dining-crest">
+          <span class="dining-monogram">C</span>
+        </div>
+        <p class="dining-name">Contramar</p>
+        <p class="dining-desc">Mexico City seafood institution.<br>Icons at every table.</p>
+        <a href="https://booketing.com/microsite/brianaltmann/" class="btn-reserve">Reserve</a>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       VIP CTA — THE MONEY SHOT
+  ════════════════════════════════════════════════════════ -->
+  <section class="vip-section">
+    <div class="vip-outer">
+      <div class="vip-inner">
+
+        <p class="vip-overline">Private Table Service</p>
+        <h2 class="vip-headline">Reserve Your Night</h2>
+        <hr class="gold-rule-narrow" style="margin-bottom: 40px;">
+
+        <p class="vip-amenities">
+          Dedicated Host &nbsp;&middot;&nbsp; Premium Bottle Service<br>
+          Priority Entry &nbsp;&middot;&nbsp; Front-of-House Positioning<br>
+          Day-to-Night Coordination &nbsp;&middot;&nbsp; Complimentary Access Planning
+        </p>
+
+        <a href="https://booketing.com/microsite/brianaltmann/" class="btn-gold">Book Now</a>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════════════════════ -->
+  <footer class="footer">
+    <p class="footer-wordmark">LIV</p>
+    <hr class="gold-rule" style="margin-bottom: 28px; opacity: 0.2;">
+
+    <p class="footer-info">
+      2777 S. Las Vegas Blvd, Las Vegas NV 89109<br>
+      Fontainebleau Las Vegas
+    </p>
+    <p class="footer-hours">
+      Nightclub Fri &ndash; Sun &nbsp;10 PM &nbsp;&middot;&nbsp; Beach Fri &ndash; Sun &nbsp;11 AM
+    </p>
+
+    <div class="footer-social">
+      <a href="https://booketing.com/microsite/brianaltmann/">Instagram</a>
+      <a href="https://booketing.com/microsite/brianaltmann/">Facebook</a>
+      <a href="https://booketing.com/microsite/brianaltmann/">Twitter</a>
+    </div>
+
+    <hr class="gold-rule" style="margin-bottom: 24px; opacity: 0.08;">
+
+    <p class="footer-legal">
+      <a href="https://booketing.com/microsite/brianaltmann/">Unsubscribe</a>
+      &nbsp;&middot;&nbsp;
+      <a href="https://booketing.com/microsite/brianaltmann/">Privacy Policy</a>
+      <br><br>
+      &copy; 2026 LIV Nightclub &nbsp;&middot;&nbsp; Fontainebleau Las Vegas &nbsp;&middot;&nbsp; Groot Hospitality
+    </p>
+  </footer>
+
+
+</div>
+</body>
+</html>
