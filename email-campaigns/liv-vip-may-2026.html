@@ -16,39 +16,38 @@
 
     /* ── Design Tokens ──────────────────────────────────────── */
     :root {
-      --black:      #080706;
-      --black-90:   #0d0c09;
-      --black-80:   #131109;
-      --black-70:   #1a1814;
-      --gold:       #c9a84c;
-      --gold-dim:   rgba(201,168,76,0.28);
-      --gold-rule:  rgba(201,168,76,0.45);
-      --text:       #f0ece4;
-      --text-mid:   #b0a898;
-      --text-dim:   #6e6658;
-      --text-ghost: #35322a;
-      --rule:       rgba(255,255,255,0.07);
+      --cream:      #f2ede4;
+      --cream-alt:  #ece6dc;
+      --white:      #ffffff;
+      --dark:       #1a1714;
+      --mid:        #5a5048;
+      --dim:        #9a9088;
+      --ghost:      #c8c0b8;
+      --gold:       #9b8630;
+      --gold-hi:    #c4a84c;
+      --gold-rule:  rgba(155,134,48,0.35);
+      --border:     rgba(0,0,0,0.08);
+      --rule:       rgba(0,0,0,0.07);
+      --navy:       #1c3460;
     }
 
     /* ── Reset ──────────────────────────────────────────────── */
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
-      background-color: var(--black);
-      color: var(--text);
+      background-color: #e8e2d8;
+      color: var(--dark);
       font-family: 'Montserrat', Helvetica, Arial, sans-serif;
       -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
     }
 
     a { color: inherit; text-decoration: none; }
     img { display: block; border: 0; }
 
-    /* ── Wrapper ────────────────────────────────────────────── */
     .email-wrapper {
       max-width: 680px;
       margin: 0 auto;
-      background-color: var(--black);
+      background-color: var(--cream);
     }
 
     /* ── Rules ──────────────────────────────────────────────── */
@@ -78,10 +77,10 @@
 
     /* ── Header ─────────────────────────────────────────────── */
     .header {
-      padding: 80px 52px 64px;
+      padding: 72px 52px 56px;
       text-align: center;
-      background-color: var(--black);
-      background-image: radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,168,76,0.13) 0%, transparent 65%);
+      background-color: var(--cream);
+      background-image: radial-gradient(ellipse 60% 45% at 50% 0%, rgba(155,134,48,0.10) 0%, transparent 65%);
     }
 
     .eyebrow {
@@ -91,15 +90,15 @@
       letter-spacing: 5px;
       color: var(--gold);
       text-transform: uppercase;
-      margin-bottom: 36px;
+      margin-bottom: 32px;
     }
 
     .wordmark {
       font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
       font-size: 108px;
       font-weight: 300;
-      letter-spacing: 0.24em;
-      color: var(--text);
+      letter-spacing: 0.22em;
+      color: var(--dark);
       line-height: 1;
       margin-bottom: 20px;
     }
@@ -111,7 +110,7 @@
       letter-spacing: 5.5px;
       color: var(--gold);
       text-transform: uppercase;
-      margin-bottom: 44px;
+      margin-bottom: 40px;
     }
 
     .month-display {
@@ -119,16 +118,49 @@
       font-style: italic;
       font-size: 15px;
       font-weight: 300;
-      color: var(--text-dim);
+      color: var(--dim);
       letter-spacing: 0.16em;
       margin-top: 28px;
     }
 
+    /* ── Michelin Strip ─────────────────────────────────────── */
+    .michelin-strip {
+      padding: 20px 52px;
+      background-color: var(--cream);
+      text-align: center;
+      border-top: 1px solid var(--gold-rule);
+      border-bottom: 1px solid var(--gold-rule);
+    }
+
+    .michelin-inner {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+
+    .michelin-divider {
+      color: rgba(155,134,48,0.4);
+      margin: 0 8px;
+    }
+
+    .michelin-sub {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 7px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--dim);
+      margin-top: 5px;
+    }
+
     /* ── Intro ──────────────────────────────────────────────── */
     .intro {
-      padding: 64px 88px 60px;
+      padding: 60px 88px 56px;
       text-align: center;
-      background-color: var(--black);
+      background-color: var(--cream);
       border-top: 1px solid var(--rule);
       border-bottom: 1px solid var(--rule);
     }
@@ -139,14 +171,14 @@
       font-size: 22px;
       font-weight: 300;
       line-height: 1.75;
-      color: var(--text-mid);
+      color: var(--mid);
     }
 
     /* ── Section Header ─────────────────────────────────────── */
     .section-header {
       text-align: center;
       margin-bottom: 0;
-      padding-bottom: 40px;
+      padding-bottom: 36px;
       border-bottom: 1px solid var(--rule);
     }
 
@@ -162,27 +194,27 @@
 
     .section-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 42px;
+      font-size: 40px;
       font-weight: 300;
       letter-spacing: 0.04em;
-      color: var(--text);
+      color: var(--dark);
     }
 
-    /* ── Event Sections ─────────────────────────────────────── */
+    /* ── Event Sections — Light ─────────────────────────────── */
     .event-section {
-      padding: 60px 52px;
-      background-color: var(--black);
+      padding: 56px 52px;
+      background-color: var(--white);
     }
 
     .event-section-alt {
-      padding: 60px 52px;
-      background-color: var(--black-90);
+      padding: 56px 52px;
+      background-color: var(--cream);
     }
 
     /* ── Event: Featured ────────────────────────────────────── */
     .event-featured {
-      padding: 40px 0;
-      border-top: 1px solid var(--gold-rule);
+      padding: 32px 0 32px 20px;
+      border-left: 3px solid var(--gold);
       border-bottom: 1px solid var(--rule);
       background: transparent;
       margin-bottom: 0;
@@ -190,7 +222,7 @@
 
     /* ── Event: Standard ────────────────────────────────────── */
     .event-card {
-      padding: 28px 0;
+      padding: 24px 0;
       border-bottom: 1px solid var(--rule);
       background: transparent;
       margin-bottom: 0;
@@ -214,7 +246,7 @@
       font-size: 52px;
       font-weight: 300;
       letter-spacing: 0.01em;
-      color: var(--text);
+      color: var(--dark);
       line-height: 1;
       margin-bottom: 10px;
     }
@@ -224,7 +256,7 @@
       font-size: 30px;
       font-weight: 300;
       letter-spacing: 0.01em;
-      color: var(--text);
+      color: var(--dark);
       line-height: 1.1;
       margin-bottom: 8px;
     }
@@ -234,7 +266,7 @@
       font-size: 21px;
       font-weight: 300;
       letter-spacing: 0.01em;
-      color: var(--text);
+      color: var(--dark);
       line-height: 1.25;
       margin-bottom: 7px;
     }
@@ -244,7 +276,7 @@
       font-size: 8px;
       font-weight: 400;
       letter-spacing: 2.5px;
-      color: var(--text-dim);
+      color: var(--dim);
       text-transform: uppercase;
     }
 
@@ -253,7 +285,7 @@
       font-size: 7px;
       font-weight: 400;
       letter-spacing: 1.5px;
-      color: var(--text-ghost);
+      color: var(--ghost);
       text-transform: uppercase;
       margin-top: 4px;
     }
@@ -281,7 +313,7 @@
     .venue-divider-table {
       width: 100%;
       border-collapse: collapse;
-      margin: 48px 0 0;
+      margin: 44px 0 0;
     }
 
     .venue-divider-label-left {
@@ -289,10 +321,10 @@
       font-size: 7px;
       font-weight: 600;
       letter-spacing: 4px;
-      color: var(--gold);
+      color: #f0ece4;
       text-transform: uppercase;
       white-space: nowrap;
-      padding-right: 16px;
+      padding-right: 14px;
       vertical-align: middle;
     }
 
@@ -301,32 +333,51 @@
       font-size: 7px;
       font-weight: 400;
       letter-spacing: 2px;
-      color: var(--text-dim);
+      color: #6e6658;
       text-transform: uppercase;
       white-space: nowrap;
-      padding-left: 16px;
+      padding-left: 14px;
       vertical-align: middle;
     }
 
     .venue-divider-line { width: 100%; vertical-align: middle; }
-
     .venue-divider-line-inner {
       height: 1px;
-      background: linear-gradient(to right, rgba(201,168,76,0.5), transparent);
+      background: linear-gradient(to right, rgba(155,134,48,0.6), transparent);
     }
 
-    /* ── EDC Week ───────────────────────────────────────────── */
+    /* ── EDC Week — DARK ────────────────────────────────────── */
     .edc-section {
-      background-color: var(--black-80);
+      background-color: #141210;
       border-top: 1px solid var(--gold);
       border-bottom: 1px solid var(--gold);
       padding: 72px 52px 80px;
     }
 
+    .edc-section .event-featured {
+      border-left: 3px solid var(--gold);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .edc-section .event-card {
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .edc-section .event-grid .event-card:nth-child(even) {
+      border-left: 1px solid rgba(255,255,255,0.07);
+    }
+
+    .edc-section .event-artist-lg,
+    .edc-section .event-artist-md,
+    .edc-section .event-artist-sm { color: #f0ece4; }
+
+    .edc-section .event-venue-tag,
+    .edc-section .event-venue-note { color: #6e6658; }
+
     .edc-banner {
       text-align: center;
       padding-bottom: 52px;
-      border-bottom: 1px solid var(--rule);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
       margin-bottom: 52px;
     }
 
@@ -345,7 +396,7 @@
       font-size: 88px;
       font-weight: 300;
       letter-spacing: 0.14em;
-      color: var(--text);
+      color: #f0ece4;
       line-height: 1;
       margin-bottom: 20px;
     }
@@ -361,7 +412,7 @@
 
     /* ── Book Strip ─────────────────────────────────────────── */
     .book-strip {
-      background-color: var(--black-90);
+      background-color: var(--cream-alt);
       border-top: 1px solid var(--gold-rule);
       border-bottom: 1px solid var(--gold-rule);
       padding: 36px 52px;
@@ -391,7 +442,7 @@
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 26px;
       font-weight: 300;
-      color: var(--text);
+      color: var(--dark);
       margin-bottom: 6px;
       letter-spacing: 0.03em;
     }
@@ -400,14 +451,14 @@
       font-family: 'Montserrat', Helvetica, sans-serif;
       font-size: 8px;
       font-weight: 400;
-      color: var(--text-dim);
+      color: var(--dim);
       letter-spacing: 1.5px;
     }
 
     .btn-ghost {
       display: inline-block;
       padding: 13px 28px;
-      border: 1px solid var(--gold-dim);
+      border: 1px solid rgba(155,134,48,0.5);
       font-family: 'Montserrat', Helvetica, sans-serif;
       font-size: 8px;
       font-weight: 600;
@@ -420,13 +471,13 @@
     /* ── Hotel ──────────────────────────────────────────────── */
     .hotel-section {
       padding: 0 52px;
-      background-color: var(--black);
+      background-color: var(--cream);
     }
 
     .hotel-inner {
-      border: 1px solid rgba(201,168,76,0.18);
+      border: 1px solid rgba(155,134,48,0.18);
       border-top: 2px solid var(--gold);
-      background-color: var(--black-90);
+      background-color: var(--white);
       padding: 52px 48px;
       display: table;
       width: 100%;
@@ -457,7 +508,7 @@
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 32px;
       font-weight: 300;
-      color: var(--text);
+      color: var(--dark);
       letter-spacing: 0.03em;
       line-height: 1.2;
       margin-bottom: 14px;
@@ -474,7 +525,7 @@
 
     .hotel-promo-row {
       display: inline-block;
-      border: 1px solid rgba(201,168,76,0.22);
+      border: 1px solid rgba(155,134,48,0.22);
       padding: 8px 18px;
       margin-bottom: 14px;
     }
@@ -484,7 +535,7 @@
       font-size: 7px;
       font-weight: 600;
       letter-spacing: 3px;
-      color: var(--text-dim);
+      color: var(--dim);
       text-transform: uppercase;
       margin-bottom: 4px;
     }
@@ -502,7 +553,7 @@
       font-family: 'Montserrat', Helvetica, sans-serif;
       font-size: 8px;
       font-weight: 400;
-      color: var(--text-ghost);
+      color: var(--dim);
       letter-spacing: 1px;
     }
 
@@ -514,379 +565,26 @@
       font-size: 9px;
       font-weight: 600;
       letter-spacing: 4px;
-      color: #080706;
+      color: #ffffff;
       text-transform: uppercase;
       text-decoration: none;
       white-space: nowrap;
     }
 
-    /* ── Dining ─────────────────────────────────────────────── */
-    .dining-section {
-      padding: 72px 52px 80px;
-      background-color: var(--black-80);
-      text-align: center;
-    }
-
-    .dining-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1px;
-      background-color: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.05);
-      margin-top: 52px;
-    }
-
-    .dining-card {
-      background-color: var(--black-80);
-      border: none;
-      border-top: 1px solid var(--gold);
-      padding: 0 0 32px;
-      text-align: center;
-      overflow: hidden;
-    }
-
-    .dining-img {
-      display: block;
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      object-position: center;
-      margin-bottom: 28px;
-    }
-
-    .dining-img-placeholder {
-      width: 100%;
-      height: 180px;
-      background-color: var(--black-70);
-      line-height: 180px;
-      text-align: center;
-      margin-bottom: 28px;
-    }
-
-    .dining-card-body { padding: 0 22px; }
-
-    .dining-crest {
-      width: 64px;
-      height: 64px;
-      border: 1px solid rgba(201,168,76,0.3);
-      border-radius: 50%;
-      margin: 0 auto 20px;
-      line-height: 64px;
-      text-align: center;
-    }
-
-    .dining-monogram {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 26px;
-      font-weight: 400;
-      color: var(--gold);
-      letter-spacing: 0.04em;
-      line-height: 64px;
-    }
-
-    .dining-name {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 19px;
-      font-weight: 400;
-      color: var(--text);
-      letter-spacing: 0.05em;
-      margin-bottom: 10px;
-    }
-
-    .dining-desc {
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 8px;
-      font-weight: 400;
-      color: var(--text-dim);
-      letter-spacing: 0.5px;
-      line-height: 2;
-      margin-bottom: 20px;
-    }
-
-    .btn-reserve {
-      display: inline-block;
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 8px;
-      font-weight: 600;
-      letter-spacing: 3.5px;
-      color: var(--gold);
-      text-transform: uppercase;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(201,168,76,0.3);
-      padding-bottom: 3px;
-    }
-
-    /* ── Poodle Room ────────────────────────────────────────── */
-    .poodle-section {
-      padding: 80px 52px;
-      background-color: var(--black-80);
-      text-align: center;
-    }
-
-    .poodle-eyebrow {
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 8px;
-      font-weight: 500;
-      letter-spacing: 5.5px;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    .poodle-wordmark {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 56px;
-      font-weight: 300;
-      letter-spacing: 0.1em;
-      color: var(--text);
-      line-height: 1.1;
-      margin-bottom: 6px;
-    }
-
-    .poodle-floor {
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 8px;
-      font-weight: 500;
-      letter-spacing: 4.5px;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 40px;
-    }
-
-    .poodle-desc {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-style: italic;
-      font-size: 18px;
-      font-weight: 300;
-      color: var(--text-mid);
-      line-height: 1.75;
-      max-width: 400px;
-      margin: 0 auto 52px;
-    }
-
-    .poodle-perks {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 1px;
-      background-color: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.05);
-      margin-bottom: 48px;
-    }
-
-    .poodle-perk {
-      background-color: var(--black-80);
-      padding: 28px 16px;
-      text-align: center;
-    }
-
-    .poodle-perk-icon {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 20px;
-      font-weight: 300;
-      color: var(--gold);
-      line-height: 1;
-      margin-bottom: 10px;
-    }
-
-    .poodle-perk-label {
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 7px;
-      font-weight: 500;
-      letter-spacing: 2.5px;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      line-height: 1.7;
-    }
-
-    .btn-poodle {
-      display: inline-block;
-      padding: 14px 36px;
-      border: 1px solid var(--gold-dim);
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 8px;
-      font-weight: 600;
-      letter-spacing: 4px;
-      color: var(--gold);
-      text-transform: uppercase;
-      text-decoration: none;
-    }
-
-    /* ── VIP CTA ────────────────────────────────────────────── */
-    .vip-section {
-      padding: 88px 52px;
-      background-color: var(--black);
-    }
-
-    .vip-outer {
-      border: 1px solid rgba(201,168,76,0.32);
-      padding: 2px;
-    }
-
-    .vip-inner {
-      padding: 80px 68px;
-      text-align: center;
-      background-color: var(--black-90);
-      background-image: radial-gradient(ellipse 80% 50% at 50% 110%, rgba(201,168,76,0.07) 0%, transparent 60%);
-      border: 1px solid rgba(201,168,76,0.07);
-    }
-
-    .vip-overline {
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 8px;
-      font-weight: 500;
-      letter-spacing: 6px;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 24px;
-    }
-
-    .vip-headline {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-style: italic;
-      font-size: 56px;
-      font-weight: 300;
-      color: var(--text);
-      letter-spacing: 0.02em;
-      line-height: 1.1;
-      margin-bottom: 36px;
-    }
-
-    .vip-amenities {
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 8px;
-      font-weight: 400;
-      letter-spacing: 2.5px;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      line-height: 3;
-      margin-bottom: 48px;
-    }
-
-    .btn-gold {
-      display: inline-block;
-      padding: 18px 64px;
-      background-color: var(--gold);
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 5px;
-      color: #080706;
-      text-transform: uppercase;
-      text-decoration: none;
-    }
-
-    /* ── Footer ─────────────────────────────────────────────── */
-    .footer {
-      background-color: #050504;
-      padding: 60px 52px 48px;
-      text-align: center;
-    }
-
-    .footer-wordmark {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 36px;
-      font-weight: 300;
-      letter-spacing: 0.22em;
-      color: var(--text-ghost);
-      margin-bottom: 24px;
-    }
-
-    .footer-info {
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 9px;
-      font-weight: 400;
-      color: var(--text-ghost);
-      letter-spacing: 1px;
-      line-height: 2;
-      margin-bottom: 14px;
-    }
-
-    .footer-hours {
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 8px;
-      font-weight: 400;
-      color: #252218;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      margin-bottom: 28px;
-    }
-
-    .footer-social { margin-bottom: 28px; }
-
-    .footer-social a {
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 8px;
-      font-weight: 500;
-      letter-spacing: 3px;
-      color: var(--text-dim);
-      text-transform: uppercase;
-      text-decoration: none;
-      margin: 0 16px;
-    }
-
-    .footer-legal {
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 8px;
-      font-weight: 400;
-      color: #252218;
-      letter-spacing: 1px;
-      line-height: 2.4;
-    }
-
-    .footer-legal a {
-      color: var(--text-ghost);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-
-    /* ── Michelin Strip ─────────────────────────────────────── */
-    .michelin-strip {
-      padding: 22px 52px;
-      background-color: var(--black-90);
-      text-align: center;
-      border-top: 1px solid rgba(201,168,76,0.18);
-      border-bottom: 1px solid rgba(201,168,76,0.18);
-    }
-
-    .michelin-inner {
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 8px;
-      font-weight: 600;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--gold);
-    }
-
-    .michelin-divider {
-      color: rgba(201,168,76,0.4);
-      margin: 0 10px;
-    }
-
-    .michelin-sub {
-      font-family: 'Montserrat', Helvetica, sans-serif;
-      font-size: 7px;
-      font-weight: 400;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-top: 5px;
-    }
-
     /* ── Fontainebleau Rewards ──────────────────────────────── */
     .rewards-section {
       padding: 72px 52px;
-      background-color: var(--black-90);
+      background-color: var(--white);
       text-align: center;
       border-top: 1px solid var(--rule);
       border-bottom: 1px solid var(--rule);
     }
 
     .rewards-bowtie {
-      font-size: 26px;
-      color: var(--text);
+      font-size: 22px;
+      color: var(--gold);
       line-height: 1;
-      margin-bottom: 10px;
-      letter-spacing: 0.08em;
+      margin-bottom: 12px;
     }
 
     .rewards-brand {
@@ -894,7 +592,7 @@
       font-size: 9px;
       font-weight: 500;
       letter-spacing: 6px;
-      color: var(--text-mid);
+      color: var(--mid);
       text-transform: uppercase;
       margin-bottom: 6px;
     }
@@ -904,26 +602,23 @@
       font-size: 54px;
       font-weight: 300;
       letter-spacing: 0.1em;
-      color: var(--text);
+      color: var(--dark);
       line-height: 1;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
 
     .rewards-desc {
       font-family: 'Montserrat', Helvetica, sans-serif;
       font-size: 9px;
       font-weight: 400;
-      color: var(--text-mid);
+      color: var(--mid);
       letter-spacing: 1px;
       line-height: 2;
       max-width: 380px;
-      margin: 0 auto 40px;
+      margin: 0 auto 36px;
     }
 
-    .rewards-highlight {
-      color: var(--gold);
-      font-weight: 600;
-    }
+    .rewards-highlight { color: var(--gold); font-weight: 600; }
 
     .rewards-perks {
       display: table;
@@ -958,7 +653,7 @@
       font-size: 7px;
       font-weight: 500;
       letter-spacing: 2.5px;
-      color: var(--text-dim);
+      color: var(--dim);
       text-transform: uppercase;
       line-height: 1.6;
     }
@@ -966,27 +661,348 @@
     .btn-rewards {
       display: inline-block;
       padding: 16px 52px;
+      background-color: var(--navy);
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 5px;
+      color: #ffffff;
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    /* ── Dining ─────────────────────────────────────────────── */
+    .dining-section {
+      padding: 72px 52px 80px;
+      background-color: var(--cream);
+      text-align: center;
+    }
+
+    .dining-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background-color: var(--rule);
+      border: 1px solid var(--rule);
+      margin-top: 48px;
+    }
+
+    .dining-card {
+      background-color: var(--white);
+      border: none;
+      border-top: 2px solid var(--gold);
+      padding: 0 0 32px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .dining-img {
+      display: block;
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      object-position: center;
+      margin-bottom: 24px;
+    }
+
+    .dining-img-placeholder {
+      width: 100%;
+      height: 180px;
+      background-color: var(--cream-alt);
+      line-height: 180px;
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .dining-card-body { padding: 0 20px; }
+
+    .dining-crest {
+      width: 60px;
+      height: 60px;
+      border: 1px solid rgba(155,134,48,0.3);
+      border-radius: 50%;
+      margin: 0 auto 18px;
+      line-height: 60px;
+      text-align: center;
+    }
+
+    .dining-monogram {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 24px;
+      font-weight: 400;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+      line-height: 60px;
+    }
+
+    .dining-name {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--dark);
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .dining-desc {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 400;
+      color: var(--dim);
+      letter-spacing: 0.5px;
+      line-height: 2;
+      margin-bottom: 18px;
+    }
+
+    .btn-reserve {
+      display: inline-block;
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 3.5px;
+      color: var(--gold);
+      text-transform: uppercase;
+      text-decoration: none;
+      border-bottom: 1px solid rgba(155,134,48,0.3);
+      padding-bottom: 3px;
+    }
+
+    /* ── Poodle Room — DARK ─────────────────────────────────── */
+    .poodle-section {
+      padding: 80px 52px;
+      background-color: #141210;
+      text-align: center;
+    }
+
+    .poodle-eyebrow {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 5.5px;
+      color: #6e6658;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .poodle-wordmark {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 56px;
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: #f0ece4;
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+
+    .poodle-floor {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 4.5px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+
+    .poodle-desc {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 18px;
+      font-weight: 300;
+      color: #a09888;
+      line-height: 1.75;
+      max-width: 400px;
+      margin: 0 auto 52px;
+    }
+
+    .poodle-perks {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1px;
+      background-color: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 48px;
+    }
+
+    .poodle-perk {
+      background-color: #141210;
+      padding: 26px 16px;
+      text-align: center;
+    }
+
+    .poodle-perk-icon {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 20px;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .poodle-perk-label {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 7px;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+      color: #6e6658;
+      text-transform: uppercase;
+      line-height: 1.7;
+    }
+
+    .btn-poodle {
+      display: inline-block;
+      padding: 14px 36px;
+      border: 1px solid rgba(155,134,48,0.4);
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: var(--gold);
+      text-transform: uppercase;
+      text-decoration: none;
+    }
+
+    /* ── VIP CTA — DARK ─────────────────────────────────────── */
+    .vip-section {
+      padding: 88px 52px;
+      background-color: #0d0c09;
+    }
+
+    .vip-outer {
+      border: 1px solid rgba(155,134,48,0.35);
+      padding: 2px;
+    }
+
+    .vip-inner {
+      padding: 80px 68px;
+      text-align: center;
+      background-color: #111009;
+      background-image: radial-gradient(ellipse 80% 50% at 50% 110%, rgba(155,134,48,0.10) 0%, transparent 60%);
+      border: 1px solid rgba(155,134,48,0.07);
+    }
+
+    .vip-overline {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 6px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .vip-headline {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 56px;
+      font-weight: 300;
+      color: #f0ece4;
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      margin-bottom: 36px;
+    }
+
+    .vip-amenities {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 400;
+      letter-spacing: 2.5px;
+      color: #6e6658;
+      text-transform: uppercase;
+      line-height: 3;
+      margin-bottom: 48px;
+    }
+
+    .btn-gold {
+      display: inline-block;
+      padding: 18px 64px;
       background-color: var(--gold);
       font-family: 'Montserrat', Helvetica, sans-serif;
       font-size: 9px;
       font-weight: 600;
       letter-spacing: 5px;
-      color: #080706;
+      color: #ffffff;
       text-transform: uppercase;
       text-decoration: none;
     }
 
+    /* ── Footer — DARK ──────────────────────────────────────── */
+    .footer {
+      background-color: #080706;
+      padding: 60px 52px 48px;
+      text-align: center;
+    }
+
+    .footer-wordmark {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 36px;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+      color: #2e2b24;
+      margin-bottom: 24px;
+    }
+
+    .footer-info {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 9px;
+      font-weight: 400;
+      color: #3a3628;
+      letter-spacing: 1px;
+      line-height: 2;
+      margin-bottom: 14px;
+    }
+
+    .footer-hours {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 400;
+      color: #252218;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .footer-social { margin-bottom: 28px; }
+
+    .footer-social a {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      color: #6e6658;
+      text-transform: uppercase;
+      text-decoration: none;
+      margin: 0 16px;
+    }
+
+    .footer-legal {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 400;
+      color: #252218;
+      letter-spacing: 1px;
+      line-height: 2.4;
+    }
+
+    .footer-legal a {
+      color: #3a3628;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
     /* ── Mobile ─────────────────────────────────────────────── */
     @media only screen and (max-width: 480px) {
-      .wordmark         { font-size: 72px !important; letter-spacing: 0.18em !important; }
+      .wordmark         { font-size: 72px !important; }
       .header           { padding: 52px 28px 48px !important; }
-      .intro            { padding: 44px 28px !important; }
+      .intro            { padding: 40px 28px !important; }
       .intro-text       { font-size: 19px !important; }
+
+      .michelin-strip   { padding: 16px 24px !important; }
+      .michelin-inner   { font-size: 7px !important; letter-spacing: 2.5px !important; }
 
       .event-section,
       .event-section-alt,
       .edc-section      { padding: 44px 24px !important; }
-
       .event-artist-lg  { font-size: 40px !important; }
       .edc-wordmark     { font-size: 56px !important; }
 
@@ -1002,9 +1018,15 @@
       .book-strip-action-cell { display: block !important; text-align: left !important; padding-left: 0 !important; }
 
       .hotel-section    { padding: 0 24px !important; }
-      .hotel-inner      { display: block !important; padding: 36px 28px !important; }
+      .hotel-inner      { display: block !important; padding: 32px 24px !important; }
       .hotel-copy       { display: block !important; }
-      .hotel-cta-cell   { display: block !important; text-align: left !important; padding-left: 0 !important; margin-top: 28px; }
+      .hotel-cta-cell   { display: block !important; text-align: left !important; padding-left: 0 !important; margin-top: 24px; }
+
+      .rewards-section  { padding: 52px 24px !important; }
+      .rewards-headline { font-size: 40px !important; }
+      .rewards-perks    { display: block !important; }
+      .rewards-perk     { display: block !important; border-right: none !important; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 16px 12px; }
+      .rewards-perk:last-child { border-bottom: none; }
 
       .dining-section   { padding: 52px 24px 60px !important; }
       .dining-grid      { display: block !important; background: transparent !important; border: none !important; }
@@ -1019,14 +1041,10 @@
       .vip-section      { padding: 52px 24px !important; }
       .vip-inner        { padding: 48px 28px !important; }
       .vip-headline     { font-size: 40px !important; }
-      .btn-gold         { padding: 16px 40px !important; }
+      .btn-gold         { padding: 16px 36px !important; }
 
       .footer           { padding: 48px 24px 40px !important; }
       .footer-social a  { margin: 0 10px !important; }
-
-      .michelin-strip   { padding: 18px 24px !important; }
-      .rewards-section  { padding: 52px 24px !important; }
-      .rewards-headline { font-size: 38px !important; }
     }
 
   </style>
