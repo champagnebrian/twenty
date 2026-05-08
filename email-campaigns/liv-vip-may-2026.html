@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="color-scheme" content="dark">
+  <meta name="color-scheme" content="light">
   <meta name="format-detection" content="telephone=no">
   <title>LIV Nightclub &amp; Beach — May 2026 VIP</title>
 
@@ -77,10 +77,12 @@
 
     /* ── Header ─────────────────────────────────────────────── */
     .header {
-      padding: 72px 52px 56px;
+      padding: 80px 52px 64px;
       text-align: center;
       background-color: var(--cream);
-      background-image: radial-gradient(ellipse 60% 45% at 50% 0%, rgba(155,134,48,0.10) 0%, transparent 65%);
+      background-image:
+        radial-gradient(ellipse 70% 55% at 50% 0%, rgba(155,134,48,0.13) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 30% at 50% 100%, rgba(155,134,48,0.06) 0%, transparent 70%);
     }
 
     .eyebrow {
@@ -95,12 +97,12 @@
 
     .wordmark {
       font-family: 'Cormorant Garamond', Georgia, 'Times New Roman', serif;
-      font-size: 108px;
+      font-size: 130px;
       font-weight: 300;
-      letter-spacing: 0.22em;
+      letter-spacing: 0.28em;
       color: var(--dark);
       line-height: 1;
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     .header-sub {
@@ -194,7 +196,7 @@
 
     .section-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 40px;
+      font-size: 48px;
       font-weight: 300;
       letter-spacing: 0.04em;
       color: var(--dark);
@@ -243,7 +245,7 @@
 
     .event-artist-lg {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 52px;
+      font-size: 58px;
       font-weight: 300;
       letter-spacing: 0.01em;
       color: var(--dark);
@@ -253,7 +255,7 @@
 
     .event-artist-md {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 30px;
+      font-size: 34px;
       font-weight: 300;
       letter-spacing: 0.01em;
       color: var(--dark);
@@ -263,7 +265,7 @@
 
     .event-artist-sm {
       font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 21px;
+      font-size: 22px;
       font-weight: 300;
       letter-spacing: 0.01em;
       color: var(--dark);
@@ -992,58 +994,89 @@
 
     /* ── Mobile ─────────────────────────────────────────────── */
     @media only screen and (max-width: 480px) {
-      .wordmark         { font-size: 72px !important; }
-      .header           { padding: 52px 28px 48px !important; }
-      .intro            { padding: 40px 28px !important; }
-      .intro-text       { font-size: 19px !important; }
+      .wordmark         { font-size: 96px !important; letter-spacing: 0.24em !important; }
+      .header           { padding: 60px 28px 52px !important; }
+      .eyebrow          { font-size: 8px !important; letter-spacing: 4px !important; margin-bottom: 28px !important; }
+      .header-sub       { font-size: 8px !important; letter-spacing: 4px !important; }
+      .month-display    { font-size: 13px !important; }
+
+      .intro            { padding: 44px 28px !important; }
+      .intro-text       { font-size: 20px !important; line-height: 1.8 !important; }
 
       .michelin-strip   { padding: 16px 24px !important; }
       .michelin-inner   { font-size: 7px !important; letter-spacing: 2.5px !important; }
+      .michelin-sub     { font-size: 6.5px !important; letter-spacing: 2px !important; }
 
       .event-section,
-      .event-section-alt,
-      .edc-section      { padding: 44px 24px !important; }
-      .event-artist-lg  { font-size: 40px !important; }
-      .edc-wordmark     { font-size: 56px !important; }
+      .event-section-alt { padding: 48px 24px !important; }
+      .edc-section      { padding: 52px 24px 60px !important; }
+
+      .section-title    { font-size: 38px !important; }
+      .section-overline { font-size: 7px !important; letter-spacing: 4px !important; }
+      .section-header   { padding-bottom: 28px !important; }
+
+      .event-featured   { padding: 28px 0 28px 18px !important; }
+      .event-artist-lg  { font-size: 46px !important; }
+      .event-artist-md  { font-size: 28px !important; }
+      .event-artist-sm  { font-size: 19px !important; }
+      .event-date-tag   { font-size: 7.5px !important; letter-spacing: 3px !important; margin-bottom: 10px !important; }
+      .event-venue-tag  { font-size: 7.5px !important; }
+
+      .edc-wordmark     { font-size: 64px !important; }
+      .edc-overline     { font-size: 7px !important; letter-spacing: 4px !important; }
+      .edc-dates        { font-size: 7.5px !important; letter-spacing: 4px !important; }
 
       .event-grid       { display: block !important; }
       .event-grid .event-card {
         padding-left: 0 !important;
         border-left: none !important;
+        padding-right: 0 !important;
       }
 
-      .book-strip       { padding: 28px 24px !important; }
+      .book-strip       { padding: 32px 24px !important; }
       .book-strip-table { display: block !important; }
-      .book-strip-copy-cell   { display: block !important; margin-bottom: 20px; }
+      .book-strip-copy-cell   { display: block !important; margin-bottom: 24px; }
       .book-strip-action-cell { display: block !important; text-align: left !important; padding-left: 0 !important; }
+      .btn-ghost        { display: block !important; text-align: center !important; padding: 16px 24px !important; }
 
-      .hotel-section    { padding: 0 24px !important; }
-      .hotel-inner      { display: block !important; padding: 32px 24px !important; }
+      .hotel-section    { padding: 0 20px !important; }
+      .hotel-inner      { display: block !important; padding: 36px 24px !important; }
       .hotel-copy       { display: block !important; }
-      .hotel-cta-cell   { display: block !important; text-align: left !important; padding-left: 0 !important; margin-top: 24px; }
+      .hotel-headline   { font-size: 26px !important; }
+      .hotel-cta-cell   { display: block !important; text-align: left !important; padding-left: 0 !important; margin-top: 28px; }
+      .btn-hotel        { display: block !important; text-align: center !important; padding: 16px 24px !important; }
 
-      .rewards-section  { padding: 52px 24px !important; }
-      .rewards-headline { font-size: 40px !important; }
-      .rewards-perks    { display: block !important; }
-      .rewards-perk     { display: block !important; border-right: none !important; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 16px 12px; }
-      .rewards-perk:last-child { border-bottom: none; }
+      .rewards-section  { padding: 56px 24px !important; }
+      .rewards-headline { font-size: 44px !important; }
+      .rewards-desc     { font-size: 8.5px !important; }
+      .rewards-perks    { display: table !important; width: 100% !important; }
+      .rewards-perk     { display: table-cell !important; padding: 18px 8px !important; }
+      .rewards-perk-value { font-size: 20px !important; }
+      .rewards-perk-label { font-size: 6.5px !important; letter-spacing: 1.5px !important; }
+      .btn-rewards      { display: block !important; text-align: center !important; padding: 16px 24px !important; letter-spacing: 4px !important; }
 
-      .dining-section   { padding: 52px 24px 60px !important; }
-      .dining-grid      { display: block !important; background: transparent !important; border: none !important; }
-      .dining-card      { margin-bottom: 1px; }
+      .dining-section   { padding: 52px 20px 60px !important; }
+      .dining-grid      { display: block !important; background: transparent !important; border: none !important; gap: 0 !important; }
+      .dining-card      { margin-bottom: 12px !important; border-top: 2px solid var(--gold) !important; }
       .dining-img,
-      .dining-img-placeholder { height: 200px !important; }
+      .dining-img-placeholder { height: 220px !important; }
+      .dining-card-body { padding: 0 16px !important; }
+      .dining-name      { font-size: 20px !important; }
+      .btn-reserve      { font-size: 9px !important; letter-spacing: 3px !important; }
 
-      .poodle-section   { padding: 52px 24px !important; }
+      .poodle-section   { padding: 56px 24px !important; }
       .poodle-perks     { grid-template-columns: 1fr 1fr !important; }
-      .poodle-wordmark  { font-size: 40px !important; }
+      .poodle-wordmark  { font-size: 44px !important; }
+      .poodle-desc      { font-size: 16px !important; }
 
-      .vip-section      { padding: 52px 24px !important; }
-      .vip-inner        { padding: 48px 28px !important; }
-      .vip-headline     { font-size: 40px !important; }
-      .btn-gold         { padding: 16px 36px !important; }
+      .vip-section      { padding: 52px 20px !important; }
+      .vip-inner        { padding: 48px 24px !important; }
+      .vip-headline     { font-size: 42px !important; }
+      .vip-amenities    { font-size: 7.5px !important; letter-spacing: 2px !important; }
+      .btn-gold         { display: block !important; text-align: center !important; padding: 18px 24px !important; }
 
-      .footer           { padding: 48px 24px 40px !important; }
+      .footer           { padding: 52px 24px 44px !important; }
+      .footer-wordmark  { font-size: 30px !important; }
       .footer-social a  { margin: 0 10px !important; }
     }
 
