@@ -402,6 +402,112 @@
       text-decoration: none;
     }
 
+    /* ── Hotel ──────────────────────────────────────────────── */
+    .hotel-section {
+      padding: 0 52px;
+      background-color: #1e1c18;
+    }
+
+    .hotel-inner {
+      border: 1px solid #3a3628;
+      border-top: 2px solid #9a7e4a;
+      background-color: #232018;
+      padding: 52px 56px;
+      display: table;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .hotel-copy {
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    .hotel-cta-cell {
+      display: table-cell;
+      vertical-align: middle;
+      text-align: right;
+      white-space: nowrap;
+      padding-left: 40px;
+    }
+
+    .hotel-overline {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 5px;
+      color: #9a7e4a;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .hotel-headline {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 30px;
+      font-weight: 300;
+      color: #f5f1eb;
+      letter-spacing: 0.03em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+
+    .hotel-discount {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 18px;
+      font-weight: 300;
+      color: #c4a96e;
+      margin-bottom: 16px;
+    }
+
+    .hotel-promo-row {
+      display: inline-block;
+      border: 1px solid rgba(154,126,74,0.3);
+      padding: 7px 16px;
+      margin-bottom: 14px;
+    }
+
+    .hotel-promo-label {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 7px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      color: #6b6355;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .hotel-promo-code {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: #c4a96e;
+      text-transform: uppercase;
+    }
+
+    .hotel-note {
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 8px;
+      font-weight: 400;
+      color: #4a4438;
+      letter-spacing: 1px;
+    }
+
+    .btn-hotel {
+      display: inline-block;
+      padding: 16px 32px;
+      background-color: #9a7e4a;
+      font-family: 'Montserrat', Helvetica, sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: #1a1612;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
     /* ── Dining ─────────────────────────────────────────────── */
     .dining-section {
       padding: 76px 52px 80px;
@@ -631,6 +737,11 @@
       .book-strip-table { display: block !important; }
       .book-strip-copy-cell   { display: block !important; margin-bottom: 20px; }
       .book-strip-action-cell { display: block !important; text-align: left !important; padding-left: 0 !important; }
+
+      .hotel-section    { padding: 0 24px !important; }
+      .hotel-inner      { display: block !important; padding: 36px 28px !important; }
+      .hotel-copy       { display: block !important; }
+      .hotel-cta-cell   { display: block !important; text-align: left !important; padding-left: 0 !important; margin-top: 28px; }
 
       .dining-section   { padding: 52px 24px 60px !important; }
       .dining-grid      { display: block !important; }
@@ -899,8 +1010,8 @@
       <tr>
         <td class="book-strip-copy-cell">
           <p class="book-strip-overline">The Complete Experience</p>
-          <p class="book-strip-title">Night &nbsp;&middot;&nbsp; Day &nbsp;&middot;&nbsp; Dinner</p>
-          <p class="book-strip-sub">VIP Table &nbsp;&middot;&nbsp; Beach Daybed &nbsp;&middot;&nbsp; Restaurant Reservation</p>
+          <p class="book-strip-title">Night &nbsp;&middot;&nbsp; Day &nbsp;&middot;&nbsp; Dinner &nbsp;&middot;&nbsp; Hotel</p>
+          <p class="book-strip-sub">VIP Table &nbsp;&middot;&nbsp; Beach Daybed &nbsp;&middot;&nbsp; Restaurant &nbsp;&middot;&nbsp; 30% Off Your Room</p>
         </td>
         <td class="book-strip-action-cell">
           <a href="https://booketing.com/microsite/brianaltmann/" class="btn-ghost">Inquire Now</a>
@@ -908,6 +1019,33 @@
       </tr>
     </table>
   </div>
+
+  <hr class="gold-rule">
+
+
+  <!-- ════════════════════════════════════════════════════════
+       HOTEL DISCOUNT
+  ════════════════════════════════════════════════════════ -->
+  <section class="hotel-section">
+    <div class="hotel-inner">
+
+      <div class="hotel-copy">
+        <p class="hotel-overline">Exclusive VIP Rate</p>
+        <h2 class="hotel-headline">Stay at Fontainebleau<br>Las Vegas</h2>
+        <p class="hotel-discount">30% off your room &mdash; where the night begins.</p>
+        <div class="hotel-promo-row">
+          <p class="hotel-promo-label">Promo Code</p>
+          <p class="hotel-promo-code">BRIANALTMANN</p>
+        </div>
+        <p class="hotel-note">Applied automatically at checkout &nbsp;&middot;&nbsp; Limited availability</p>
+      </div>
+
+      <div class="hotel-cta-cell">
+        <a href="https://reserve.fontainebleaulasvegas.com/ibe/shop.aspx?propertyid=17704&lang=en-us&nights=1&promo=BRIANALTMANN" class="btn-hotel">Book Your Stay</a>
+      </div>
+
+    </div>
+  </section>
 
   <hr class="gold-rule">
 
