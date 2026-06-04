@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="format-detection" content="telephone=no,date=no,address=no,email=no">
+<title>Fontainebleau Las Vegas · Summer 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{background-color:#161410;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;font-family:'Montserrat',Helvetica,Arial,sans-serif;}
+  img{display:block;max-width:100%;height:auto;border:0;-ms-interpolation-mode:bicubic;line-height:0;}
+  a{text-decoration:none;}
+  table{border-collapse:collapse;border-spacing:0;mso-table-lspace:0pt;mso-table-rspace:0pt;}
+
+  .eb{max-width:680px;margin:0 auto;background-color:#1e1c18;}
+
+  /* gold rule */
+  .gr{border:none;border-top:1px solid #9a7e4a;width:60%;margin:0 auto;display:block;}
+
+  /* top bar */
+  .topbar{background-color:#1e1c18;padding:16px 24px;text-align:center;}
+  .topbar-t{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:10px;letter-spacing:.32em;color:#9a7e4a;text-transform:uppercase;}
+
+  /* hero */
+  .hero-wrap{position:relative;line-height:0;overflow:hidden;}
+  .hero-wrap img{width:100%;display:block;}
+  .hero-ov{position:absolute;top:0;left:0;right:0;bottom:0;background:linear-gradient(180deg,rgba(30,28,24,.18) 0%,rgba(30,28,24,.72) 55%,rgba(30,28,24,.88) 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 40px;text-align:center;}
+  .hero-wm{font-family:'Cormorant Garamond',Georgia,serif;font-weight:400;font-size:54px;color:#fff;letter-spacing:.32em;text-transform:uppercase;line-height:1;}
+  .hero-tag{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:300;font-size:18px;color:#fff;margin-top:20px;letter-spacing:.04em;line-height:1.55;max-width:440px;}
+
+  /* michelin */
+  .mich{background-color:#f5f1eb;padding:60px 48px;text-align:center;}
+  .mich-hl{font-family:'Cormorant Garamond',Georgia,serif;font-size:34px;font-weight:400;color:#1e1c18;letter-spacing:.025em;line-height:1.25;margin:36px 0 40px;}
+  .mich-row{display:table;width:100%;}
+  .mich-c{display:table-cell;width:50%;vertical-align:top;padding:0 22px;text-align:center;}
+  .mich-c+.mich-c{border-left:1px solid rgba(154,126,74,.22);}
+  .mich-lbl{display:block;font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:8.5px;letter-spacing:.3em;color:#9a7e4a;text-transform:uppercase;margin-bottom:14px;}
+  .mich-txt{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:12px;color:#1e1c18;line-height:1.78;font-weight:300;}
+
+  /* rewards */
+  .rwd{background-color:#1e1c18;padding:64px 48px;text-align:center;}
+  .rwd-hl{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:36px;font-weight:300;color:#f5f1eb;letter-spacing:.02em;line-height:1.3;margin-bottom:28px;}
+  .rwd-bd{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:12px;color:#f5f1eb;line-height:1.8;font-weight:300;max-width:520px;margin:0 auto;}
+  .rwd-nt{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:12px;color:#f5f1eb;line-height:1.8;font-weight:300;max-width:520px;margin:28px auto 0;}
+
+  /* buttons */
+  .btn-gf{display:inline-block;background-color:#9a7e4a;color:#1e1c18 !important;font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:10px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;padding:17px 42px;margin-top:34px;text-decoration:none;}
+  .btn-go{display:inline-block;background-color:transparent;border:1px solid #9a7e4a;color:#f5f1eb !important;font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:10px;font-weight:600;letter-spacing:.28em;text-transform:uppercase;padding:17px 42px;margin-top:34px;text-decoration:none;}
+
+  /* nightclub / beach sections */
+  .nclub{background-color:#1e1c18;padding:64px 48px;text-align:center;}
+  .beach{background-color:#252320;padding:64px 48px;text-align:center;}
+  .s-eye{display:block;font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:8.5px;letter-spacing:.38em;color:#9a7e4a;text-transform:uppercase;margin-bottom:18px;}
+  .s-hl{font-family:'Cormorant Garamond',Georgia,serif;font-size:42px;font-weight:400;color:#f5f1eb;letter-spacing:.02em;line-height:1.15;margin-bottom:18px;}
+  .s-meta{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:11px;color:#f5f1eb;line-height:1.7;font-weight:300;opacity:.75;}
+  .s-pq{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:17px;font-weight:300;color:#f5f1eb;line-height:1.65;max-width:480px;margin:26px auto 0;opacity:.82;}
+  .mo-lbl{display:block;font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:8.5px;letter-spacing:.38em;color:#9a7e4a;text-transform:uppercase;margin:40px 0 24px;}
+
+  /* event table */
+  .evt-tbl{width:100%;border-collapse:collapse;}
+  .evt-tbl td{width:50%;vertical-align:top;padding:0 10px;}
+  .evt-item{padding:15px 0;border-bottom:1px solid rgba(154,126,74,.2);text-align:left;}
+  .evt-date{display:block;font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:8.5px;letter-spacing:.22em;color:#9a7e4a;text-transform:uppercase;margin-bottom:6px;}
+  .evt-nm{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:21px;font-weight:400;color:#f5f1eb;line-height:1.2;}
+  .evt-note{display:block;font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:10px;color:rgba(245,241,235,.5);font-style:italic;margin-top:3px;}
+  .evt-cta{display:inline-block;font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:8.5px;letter-spacing:.16em;color:#9a7e4a;text-decoration:underline;text-transform:uppercase;margin-top:7px;}
+
+  /* suite */
+  .suite{background-color:#1e1c18;text-align:center;}
+  .suite img{width:100%;display:block;}
+  .suite-in{padding:60px 48px;}
+  .suite-hl{font-family:'Cormorant Garamond',Georgia,serif;font-size:42px;font-weight:400;color:#f5f1eb;letter-spacing:.02em;line-height:1.2;margin-bottom:24px;}
+  .suite-bd{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:12px;color:#f5f1eb;line-height:1.8;font-weight:300;max-width:520px;margin:0 auto;}
+  .suite-nt{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:11px;color:rgba(245,241,235,.42);font-style:italic;margin-top:22px;}
+
+  /* dining */
+  .din{background-color:#f5f1eb;padding:64px 48px;text-align:center;}
+  .din-eye{display:block;font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:8.5px;letter-spacing:.38em;color:#9a7e4a;text-transform:uppercase;margin-bottom:18px;}
+  .din-hl{font-family:'Cormorant Garamond',Georgia,serif;font-size:38px;font-weight:400;color:#1e1c18;letter-spacing:.02em;line-height:1.2;margin-bottom:16px;}
+  .din-sub{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:12px;color:#1e1c18;line-height:1.75;font-weight:300;max-width:460px;margin:0 auto 44px;}
+  .din-grid{display:table;width:100%;table-layout:fixed;}
+  .din-col{display:table-cell;width:33.333%;vertical-align:top;padding:0 10px;}
+  .din-img{width:100%;height:185px;object-fit:cover;display:block;}
+  .din-nm{display:block;font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:500;color:#1e1c18;margin:16px 0 8px;line-height:1.2;}
+  .din-desc{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:11px;color:#1e1c18;line-height:1.72;font-weight:300;}
+  .din-lnk{display:inline-block;font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:8.5px;letter-spacing:.2em;color:#9a7e4a;text-decoration:underline;text-transform:uppercase;margin-top:10px;}
+
+  /* vip */
+  .vip{background-color:#1e1c18;padding:72px 48px;text-align:center;}
+  .vip-hl{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:38px;font-weight:300;color:#f5f1eb;letter-spacing:.02em;line-height:1.3;margin-bottom:28px;}
+  .vip-bd{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:12px;color:#f5f1eb;line-height:1.8;font-weight:300;max-width:500px;margin:0 auto;}
+
+  /* footer */
+  .ftr{background-color:#1e1c18;border-top:1px solid rgba(154,126,74,.25);padding:52px 40px 44px;text-align:center;}
+  .ftr-wm{font-family:'Cormorant Garamond',Georgia,serif;font-size:19px;font-weight:400;color:#fff;letter-spacing:.38em;text-transform:uppercase;margin-bottom:12px;}
+  .ftr-addr{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:10px;color:rgba(245,241,235,.45);letter-spacing:.06em;margin-bottom:22px;}
+  .ftr-soc{margin-bottom:24px;}
+  .ftr-soc a{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:9px;letter-spacing:.18em;color:#9a7e4a;text-transform:uppercase;text-decoration:none;margin:0 12px;}
+  .ftr-copy{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(245,241,235,.28);margin-bottom:8px;}
+  .ftr-leg{font-family:'Montserrat',Helvetica,Arial,sans-serif;font-size:9px;color:rgba(245,241,235,.28);}
+  .ftr-leg a{color:#9a7e4a;text-decoration:underline;}
+
+  /* spacers */
+  .sp16{height:16px;line-height:16px;font-size:1px;}
+  .sp24{height:24px;line-height:24px;font-size:1px;}
+  .sp32{height:32px;line-height:32px;font-size:1px;}
+  .sp40{height:40px;line-height:40px;font-size:1px;}
+
+  @media only screen and (max-width:600px){
+    .eb{width:100% !important;}
+    .hero-ov{padding:44px 20px !important;}
+    .hero-wm{font-size:30px !important;letter-spacing:.18em !important;}
+    .hero-tag{font-size:14px !important;margin-top:14px !important;}
+    .mich{padding:40px 22px !important;}
+    .mich-hl{font-size:24px !important;margin:28px 0 30px !important;}
+    .mich-row{display:block !important;}
+    .mich-c{display:block !important;width:100% !important;padding:0 0 26px !important;}
+    .mich-c+.mich-c{border-left:none !important;border-top:1px solid rgba(154,126,74,.22) !important;padding:26px 0 0 !important;}
+    .rwd{padding:40px 22px !important;}
+    .rwd-hl{font-size:26px !important;}
+    .nclub,.beach{padding:40px 22px !important;}
+    .s-hl{font-size:28px !important;}
+    .evt-tbl,.evt-tbl tbody,.evt-tbl tr,.evt-tbl td{display:block !important;width:100% !important;padding:0 !important;}
+    .suite-in{padding:40px 22px !important;}
+    .suite-hl{font-size:28px !important;}
+    .din{padding:40px 22px !important;}
+    .din-hl{font-size:26px !important;}
+    .din-grid{display:block !important;}
+    .din-col{display:block !important;width:100% !important;padding:0 0 30px !important;}
+    .vip{padding:50px 22px !important;}
+    .vip-hl{font-size:26px !important;}
+    .ftr{padding:38px 22px 34px !important;}
+    .btn-gf,.btn-go{display:block !important;width:100% !important;text-align:center !important;padding:19px 20px !important;}
+  }
+</style>
+</head>
+<body>
+
+<!-- PREHEADER -->
+<span style="display:none;max-height:0;overflow:hidden;mso-hide:all;visibility:hidden;opacity:0;color:transparent;">An invitation to Summer 2026 at Fontainebleau Las Vegas — the only MICHELIN Key resort on the Strip.</span>
+
+<div class="eb">
+
+  <!-- ============================================================
+       1. TOP BAR
+  ============================================================ -->
+  <div class="topbar">
+    <span class="topbar-t">Fontainebleau Las Vegas &nbsp;&middot;&nbsp; Summer 2026</span>
+  </div>
+
+  <!-- ============================================================
+       2. HERO
+  ============================================================ -->
+  <div class="hero-wrap">
+    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1360&h=765&fit=crop&q=85" alt="Fontainebleau Las Vegas">
+    <div class="hero-ov">
+      <div class="hero-wm">Fontainebleau</div>
+      <div class="hero-tag">The only resort on the Las Vegas Strip recognized by the MICHELIN Guide.</div>
+    </div>
+  </div>
+
+  <!-- gold rule transition -->
+  <div style="background-color:#1e1c18;padding:36px 0 0;">
+    <hr class="gr">
+  </div>
+
+  <!-- ============================================================
+       3. MICHELIN BLOCK
+  ============================================================ -->
+  <div class="mich">
+    <hr class="gr">
+    <h2 class="mich-hl">Recognized by the World's Most Demanding Standards</h2>
+    <div class="mich-row">
+      <div class="mich-c">
+        <span class="mich-lbl">Michelin One Key &nbsp;&middot;&nbsp; 2025</span>
+        <p class="mich-txt">Fontainebleau Las Vegas is the only resort and casino on the Las Vegas Strip to receive the coveted MICHELIN Key — a distinction reserved for hotels that deliver exceptional hospitality, elevated comfort, and world-class guest experiences.</p>
+      </div>
+      <div class="mich-c">
+        <span class="mich-lbl">Michelin Star &nbsp;&middot;&nbsp; Restaurant Ito</span>
+        <p class="mich-txt">Chef Masa Ito's intimate omakase on the 63rd floor is the only Michelin-starred restaurant on the Las Vegas Strip, with fish flown daily from Japan and sweeping views of the city below.</p>
+      </div>
+    </div>
+    <div class="sp40"></div>
+    <hr class="gr">
+  </div>
+
+  <!-- ============================================================
+       4. FONTAINEBLEAU REWARDS
+  ============================================================ -->
+  <div class="rwd">
+    <h2 class="rwd-hl">"Your membership unlocks extraordinary."</h2>
+    <p class="rwd-bd">From suite upgrades to exclusive event invitations, a Fontainebleau Rewards membership is your upgrade to extraordinary. Earn points on gaming, dining, nightlife, and hotel stays — then redeem across the entire resort.</p>
+    <div class="sp32"></div>
+    <hr class="gr">
+    <p class="rwd-nt">New members instantly receive $10 in Slot Free Credit and unlock $50 in Food &amp; Beverage credit after qualified play.</p>
+    <a href="https://www.fontainebleaulasvegas.com/rewards/" class="btn-gf">Join Fontainebleau Rewards</a>
+  </div>
+
+  <!-- ============================================================
+       5. LIV NIGHTCLUB — JUNE & JULY HEADLINERS
+  ============================================================ -->
+  <div class="nclub">
+    <hr class="gr" style="margin-bottom:48px;">
+    <span class="s-eye">Nightlife &nbsp;&middot;&nbsp; LIV Las Vegas</span>
+    <h2 class="s-hl">Meet Us Under the Halo</h2>
+    <p class="s-meta">Friday – Sunday &nbsp;&middot;&nbsp; Doors 10:30 PM &nbsp;&middot;&nbsp; 21+ &nbsp;&middot;&nbsp; 2777 South Las Vegas Boulevard</p>
+    <p class="s-pq">"LIV Las Vegas promises an unparalleled evening of revelry where the city's elite come to party."</p>
+    <div class="sp32"></div>
+    <hr class="gr">
+
+    <!-- JUNE -->
+    <span class="mo-lbl">June</span>
+    <table class="evt-tbl">
+      <tr>
+        <td>
+          <div class="evt-item">
+            <span class="evt-date">Sat Jun 6</span>
+            <span class="evt-nm">Ti&euml;sto</span>
+            <a href="#" class="evt-cta">Reserve Table</a>
+          </div>
+          <div class="evt-item">
+            <span class="evt-date">Sat Jun 20</span>
+            <span class="evt-nm">Gorgon City</span>
+            <a href="#" class="evt-cta">Reserve Table</a>
+          </div>
+        </td>
+        <td>
+          <div class="evt-item">
+            <span class="evt-date">Fri Jun 12</span>
+            <span class="evt-nm">Metro Boomin</span>
+            <a href="#" class="evt-cta">Reserve Table</a>
+          </div>
+          <div class="evt-item">
+            <span class="evt-date">Fri Jun 26</span>
+            <span class="evt-nm">Metro Boomin</span>
+            <a href="#" class="evt-cta">Reserve Table</a>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="sp32"></div>
+    <hr class="gr">
+
+    <!-- JULY -->
+    <span class="mo-lbl">July</span>
+    <table class="evt-tbl">
+      <tr>
+        <td>
+          <div class="evt-item">
+            <span class="evt-date">Sat Jul 4</span>
+            <span class="evt-nm">Fontainebleau's Neon Moon with Midland</span>
+            <span class="evt-note">LIV Beach &nbsp;&middot;&nbsp; 8PM &nbsp;&middot;&nbsp; Special Event</span>
+            <a href="#" class="evt-cta">Reserve Table</a>
+          </div>
+          <div class="evt-item">
+            <span class="evt-date">Sat Jul 25</span>
+            <span class="evt-nm">50 Cent</span>
+            <span class="evt-note">LIV Beach</span>
+            <a href="#" class="evt-cta">Reserve Table</a>
+          </div>
+        </td>
+        <td>
+          <div class="evt-item">
+            <span class="evt-date">Sat Jul 11</span>
+            <span class="evt-nm">Metro Boomin</span>
+            <a href="#" class="evt-cta">Reserve Table</a>
+          </div>
+          <div class="evt-item">
+            <span class="evt-date">Fri Jul 31</span>
+            <span class="evt-nm">Metro Boomin</span>
+            <a href="#" class="evt-cta">Reserve Table</a>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="sp40"></div>
+    <a href="https://www.livnightclub.com/las-vegas/events/" class="btn-go">View Full Nightclub Schedule</a>
+  </div>
+
+  <!-- ============================================================
+       6. LIV BEACH — JUNE & JULY HEADLINERS
+  ============================================================ -->
+  <div class="beach">
+    <hr class="gr" style="margin-bottom:48px;">
+    <span class="s-eye">Daylife &nbsp;&middot;&nbsp; LIV Beach</span>
+    <h2 class="s-hl">A Poolside Paradise</h2>
+    <p class="s-meta">Friday – Sunday &nbsp;&middot;&nbsp; Doors 11:30 AM &nbsp;&middot;&nbsp; Pool Deck &nbsp;&middot;&nbsp; 35,000 Square Feet of Daylife</p>
+    <p class="s-pq">"A poolside paradise for adults only, LIV Beach at Fontainebleau Las Vegas is the ultimate Strip daylife destination."</p>
+    <div class="sp32"></div>
+    <hr class="gr">
+
+    <!-- JUNE -->
+    <span class="mo-lbl">June</span>
+    <table class="evt-tbl">
+      <tr>
+        <td>
+          <div class="evt-item">
+            <span class="evt-date">Sat Jun 6</span>
+            <span class="evt-nm">Disco Lines</span>
+            <a href="#" class="evt-cta">Reserve Daybed</a>
+          </div>
+          <div class="evt-item">
+            <span class="evt-date">Sat Jun 20</span>
+            <span class="evt-nm">Ti&euml;sto</span>
+            <a href="#" class="evt-cta">Reserve Daybed</a>
+          </div>
+        </td>
+        <td>
+          <div class="evt-item">
+            <span class="evt-date">Sat Jun 13</span>
+            <span class="evt-nm">Disco Lines</span>
+            <a href="#" class="evt-cta">Reserve Daybed</a>
+          </div>
+          <div class="evt-item">
+            <span class="evt-date">Fri Jun 26</span>
+            <span class="evt-nm">Linska</span>
+            <a href="#" class="evt-cta">Reserve Daybed</a>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="sp32"></div>
+    <hr class="gr">
+
+    <!-- JULY -->
+    <span class="mo-lbl">July</span>
+    <table class="evt-tbl">
+      <tr>
+        <td>
+          <div class="evt-item">
+            <span class="evt-date">Sat Jul 4</span>
+            <span class="evt-nm">Ti&euml;sto</span>
+            <span class="evt-note">4th of July Weekend</span>
+            <a href="#" class="evt-cta">Reserve Daybed</a>
+          </div>
+          <div class="evt-item">
+            <span class="evt-date">Sat Jul 4</span>
+            <span class="evt-nm">Midland</span>
+            <span class="evt-note">Neon Moon &nbsp;&middot;&nbsp; LIV Beach &nbsp;&middot;&nbsp; 8PM</span>
+            <a href="#" class="evt-cta">Reserve Daybed</a>
+          </div>
+          <div class="evt-item">
+            <span class="evt-date">Sat Jul 18</span>
+            <span class="evt-nm">Ti&euml;sto</span>
+            <a href="#" class="evt-cta">Reserve Daybed</a>
+          </div>
+        </td>
+        <td>
+          <div class="evt-item">
+            <span class="evt-date">Sat Jul 25</span>
+            <span class="evt-nm">50 Cent</span>
+            <a href="#" class="evt-cta">Reserve Daybed</a>
+          </div>
+        </td>
+      </tr>
+    </table>
+
+    <div class="sp40"></div>
+    <a href="https://www.livnightclub.com/las-vegas/events/" class="btn-go">View Full Beach Schedule</a>
+  </div>
+
+  <!-- ============================================================
+       7. BOOK YOUR SUITE
+  ============================================================ -->
+  <div class="suite">
+    <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=1360&h=765&fit=crop&q=85" alt="Fontainebleau Las Vegas Suite">
+    <div class="suite-in">
+      <h2 class="suite-hl">Your Suite Awaits</h2>
+      <p class="suite-bd">Fontainebleau Rewards members enjoy up to 30% off with our members-only rate — plus earn 5% back in Bleau Points on all resort spend. Waived resort fees. Complimentary self-parking through September 7, 2026.</p>
+      <div class="sp24"></div>
+      <hr class="gr">
+      <p class="suite-nt">Preferred gaming and entertainment arrangements available upon request.</p>
+      <a href="https://www.fontainebleaulasvegas.com/special-offers/members-only/" class="btn-gf">Book Your Suite &nbsp;&mdash;&nbsp; 30% Off</a>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       8. DINING
+  ============================================================ -->
+  <div class="din">
+    <hr class="gr" style="margin-bottom:40px;">
+    <span class="din-eye">Dining</span>
+    <h2 class="din-hl">A Culinary Collection Without Equal</h2>
+    <p class="din-sub">Three of the Strip's most celebrated restaurants — each under one roof at Fontainebleau Las Vegas.</p>
+
+    <div class="din-grid">
+      <!-- PAPI STEAK -->
+      <div class="din-col">
+        <img class="din-img" src="https://images.unsplash.com/photo-1544025162-d76694265947?w=600&h=450&fit=crop&q=85" alt="Papi Steak">
+        <span class="din-nm">Papi Steak</span>
+        <p class="din-desc">Golden Era Hollywood glamour fused with modern-day spectacle — the Strip's most theatrical steakhouse. The signature &lsquo;Beefcase&rsquo; Tomahawk, nightly DJ talent, and a room designed to be seen in.</p>
+        <a href="#" class="din-lnk">View Restaurant</a>
+      </div>
+      <!-- KOMODO -->
+      <div class="din-col">
+        <img class="din-img" src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=450&fit=crop&q=85" alt="Komodo">
+        <span class="din-nm">Komodo</span>
+        <p class="din-desc">Groot Hospitality's iconic Southeast Asian restaurant envelops guests in a low-lit futuristic rainforest of bamboo pillars and scarlet orchids. Signature Peking duck, full sushi bar, Japanese Wagyu, and inventive cocktails — built for the senses.</p>
+        <a href="#" class="din-lnk">View Restaurant</a>
+      </div>
+      <!-- CANTINA CONTRAMAR -->
+      <div class="din-col">
+        <img class="din-img" src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=450&fit=crop&q=85" alt="Cantina Contramar">
+        <span class="din-nm">Cantina Contramar</span>
+        <p class="din-desc">Chef Gabriela C&aacute;mara's first U.S. location, now open at Fontainebleau Las Vegas. Signature whole grilled fish, tuna tostadas, and an onsite Casa Dragones tequila tasting room.</p>
+        <a href="#" class="din-lnk">View Restaurant</a>
+      </div>
+    </div>
+
+    <div class="sp40"></div>
+    <hr class="gr">
+  </div>
+
+  <!-- ============================================================
+       9. VIP CLOSE
+  ============================================================ -->
+  <div class="vip">
+    <h2 class="vip-hl">"For those seeking the ultimate VIP experience."</h2>
+    <p class="vip-bd">LIV offers banquette areas and private skyboxes with Groot Hospitality's signature table service. With prime seating overlooking the dance floor, your personal cocktail server will be on hand to cater to your every whim — with glasses that never go empty.</p>
+    <a href="#" class="btn-gf">Request VIP Access</a>
+  </div>
+
+  <!-- gold rule before footer -->
+  <div style="background-color:#1e1c18;">
+    <hr class="gr">
+  </div>
+
+  <!-- ============================================================
+       10. FOOTER
+  ============================================================ -->
+  <div class="ftr">
+    <p class="ftr-wm">Fontainebleau Las Vegas</p>
+    <p class="ftr-addr">2777 South Las Vegas Boulevard &nbsp;&middot;&nbsp; Las Vegas, NV 89109</p>
+    <div class="ftr-soc">
+      <a href="#">Instagram</a>
+      <a href="#">TikTok</a>
+      <a href="#">Facebook</a>
+    </div>
+    <p class="ftr-copy">&copy; 2026 Fontainebleau Las Vegas. All rights reserved.</p>
+    <p class="ftr-leg">You are receiving this as a valued Fontainebleau guest. &nbsp;|&nbsp; <a href="#">Unsubscribe</a></p>
+  </div>
+
+</div><!-- /.eb -->
+</body>
+</html>
