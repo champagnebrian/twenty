@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-label="Floral placeholder">
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0E1C36"/><stop offset=".55" stop-color="#0A0F1A"/><stop offset="1" stop-color="#06080f"/></linearGradient>
+<radialGradient id="gl" cx=".72" cy=".26" r=".7"><stop offset="0" stop-color="#BF8F1F" stop-opacity=".22"/><stop offset="1" stop-color="#BF8F1F" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1200" height="630" fill="url(#bg)"/>
+<rect width="1200" height="630" fill="url(#gl)"/>
+<g transform="translate(482.8,104.1) scale(0.7812)" fill="none" stroke="#D9B968" stroke-width="3.07" stroke-opacity="0.34" stroke-linecap="round" stroke-linejoin="round">
+<path d="M150,470 C150,360 150,300 150,250"/>
+<path d="M150,250 m-58,0 a58,58 0 1,0 116,0 a58,58 0 1,0 -116,0"/>
+<path d="M150,192 C120,210 120,250 150,268 C180,250 180,210 150,192"/>
+<path d="M92,250 C112,228 150,228 150,250 C150,272 112,272 92,250"/>
+<path d="M150,360 C110,350 86,322 80,288 C120,296 144,322 150,360"/>
+<path d="M150,400 C190,390 214,362 220,328 C180,336 156,362 150,400"/>
+<path d="M150,320 C120,316 100,300 92,282"/>
+<path d="M92,282 m-15,0 a15,15 0 1,0 30,0 a15,15 0 1,0 -30,0"/>
+<path d="M150,300 C180,296 200,284 208,266"/>
+<path d="M208,266 m-13,0 a13,13 0 1,0 26,0 a13,13 0 1,0 -26,0"/></g>
+
+<text x="600" y="300" fill="#F7F4EC" font-family="Georgia,serif" font-size="86" letter-spacing="14" text-anchor="middle">AFUVAI</text><text x="600" y="360" fill="#D9B968" font-family="Georgia,serif" font-size="30" letter-spacing="6" text-anchor="middle">LUXURY FLORAL DESIGN · LAS VEGAS</text></svg>
