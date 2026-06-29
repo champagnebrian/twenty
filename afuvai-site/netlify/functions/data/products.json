@@ -80,5 +80,201 @@
     ],
     "labor": 35.00,
     "notes": "Soft whites and greens. Update stems/costs from your wholesaler."
+  },
+
+  "flower-purse": {
+    "name": "The Flower Purse",
+    "price": 145.00,
+    "recipe": [
+      { "flower": "Garden Roses (mixed)",   "stems": 8,  "costPerStem": 3.50 },
+      { "flower": "Spray Roses",            "stems": 5,  "costPerStem": 2.50 },
+      { "flower": "Ranunculus",             "stems": 4,  "costPerStem": 3.20 },
+      { "flower": "Greenery / Filler",      "stems": 4,  "costPerStem": 1.20 }
+    ],
+    "labor": 45.00,
+    "notes": "Includes acrylic purse holder (~$12 COGS). Update flower stems/costs from wholesaler."
+  },
+
+  "_bulk_note": "Bulk items below — wholesale costs per BUNCH (not per stem). Labor is packaging + handling per bunch.",
+
+  "bulk-sa-rose-50": {
+    "name": "SA Rose Bunch — 50 cm (25 stems)",
+    "price": 79.00,
+    "recipe": [
+      { "flower": "SA Roses 50cm",          "stems": 25, "costPerStem": 1.10 }
+    ],
+    "labor": 5.00,
+    "notes": "Wholesale: ~$27.50/bunch. Retail: $79. Margin ~65%."
+  },
+
+  "bulk-sa-rose-60": {
+    "name": "SA Rose Bunch — 60 cm (25 stems)",
+    "price": 89.00,
+    "recipe": [
+      { "flower": "SA Roses 60cm",          "stems": 25, "costPerStem": 1.20 }
+    ],
+    "labor": 5.00,
+    "notes": "Wholesale: ~$30.00/bunch. Retail: $89. Margin ~66%."
+  },
+
+  "bulk-garden-rose-reg": {
+    "name": "Garden Rose Bunch — Regular (12 stems)",
+    "price": 99.00,
+    "recipe": [
+      { "flower": "Garden Roses (Regular)", "stems": 12, "costPerStem": 2.85 }
+    ],
+    "labor": 5.00,
+    "notes": "Wholesale: ~$34.20/bunch. Retail: $99. Margin ~65%."
+  },
+
+  "bulk-garden-rose-prem": {
+    "name": "Garden Rose Bunch — Premium (12 stems)",
+    "price": 115.00,
+    "recipe": [
+      { "flower": "Garden Roses (Premium)", "stems": 12, "costPerStem": 3.35 }
+    ],
+    "labor": 5.00,
+    "notes": "Wholesale: ~$40.20/bunch. Retail: $115. Margin ~65%."
+  },
+
+  "bulk-spray-rose": {
+    "name": "Spray Rose Bunch — Deluxe",
+    "price": 45.00,
+    "recipe": [
+      { "flower": "Spray Roses (Deluxe)",   "stems": 10, "costPerStem": 1.55 }
+    ],
+    "labor": 4.00,
+    "notes": "Wholesale: ~$15.50/bunch. Retail: $45. Margin ~66%."
+  },
+
+  "bulk-ranunculus": {
+    "name": "Ranunculus Bunch (10 stems)",
+    "price": 52.00,
+    "recipe": [
+      { "flower": "Ranunculus",             "stems": 10, "costPerStem": 1.75 }
+    ],
+    "labor": 4.00,
+    "notes": "Wholesale: ~$17.50/bunch. Retail: $52. Margin ~66%."
+  },
+
+  "bulk-carnation": {
+    "name": "Carnation Bunch (25 stems)",
+    "price": 42.00,
+    "recipe": [
+      { "flower": "Carnations",             "stems": 25, "costPerStem": 0.55 }
+    ],
+    "labor": 4.00,
+    "notes": "Wholesale: ~$13.75/bunch. Retail: $42. Margin ~67%."
+  },
+
+  "bulk-lily": {
+    "name": "Lily Bunch — Asiatic/LA (10 stems)",
+    "price": 48.00,
+    "recipe": [
+      { "flower": "Lilies (Asiatic/LA)",    "stems": 10, "costPerStem": 1.60 }
+    ],
+    "labor": 4.00,
+    "notes": "Wholesale: ~$15.95/bunch. Retail: $48. Margin ~67%."
+  },
+
+  "bulk-hydrangea": {
+    "name": "Hydrangea Bunch (5 stems)",
+    "price": 27.00,
+    "recipe": [
+      { "flower": "Hydrangea",              "stems": 5,  "costPerStem": 1.79 }
+    ],
+    "labor": 3.00,
+    "notes": "Wholesale: ~$8.95/bunch. Retail: $27. Margin ~67%."
+  },
+
+  "bulk-sunflower": {
+    "name": "Sunflower Bunch (5 stems)",
+    "price": 20.00,
+    "recipe": [
+      { "flower": "Sunflowers",             "stems": 5,  "costPerStem": 1.35 }
+    ],
+    "labor": 3.00,
+    "notes": "Wholesale: ~$6.75/bunch. Retail: $20. Margin ~66%."
+  },
+
+  "bulk-gerbera": {
+    "name": "Gerbera Bunch (10 stems)",
+    "price": 35.00,
+    "recipe": [
+      { "flower": "Gerbera Daisies",        "stems": 10, "costPerStem": 1.15 }
+    ],
+    "labor": 3.00,
+    "notes": "Wholesale: ~$11.50/bunch. Retail: $35. Margin ~67%."
+  },
+
+  "bulk-eucalyptus": {
+    "name": "Eucalyptus Bunch",
+    "price": 22.00,
+    "recipe": [
+      { "flower": "Eucalyptus",             "stems": 5,  "costPerStem": 1.45 }
+    ],
+    "labor": 3.00,
+    "notes": "Wholesale: ~$7.25/bunch. Retail: $22. Margin ~67%."
+  },
+
+  "bulk-delphinium": {
+    "name": "Delphinium Bunch (5 stems)",
+    "price": 55.00,
+    "recipe": [
+      { "flower": "Delphinium",             "stems": 5,  "costPerStem": 3.75 }
+    ],
+    "labor": 4.00,
+    "notes": "Wholesale: ~$18.75/bunch. Retail: $55. Margin ~66%."
+  },
+
+  "bulk-bundle-bridal": {
+    "name": "Bridal White Kit",
+    "price": 229.00,
+    "recipe": [
+      { "flower": "SA Roses 50cm (White)",  "stems": 25, "costPerStem": 1.10 },
+      { "flower": "Lisianthus (White)",     "stems": 10, "costPerStem": 2.80 },
+      { "flower": "Eucalyptus (Seeded)",    "stems": 5,  "costPerStem": 1.80 },
+      { "flower": "Gypsophila (filler)",    "stems": 5,  "costPerStem": 1.00 }
+    ],
+    "labor": 25.00,
+    "notes": "Includes ribbon + recipe card. Total COGS ~$80. Retail $229. Margin ~65%."
+  },
+
+  "bulk-bundle-desert": {
+    "name": "Desert Bloom Kit",
+    "price": 159.00,
+    "recipe": [
+      { "flower": "SA Roses (Terracotta)",  "stems": 15, "costPerStem": 1.10 },
+      { "flower": "Sunflowers",             "stems": 5,  "costPerStem": 1.35 },
+      { "flower": "Eucalyptus",             "stems": 4,  "costPerStem": 1.80 },
+      { "flower": "Greenery / Filler",      "stems": 4,  "costPerStem": 1.00 }
+    ],
+    "labor": 20.00,
+    "notes": "Total COGS ~$55. Retail $159. Margin ~65%."
+  },
+
+  "bulk-bundle-blush": {
+    "name": "Blush & Pink Kit",
+    "price": 175.00,
+    "recipe": [
+      { "flower": "Spray Roses (Pink)",     "stems": 15, "costPerStem": 1.55 },
+      { "flower": "Hydrangea (Pink)",       "stems": 3,  "costPerStem": 1.79 },
+      { "flower": "Ranunculus (Blush)",     "stems": 5,  "costPerStem": 1.75 },
+      { "flower": "Greenery / Filler",      "stems": 4,  "costPerStem": 1.00 }
+    ],
+    "labor": 20.00,
+    "notes": "Total COGS ~$60. Retail $175. Margin ~66%."
+  },
+
+  "bulk-bundle-greenery": {
+    "name": "Greenery Starter Kit",
+    "price": 95.00,
+    "recipe": [
+      { "flower": "Eucalyptus (mixed)",     "stems": 8,  "costPerStem": 1.45 },
+      { "flower": "Carnations (white)",     "stems": 10, "costPerStem": 0.55 },
+      { "flower": "Gypsophila",             "stems": 3,  "costPerStem": 1.00 }
+    ],
+    "labor": 15.00,
+    "notes": "Total COGS ~$32. Retail $95. Margin ~66%."
   }
 }

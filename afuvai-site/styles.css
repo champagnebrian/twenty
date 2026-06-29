@@ -377,4 +377,18 @@ em{font-style:italic}
 .shop-suggest__result{margin-top:1.1rem;padding:.9rem 1.1rem;border-radius:4px;font-size:.88rem;line-height:1.65}
 .shop-suggest__result--loading{background:var(--ivory);color:var(--muted);font-style:italic}
 .shop-suggest__result--answer{background:color-mix(in srgb, var(--sage) 8%, var(--ivory));border:1px solid var(--line);color:var(--ink)}
+
+/* ---------- Bulk Flowers page ---------- */
+.bunch-heading{font-family:var(--serif);font-size:clamp(1.5rem,2.2vw,1.8rem);font-weight:500;color:var(--ink);margin:3rem 0 1.2rem;padding-bottom:.6rem;border-bottom:1px solid var(--line)}
+.bunch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem;margin-bottom:2rem}
+.bunch-card{background:var(--ivory-deep);border:1px solid var(--line-soft);border-radius:var(--radius);padding:1.4rem 1.5rem;display:flex;flex-direction:column;gap:.5rem}
+.bunch-card__name{font-family:var(--serif);font-size:1.05rem;font-weight:500;color:var(--ink);line-height:1.2}
+.bunch-card__detail{font-size:.8rem;color:var(--grey);line-height:1.5}
+.bunch-card__price{font-size:1.1rem;color:var(--sage);font-weight:600;margin-top:auto;padding-top:.6rem}
+.bunch-card .btn{margin-top:.5rem;font-size:.78rem;padding:.55rem 1rem}
+.market-notice{background:color-mix(in srgb, var(--gold) 8%, var(--ivory));border:1px solid var(--line);border-radius:var(--radius);padding:1.2rem 1.5rem;display:flex;align-items:flex-start;gap:.9rem;margin:2rem 0}
+.market-notice__icon{color:var(--gold-deep);font-size:1.1rem;flex-shrink:0;margin-top:.1rem}
+.market-notice__text{font-size:.88rem;color:var(--ink);line-height:1.6}
+.market-notice__text strong{color:var(--gold-ink)}
+@media(max-width:640px){.bunch-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.shop-suggest__row{flex-direction:column}.shop-suggest__btn{width:100%}}
