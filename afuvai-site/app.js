@@ -148,4 +148,35 @@
   /* ---------- Footer year ---------- */
   var yearEl = document.querySelector("[data-year]");
   if (isDefined(yearEl)) yearEl.textContent = String(new Date().getFullYear());
+
+  /* ---------- Header shadow on scroll ---------- */
+  var header = document.querySelector(".site-header");
+  if (isDefined(header)) {
+    var onScroll = function () { header.classList.toggle("scrolled", window.scrollY > 12); };
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+  }
+
+  /* ---------- Cookie consent (gates GA4 / Meta pixel) ---------- */
+  var consent = document.querySelector("[data-consent]");
+  if (isDefined(consent)) {
+    var KEY = "afuvai-consent";
+    var loadAnalytics = function () {
+      // Placeholder: initialise GA4 / Meta Pixel here once the IDs exist.
+      console.log("AFUVAI analytics: consent granted — load GA4 / Meta pixel here.");
+    };
+    var choice = null;
+    try { choice = localStorage.getItem(KEY); } catch (e) {}
+    if (choice === "accepted") { loadAnalytics(); }
+    else if (choice !== "declined") { consent.hidden = false; }
+    var decide = function (val) {
+      try { localStorage.setItem(KEY, val); } catch (e) {}
+      consent.hidden = true;
+      if (val === "accepted") loadAnalytics();
+    };
+    var acc = consent.querySelector("[data-consent-accept]");
+    var dec = consent.querySelector("[data-consent-decline]");
+    if (acc) acc.addEventListener("click", function () { decide("accepted"); });
+    if (dec) dec.addEventListener("click", function () { decide("declined"); });
+  }
 })();
