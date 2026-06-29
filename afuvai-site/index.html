@@ -268,7 +268,7 @@
           <li><a href="mailto:hello@afuvai.com">hello@afuvai.com</a></li>
           <li>Mon–Fri, 9am–5pm · By appointment</li>
         </ul>
-        <form class="newsletter" data-newsletter aria-label="Newsletter signup">
+        <form class="newsletter" data-newsletter name="newsletter" method="POST" data-netlify="true" aria-label="Newsletter signup"><input type="hidden" name="form-name" value="newsletter">
           <label for="nl-email" class="sr-only">Email address</label>
           <input id="nl-email" type="email" name="email" placeholder="Email for studio notes" autocomplete="email" required>
           <button type="submit">Join</button>

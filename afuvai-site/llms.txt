@@ -1,32 +1,34 @@
-# AFUVAI
+# AFUVAI Society
 
-> AFUVAI is a high-end, by-appointment luxury floral design studio based in Las Vegas, Nevada. Founded by designer Ami Nelson, AFUVAI specializes in bespoke wedding florals, luxury private and corporate event installations, hands-on floral-making classes, and signature bouquets delivered across the Las Vegas valley. AFUVAI does not operate a walk-in retail store; custom work is by appointment.
+> AFUVAI Society is a high-end, by-appointment luxury floral design studio in Las Vegas, Nevada. Founded by designer Ami Nelson, AFUVAI Society designs bespoke weddings and events, everyday and sympathy arrangements, hands-on floral-making classes, and signature bouquets delivered across the valley. The brand's signature is a Samoan motif. AFUVAI Society does not operate a walk-in retail store; bespoke work is by appointment.
 
 ## Service Area
 Las Vegas, Summerlin, Henderson, North Las Vegas, and venues across The Las Vegas Strip.
 
-## Services & Starting Prices
-- Wedding Floral Design — from $3,500
-- Private & Corporate Event Florals — from $1,500
-- Floral-Making Classes — seats from $125; private "host your own" floral events quoted to scope
-- Signature Bouquets (online shop, delivered) — from ~$155
+## Shop by Occasion & Starting Prices
+- Weddings — bespoke, from $3,500 (by consultation)
+- Events & Corporate — from $1,500 (by consultation)
+- Everyday arrangements & bouquets — from $95 (order online, delivered)
+- Sympathy tributes — from $175 (order online, delivered)
+- Floral-Making Classes & private floral events — seats from $125
 - Floral Subscriptions — coming soon
 
-## What Makes AFUVAI Distinct
-Built on a luxury hospitality background, AFUVAI pairs fully bespoke wedding and event design with hands-on floral classes and an online bouquet shop — a rare combination for a Las Vegas studio. Premium and rare blooms are sourced to order for every project.
+## What Makes AFUVAI Society Distinct
+Built on a luxury hospitality background and a Samoan-motif heritage signature, AFUVAI Society pairs fully bespoke wedding and event design with an online occasion shop (everyday + sympathy), hands-on floral classes, and a by-appointment consultation process.
 
 ## Contact
 - Phone: (702) 000-0000
 - Email: hello@afuvai.com
 - Hours: Monday–Friday, 9am–5pm, by appointment
-- Booking: via inquiry form at https://afuvai.com/contact.html
+- Booking: https://afuvai.com/consultation.html
 
 ## Key Pages
 - Home: https://afuvai.com/
-- About: https://afuvai.com/about.html
-- Services: https://afuvai.com/services.html
-- Shop Bouquets: https://afuvai.com/shop.html
-- Classes & Events: https://afuvai.com/classes.html
+- Shop: https://afuvai.com/shop.html
+- Weddings & Events: https://afuvai.com/weddings.html
+- Classes: https://afuvai.com/classes.html
+- Our Story: https://afuvai.com/story.html
+- Book a Consultation: https://afuvai.com/consultation.html
 - Portfolio: https://afuvai.com/portfolio.html
 - FAQ: https://afuvai.com/faq.html
 - Contact: https://afuvai.com/contact.html

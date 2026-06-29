@@ -72,23 +72,38 @@
 
       if (!valid) { if (firstInvalid) firstInvalid.focus(); return; }
 
-      // No backend: collect the payload and surface a success state.
       var payload = {};
       Array.prototype.forEach.call(form.elements, function (el) {
         if (el.name) payload[el.name] = el.value;
       });
-      payload.submittedAt = new Date().toISOString();
       console.log("AFUVAI inquiry submitted:", payload);
 
-      var success = document.querySelector("[data-inquiry-success]");
-      if (isDefined(success)) {
-        form.hidden = true;
-        success.hidden = false;
-        success.setAttribute("tabindex", "-1");
-        success.focus();
-        success.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "center" });
+      var showSuccess = function () {
+        var success = (form.parentElement && form.parentElement.querySelector("[data-inquiry-success]")) || document.querySelector("[data-inquiry-success]");
+        if (isDefined(success)) {
+          form.hidden = true;
+          success.hidden = false;
+          success.setAttribute("tabindex", "-1");
+          success.focus();
+          success.scrollIntoView({ behavior: prefersReduced ? "auto" : "smooth", block: "center" });
+        }
+        form.reset();
+      };
+
+      // Netlify Forms: POST url-encoded body (incl. form-name) so Netlify captures it.
+      // Locally there's no handler, so we still surface success on failure.
+      if (form.hasAttribute("data-netlify")) {
+        var body = Object.keys(payload).map(function (k) {
+          return encodeURIComponent(k) + "=" + encodeURIComponent(payload[k]);
+        }).join("&");
+        fetch(form.getAttribute("action") || "/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: body
+        }).then(showSuccess).catch(showSuccess);
+      } else {
+        showSuccess();
       }
-      form.reset();
     });
   }
 
@@ -105,6 +120,13 @@
         return;
       }
       console.log("AFUVAI newsletter signup:", value);
+      if (news.hasAttribute("data-netlify")) {
+        fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: "form-name=newsletter&email=" + encodeURIComponent(value)
+        }).catch(function () {});
+      }
       if (msg) msg.textContent = "Thank you — you're on the list.";
       news.reset();
     });
@@ -178,5 +200,24 @@
     var dec = consent.querySelector("[data-consent-decline]");
     if (acc) acc.addEventListener("click", function () { decide("accepted"); });
     if (dec) dec.addEventListener("click", function () { decide("declined"); });
+  }
+
+  /* ---------- Shop occasion filter ---------- */
+  var chips = document.querySelectorAll("[data-filter]");
+  if (chips.length) {
+    var products = document.querySelectorAll("[data-cat]");
+    var applyFilter = function (f) {
+      Array.prototype.forEach.call(chips, function (c) {
+        c.setAttribute("aria-pressed", c.getAttribute("data-filter") === f ? "true" : "false");
+      });
+      Array.prototype.forEach.call(products, function (p) {
+        p.hidden = !(f === "all" || p.getAttribute("data-cat") === f);
+      });
+    };
+    Array.prototype.forEach.call(chips, function (chip) {
+      chip.addEventListener("click", function () { applyFilter(chip.getAttribute("data-filter")); });
+    });
+    var hash = (location.hash || "").replace("#", "");
+    if (["everyday","sympathy","weddings","events","corporate"].indexOf(hash) !== -1) applyFilter(hash);
   }
 })();
