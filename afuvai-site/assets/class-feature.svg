@@ -1,15 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1250" role="img" aria-label="In the Studio">
 <defs>
-<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0E1C36"/><stop offset=".55" stop-color="#0A0F1A"/><stop offset="1" stop-color="#06080f"/></linearGradient>
-<radialGradient id="gl" cx=".72" cy=".26" r=".7"><stop offset="0" stop-color="#BF8F1F" stop-opacity=".22"/><stop offset="1" stop-color="#BF8F1F" stop-opacity="0"/></radialGradient>
+<linearGradient id="bg" x1="0" y1="0" x2=".7" y2="1"><stop offset="0" stop-color="#205646"/><stop offset=".55" stop-color="#163E31"/><stop offset="1" stop-color="#0E2A22"/></linearGradient>
+<radialGradient id="gl" cx=".74" cy=".24" r=".75"><stop offset="0" stop-color="#CBA85A" stop-opacity="0.18"/><stop offset="1" stop-color="#CBA85A" stop-opacity="0"/></radialGradient>
 </defs>
 <rect width="1000" height="1250" fill="url(#bg)"/>
 <rect width="1000" height="1250" fill="url(#gl)"/>
-<g transform="translate(187.5,262.5) scale(2.0833)" fill="none" stroke="#D9B968" stroke-width="1.15" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round">
-<path d="M150,150 m-72,0 a72,72 0 1,0 144,0 a72,72 0 1,0 -144,0"/>
+<g transform="translate(187.5,250.0) scale(2.0833)" fill="none" stroke="#CBA85A" stroke-width="1.15" stroke-opacity="0.6" stroke-linecap="round" stroke-linejoin="round">
+<path d="M150,150 m-70,0 a70,70 0 1,0 140,0 a70,70 0 1,0 -140,0"/>
 <path d="M150,150 c-8,-24 -36,-24 -44,-2 c-8,22 13,42 36,38 c27,-5 40,-36 25,-60"/>
-<path d="M150,82 C116,102 116,150 150,168 C184,150 184,102 150,82"/>
-<path d="M150,224 C126,218 110,200 104,178 C128,184 144,200 150,224"/>
-<path d="M150,240 C174,234 190,216 196,194 C172,200 156,216 150,240"/></g>
-<text x="500" y="1175" fill="#D9B968" fill-opacity=".82" font-family="Georgia,'Cormorant Garamond',serif" font-size="43" letter-spacing="8" text-anchor="middle">IN THE STUDIO</text>
+<path d="M150,84 C117,103 117,150 150,167 C183,150 183,103 150,84"/>
+<path d="M86,150 C105,117 150,117 167,150 C150,183 105,183 86,150"/>
+<path d="M150,222 C127,216 111,199 105,178 C129,184 144,199 150,222"/>
+<path d="M150,238 C173,232 189,215 195,194 C171,200 156,215 150,238"/></g>
+<text x="500" y="1162.5" fill="#E8DFC4" fill-opacity=".9" font-family="'Fraunces',Georgia,serif" font-size="38" letter-spacing="9" text-anchor="middle">IN THE STUDIO</text>
 </svg>
