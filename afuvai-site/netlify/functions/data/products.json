@@ -1,57 +1,177 @@
 {
   "_note": "Fill in your real flower counts and wholesale costs per stem before launch. Update whenever wholesale prices change.",
 
-  "garden-pedestal": {
-    "name": "The Garden Pedestal",
-    "price": 185.00,
+  "_everyday_note": "Everyday / gift delivery — 4 collections × 3 tiers. Labor field = total fixed overhead (vase + supplies + labor). All margins 61–65%.",
+
+  "garden-romance-classic": {
+    "name": "Garden Romance — Classic",
+    "price": 115.00,
     "recipe": [
-      { "flower": "Garden Roses",          "stems": 8, "costPerStem": 3.50 },
-      { "flower": "Sunflowers",             "stems": 5, "costPerStem": 2.00 },
-      { "flower": "Eucalyptus (Seeded)",    "stems": 4, "costPerStem": 1.80 },
-      { "flower": "Greenery / Filler",      "stems": 6, "costPerStem": 1.20 }
+      { "flower": "SA Roses 50cm (pink/blush)", "stems": 6, "costPerStem": 1.10 },
+      { "flower": "Ranunculus (blush)",          "stems": 5, "costPerStem": 1.75 },
+      { "flower": "Spray Roses (cream)",         "stems": 4, "costPerStem": 1.55 },
+      { "flower": "Eucalyptus",                  "stems": 4, "costPerStem": 0.80 }
     ],
-    "labor": 35.00,
-    "notes": "Delivered in a ceramic bowl. Update stems/costs from your wholesaler price list."
+    "labor": 17.35,
+    "notes": "19 stems. COGS $42.10. Margin 63.4%. Vase: compact glass cylinder (sage)."
   },
 
-  "desert-bloom": {
-    "name": "Desert Bloom",
-    "price": 145.00,
+  "garden-romance-signature": {
+    "name": "Garden Romance — Signature",
+    "price": 189.00,
     "recipe": [
-      { "flower": "Protea (Blush)",         "stems": 3, "costPerStem": 4.50 },
-      { "flower": "Safari Sunset",          "stems": 4, "costPerStem": 2.80 },
-      { "flower": "Amber Chrysanthemums",   "stems": 5, "costPerStem": 1.50 },
-      { "flower": "Pampas Grass",           "stems": 3, "costPerStem": 2.20 },
-      { "flower": "Greenery / Filler",      "stems": 5, "costPerStem": 1.20 }
+      { "flower": "SA Roses 60cm (pink/blush)", "stems": 9, "costPerStem": 1.20 },
+      { "flower": "Ranunculus (blush/white)",    "stems": 8, "costPerStem": 1.75 },
+      { "flower": "Spray Roses (cream)",         "stems": 5, "costPerStem": 1.55 },
+      { "flower": "Gypsophila",                  "stems": 5, "costPerStem": 1.00 },
+      { "flower": "Eucalyptus",                  "stems": 6, "costPerStem": 0.80 }
     ],
-    "labor": 28.00,
-    "notes": "Terracotta and amber palette. Update stems/costs from your wholesaler."
+    "labor": 27.50,
+    "notes": "33 stems. COGS $69.85. Margin 63.0%. Vase: matte sage-green ceramic bowl."
   },
 
-  "golden-hour": {
-    "name": "Golden Hour",
-    "price": 165.00,
+  "garden-romance-estate": {
+    "name": "Garden Romance — Estate",
+    "price": 365.00,
     "recipe": [
-      { "flower": "White Garden Roses",     "stems": 7, "costPerStem": 3.50 },
-      { "flower": "Champagne Ranunculus",   "stems": 6, "costPerStem": 3.20 },
-      { "flower": "Cream Spray Roses",      "stems": 5, "costPerStem": 2.50 },
-      { "flower": "Eucalyptus (Silver)",    "stems": 4, "costPerStem": 1.80 },
-      { "flower": "Dusty Miller",           "stems": 3, "costPerStem": 1.50 }
+      { "flower": "Garden Rose Regular (blush/pink)", "stems": 14, "costPerStem": 2.85 },
+      { "flower": "Ranunculus (blush/mixed)",          "stems": 10, "costPerStem": 1.75 },
+      { "flower": "Spray Roses (cream)",               "stems": 8,  "costPerStem": 1.55 },
+      { "flower": "Lisianthus (white/blush)",          "stems": 5,  "costPerStem": 2.80 },
+      { "flower": "Gypsophila",                        "stems": 7,  "costPerStem": 1.00 },
+      { "flower": "Eucalyptus",                        "stems": 8,  "costPerStem": 0.80 }
     ],
-    "labor": 30.00,
-    "notes": "White and champagne palette. Update stems/costs from your wholesaler."
+    "labor": 42.75,
+    "notes": "52 stems. COGS $139.95. Margin 61.7%. Vase: full rounded ceramic vessel."
   },
 
-  "everyday-posy": {
-    "name": "Everyday Posy",
-    "price": 95.00,
+  "desert-luxe-classic": {
+    "name": "Desert Luxe — Classic",
+    "price": 105.00,
     "recipe": [
-      { "flower": "Mixed Roses",            "stems": 5, "costPerStem": 3.00 },
-      { "flower": "Wax Flower",             "stems": 4, "costPerStem": 1.50 },
-      { "flower": "Eucalyptus",             "stems": 3, "costPerStem": 1.80 }
+      { "flower": "Gerbera (orange/amber)",        "stems": 6, "costPerStem": 1.15 },
+      { "flower": "Sunflowers",                     "stems": 3, "costPerStem": 1.35 },
+      { "flower": "Carnations (terracotta/orange)", "stems": 8, "costPerStem": 0.55 },
+      { "flower": "Eucalyptus",                     "stems": 5, "costPerStem": 0.80 }
     ],
-    "labor": 20.00,
-    "notes": "Petite hand-tied posy. Update stems/costs from your wholesaler."
+    "labor": 17.35,
+    "notes": "22 stems. COGS $36.70. Margin 65.0%. Vase: amber-glazed terracotta cylinder."
+  },
+
+  "desert-luxe-signature": {
+    "name": "Desert Luxe — Signature",
+    "price": 175.00,
+    "recipe": [
+      { "flower": "Gerbera (orange/warm)",    "stems": 8,  "costPerStem": 1.15 },
+      { "flower": "Sunflowers",               "stems": 5,  "costPerStem": 1.35 },
+      { "flower": "SA Roses (coral/amber)",   "stems": 6,  "costPerStem": 1.10 },
+      { "flower": "Carnations (terracotta)",  "stems": 15, "costPerStem": 0.55 },
+      { "flower": "Eucalyptus",               "stems": 7,  "costPerStem": 0.80 }
+    ],
+    "labor": 27.50,
+    "notes": "41 stems. COGS $63.90. Margin 63.5%. Vase: tall amber ceramic."
+  },
+
+  "desert-luxe-estate": {
+    "name": "Desert Luxe — Estate",
+    "price": 279.00,
+    "recipe": [
+      { "flower": "Gerbera (warm mix)",               "stems": 12, "costPerStem": 1.15 },
+      { "flower": "Sunflowers",                        "stems": 8,  "costPerStem": 1.35 },
+      { "flower": "SA Roses (coral/terracotta)",       "stems": 10, "costPerStem": 1.10 },
+      { "flower": "Carnations (amber/orange)",         "stems": 20, "costPerStem": 0.55 },
+      { "flower": "Lily Asiatic (warm/orange)",        "stems": 5,  "costPerStem": 1.60 },
+      { "flower": "Eucalyptus",                        "stems": 10, "costPerStem": 0.80 }
+    ],
+    "labor": 42.75,
+    "notes": "65 stems. COGS $105.35. Margin 62.2%. Vase: wide-mouth amber/rust glazed vessel."
+  },
+
+  "pure-garden-classic": {
+    "name": "Pure Garden — Classic",
+    "price": 135.00,
+    "recipe": [
+      { "flower": "Hydrangea (white)",  "stems": 2, "costPerStem": 1.79 },
+      { "flower": "Spray Roses (white)", "stems": 5, "costPerStem": 1.55 },
+      { "flower": "Lisianthus (white)", "stems": 5, "costPerStem": 2.80 },
+      { "flower": "Dusty Miller",       "stems": 4, "costPerStem": 1.50 }
+    ],
+    "labor": 17.35,
+    "notes": "16 stems. COGS $48.68. Margin 63.9%. Vase: white ivory ceramic bud vase. Also suitable for sympathy."
+  },
+
+  "pure-garden-signature": {
+    "name": "Pure Garden — Signature",
+    "price": 225.00,
+    "recipe": [
+      { "flower": "Hydrangea (white)",          "stems": 3, "costPerStem": 1.79 },
+      { "flower": "Garden Rose Regular (white)", "stems": 6, "costPerStem": 2.85 },
+      { "flower": "Lisianthus (white)",          "stems": 5, "costPerStem": 2.80 },
+      { "flower": "Spray Roses (white/cream)",   "stems": 5, "costPerStem": 1.55 },
+      { "flower": "Dusty Miller",                "stems": 5, "costPerStem": 1.50 },
+      { "flower": "Gypsophila",                  "stems": 4, "costPerStem": 1.00 }
+    ],
+    "labor": 27.50,
+    "notes": "28 stems. COGS $83.22. Margin 63.0%. Vase: white porcelain column vase. Also suitable for sympathy."
+  },
+
+  "pure-garden-estate": {
+    "name": "Pure Garden — Estate",
+    "price": 365.00,
+    "recipe": [
+      { "flower": "Hydrangea (white)",          "stems": 5,  "costPerStem": 1.79 },
+      { "flower": "Garden Rose Regular (white)", "stems": 12, "costPerStem": 2.85 },
+      { "flower": "Lisianthus (white)",          "stems": 8,  "costPerStem": 2.80 },
+      { "flower": "Spray Roses (white)",         "stems": 8,  "costPerStem": 1.55 },
+      { "flower": "Dusty Miller",                "stems": 8,  "costPerStem": 1.50 },
+      { "flower": "Gypsophila",                  "stems": 5,  "costPerStem": 1.00 }
+    ],
+    "labor": 42.75,
+    "notes": "46 stems. COGS $137.70. Margin 62.3%. Vase: tall elegant white porcelain or ribbed ceramic. Also suitable for sympathy."
+  },
+
+  "radiant-classic": {
+    "name": "Radiant — Classic",
+    "price": 115.00,
+    "recipe": [
+      { "flower": "Gerbera (bright mix)",       "stems": 5,  "costPerStem": 1.15 },
+      { "flower": "Lily Asiatic (colorful)",    "stems": 2,  "costPerStem": 1.60 },
+      { "flower": "Carnations (bright colors)", "stems": 10, "costPerStem": 0.55 },
+      { "flower": "Delphinium",                 "stems": 2,  "costPerStem": 3.75 },
+      { "flower": "Eucalyptus",                 "stems": 4,  "costPerStem": 0.80 }
+    ],
+    "labor": 17.35,
+    "notes": "23 stems. COGS $42.50. Margin 63.0%. Vase: clear glass cylinder."
+  },
+
+  "radiant-signature": {
+    "name": "Radiant — Signature",
+    "price": 199.00,
+    "recipe": [
+      { "flower": "Gerbera (bright)",          "stems": 7,  "costPerStem": 1.15 },
+      { "flower": "Lily Asiatic (colorful)",   "stems": 4,  "costPerStem": 1.60 },
+      { "flower": "Carnations (mixed bright)", "stems": 15, "costPerStem": 0.55 },
+      { "flower": "Delphinium",                "stems": 3,  "costPerStem": 3.75 },
+      { "flower": "Spray Roses (vibrant)",     "stems": 5,  "costPerStem": 1.55 },
+      { "flower": "Eucalyptus",                "stems": 5,  "costPerStem": 0.80 }
+    ],
+    "labor": 27.50,
+    "notes": "39 stems. COGS $73.20. Margin 63.2%. Vase: wide clear glass cylinder."
+  },
+
+  "radiant-estate": {
+    "name": "Radiant — Estate",
+    "price": 315.00,
+    "recipe": [
+      { "flower": "Gerbera (vibrant mix)",  "stems": 12, "costPerStem": 1.15 },
+      { "flower": "Lily Asiatic (mix)",     "stems": 7,  "costPerStem": 1.60 },
+      { "flower": "Carnations (bright)",    "stems": 25, "costPerStem": 0.55 },
+      { "flower": "Delphinium",             "stems": 5,  "costPerStem": 3.75 },
+      { "flower": "Spray Roses",            "stems": 8,  "costPerStem": 1.55 },
+      { "flower": "Eucalyptus",             "stems": 8,  "costPerStem": 0.80 }
+    ],
+    "labor": 42.75,
+    "notes": "65 stems. COGS $119.05. Margin 62.2%. Vase: large clear glass statement vase."
   },
 
   "heart-remembrance": {

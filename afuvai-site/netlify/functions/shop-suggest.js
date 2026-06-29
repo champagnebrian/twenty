@@ -11,17 +11,36 @@
 const Anthropic = require("@anthropic-ai/sdk");
 
 const PRODUCT_CATALOGUE = `
-Available products at AFUVAI Society (Las Vegas florist):
+Available products at AFUVAI Society (Las Vegas luxury florist):
 
-EVERYDAY / GIFT DELIVERY:
-- The Garden Pedestal ($185) — lush garden-style roses, sunflowers, eucalyptus in a ceramic bowl
-- Desert Bloom ($145) — warm terracotta and amber blooms, greenery, desert-inspired
-- Golden Hour ($165) — whites and champagne tones with dusty miller, understated luxury
-- Everyday Posy ($95) — petite hand-tied posy, perfect just-because gesture
+EVERYDAY / GIFT DELIVERY — 4 COLLECTIONS, 3 SIZES EACH (all delivered in a ceramic or glass vessel, included):
+
+GARDEN ROMANCE — roses, ranunculus, eucalyptus. Soft pinks, blushes, creams. Best for birthdays, anniversaries, romance.
+  - Classic $115 (19 stems, compact) — entry-level, great first gift
+  - Signature $189 (33 stems, full arrangement) — the hero size, most popular
+  - Estate $365 (52 stems, statement piece) — large centerpiece or wow gift
+
+DESERT LUXE — gerbera daisies, sunflowers, carnations, roses. Terracotta, amber, coral. Distinctly Las Vegas.
+  - Classic $105 (22 stems, compact)
+  - Signature $175 (41 stems, full arrangement)
+  - Estate $279 (65 stems, bold statement piece)
+
+PURE GARDEN — all white: hydrangea, garden roses, lisianthus, dusty miller. Ethereal and serene. Suitable for premium gifting AND sympathy.
+  - Classic $135 (16 stems, compact)
+  - Signature $225 (28 stems, full arrangement)
+  - Estate $365 (46 stems, large statement piece)
+
+RADIANT — gerbera, Asiatic lilies, delphinium, carnations, spray roses. Bold celebration colors: fuchsia, orange, cobalt, hot pink. Best for birthdays and "send a wow."
+  - Classic $115 (23 stems, compact)
+  - Signature $199 (39 stems, full arrangement)
+  - Estate $315 (65 stems, large statement piece)
+
+THE FLOWER PURSE ($145) — blooms arranged in a luxury acrylic purse with gold chain. Unique gift or party keepsake.
 
 SYMPATHY / TRIBUTE:
-- Heart of Remembrance ($295) — standing heart wreath of garden roses on an easel
+- Heart of Remembrance ($295) — standing heart wreath of white garden roses on an easel
 - Serene Tribute ($175) — graceful soft whites and greens sympathy arrangement
+- Pure Garden (any tier) — also appropriate for sympathy (all white, serene)
 
 BESPOKE (by consultation only — not orderable online):
 - Weddings (from $3,500), Events (from $1,500), Corporate (by quote)

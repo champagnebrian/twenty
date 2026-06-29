@@ -211,7 +211,7 @@
         c.setAttribute("aria-pressed", c.getAttribute("data-filter") === f ? "true" : "false");
       });
       Array.prototype.forEach.call(products, function (p) {
-        p.hidden = !(f === "all" || p.getAttribute("data-cat") === f);
+        p.hidden = !(f === "all" || p.getAttribute("data-cat").split(" ").indexOf(f) !== -1);
       });
     };
     Array.prototype.forEach.call(chips, function (chip) {
