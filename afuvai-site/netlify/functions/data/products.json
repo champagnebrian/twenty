@@ -1,0 +1,84 @@
+{
+  "_note": "Fill in your real flower counts and wholesale costs per stem before launch. Update whenever wholesale prices change.",
+
+  "garden-pedestal": {
+    "name": "The Garden Pedestal",
+    "price": 185.00,
+    "recipe": [
+      { "flower": "Garden Roses",          "stems": 8, "costPerStem": 3.50 },
+      { "flower": "Sunflowers",             "stems": 5, "costPerStem": 2.00 },
+      { "flower": "Eucalyptus (Seeded)",    "stems": 4, "costPerStem": 1.80 },
+      { "flower": "Greenery / Filler",      "stems": 6, "costPerStem": 1.20 }
+    ],
+    "labor": 35.00,
+    "notes": "Delivered in a ceramic bowl. Update stems/costs from your wholesaler price list."
+  },
+
+  "desert-bloom": {
+    "name": "Desert Bloom",
+    "price": 145.00,
+    "recipe": [
+      { "flower": "Protea (Blush)",         "stems": 3, "costPerStem": 4.50 },
+      { "flower": "Safari Sunset",          "stems": 4, "costPerStem": 2.80 },
+      { "flower": "Amber Chrysanthemums",   "stems": 5, "costPerStem": 1.50 },
+      { "flower": "Pampas Grass",           "stems": 3, "costPerStem": 2.20 },
+      { "flower": "Greenery / Filler",      "stems": 5, "costPerStem": 1.20 }
+    ],
+    "labor": 28.00,
+    "notes": "Terracotta and amber palette. Update stems/costs from your wholesaler."
+  },
+
+  "golden-hour": {
+    "name": "Golden Hour",
+    "price": 165.00,
+    "recipe": [
+      { "flower": "White Garden Roses",     "stems": 7, "costPerStem": 3.50 },
+      { "flower": "Champagne Ranunculus",   "stems": 6, "costPerStem": 3.20 },
+      { "flower": "Cream Spray Roses",      "stems": 5, "costPerStem": 2.50 },
+      { "flower": "Eucalyptus (Silver)",    "stems": 4, "costPerStem": 1.80 },
+      { "flower": "Dusty Miller",           "stems": 3, "costPerStem": 1.50 }
+    ],
+    "labor": 30.00,
+    "notes": "White and champagne palette. Update stems/costs from your wholesaler."
+  },
+
+  "everyday-posy": {
+    "name": "Everyday Posy",
+    "price": 95.00,
+    "recipe": [
+      { "flower": "Mixed Roses",            "stems": 5, "costPerStem": 3.00 },
+      { "flower": "Wax Flower",             "stems": 4, "costPerStem": 1.50 },
+      { "flower": "Eucalyptus",             "stems": 3, "costPerStem": 1.80 }
+    ],
+    "labor": 20.00,
+    "notes": "Petite hand-tied posy. Update stems/costs from your wholesaler."
+  },
+
+  "heart-remembrance": {
+    "name": "Heart of Remembrance",
+    "price": 295.00,
+    "recipe": [
+      { "flower": "Garden Roses (White)",   "stems": 15, "costPerStem": 3.50 },
+      { "flower": "Spray Roses (White)",    "stems": 12, "costPerStem": 2.50 },
+      { "flower": "Lisianthus (White)",     "stems": 8,  "costPerStem": 2.80 },
+      { "flower": "Gypsophila",             "stems": 6,  "costPerStem": 1.20 },
+      { "flower": "Greenery / Filler",      "stems": 8,  "costPerStem": 1.20 }
+    ],
+    "labor": 65.00,
+    "notes": "Standing heart wreath on easel. Large build — update stems/costs from your wholesaler."
+  },
+
+  "serene-tribute": {
+    "name": "Serene Tribute",
+    "price": 175.00,
+    "recipe": [
+      { "flower": "White Garden Roses",     "stems": 8,  "costPerStem": 3.50 },
+      { "flower": "Green Hydrangea",        "stems": 3,  "costPerStem": 4.00 },
+      { "flower": "Eucalyptus (Seeded)",    "stems": 4,  "costPerStem": 1.80 },
+      { "flower": "Lisianthus (White)",     "stems": 5,  "costPerStem": 2.80 },
+      { "flower": "Dusty Miller",           "stems": 4,  "costPerStem": 1.50 }
+    ],
+    "labor": 35.00,
+    "notes": "Soft whites and greens. Update stems/costs from your wholesaler."
+  }
+}

@@ -3,6 +3,10 @@
 [build]
   publish = "."
 
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
 # 301 the retired URLs to their new homes
 [[redirects]]
   from = "/about.html"

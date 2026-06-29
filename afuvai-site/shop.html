@@ -82,6 +82,26 @@
       <button class="chip" data-filter="corporate" aria-pressed="false">Corporate</button>
     </div>
 
+    <!-- Help Me Choose widget -->
+    <div class="shop-suggest reveal">
+      <details class="shop-suggest__panel">
+        <summary class="shop-suggest__trigger">
+          <span class="shop-suggest__icon" aria-hidden="true">✦</span>
+          Not sure which arrangement is right?
+        </summary>
+        <div class="shop-suggest__body">
+          <p class="shop-suggest__hint">Tell us what you're looking for and our AI will point you to the perfect match.</p>
+          <form class="shop-suggest__form" id="shopSuggestForm" novalidate>
+            <div class="shop-suggest__row">
+              <input id="shopSuggestInput" type="text" class="shop-suggest__input" placeholder="E.g. 'birthday flowers for my mom, she loves purple, around $150'" aria-label="Describe what you're looking for" maxlength="300" required>
+              <button type="submit" class="btn shop-suggest__btn">Ask</button>
+            </div>
+          </form>
+          <div class="shop-suggest__result" id="shopSuggestResult" role="status" aria-live="polite" hidden></div>
+        </div>
+      </details>
+    </div>
+
     <!-- PRODUCTS: orderable items use Snipcart data attributes; bespoke categories link to a consultation.
          Replace prices/images/copy per product. -->
     <div class="shop-grid">
@@ -286,5 +306,45 @@
 <script async src="https://cdn.snipcart.com/themes/v3.7.1/default/snipcart.js"></script>
 
 <script src="app.js" defer></script>
+<script>
+(function () {
+  var form = document.getElementById("shopSuggestForm");
+  var input = document.getElementById("shopSuggestInput");
+  var result = document.getElementById("shopSuggestResult");
+  if (!form || !input || !result) return;
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var q = input.value.trim();
+    if (q.length < 3) return;
+
+    var btn = form.querySelector("button");
+    btn.disabled = true;
+    btn.textContent = "Thinking…";
+    result.hidden = false;
+    result.className = "shop-suggest__result shop-suggest__result--loading";
+    result.textContent = "Finding the right arrangement for you…";
+
+    fetch("/.netlify/functions/shop-suggest", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: q })
+    })
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        result.className = "shop-suggest__result shop-suggest__result--answer";
+        result.textContent = data.suggestion || "Browse our collection above or email hello@afuvai.com for a personal recommendation.";
+        btn.disabled = false;
+        btn.textContent = "Ask";
+      })
+      .catch(function () {
+        result.className = "shop-suggest__result shop-suggest__result--answer";
+        result.textContent = "Something went sideways — please email hello@afuvai.com for a personal recommendation.";
+        btn.disabled = false;
+        btn.textContent = "Ask";
+      });
+  });
+})();
+</script>
 </body>
 </html>
