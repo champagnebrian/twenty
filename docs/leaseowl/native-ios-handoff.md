@@ -12,6 +12,8 @@
 - **The pre-submission review (now Phase 11) adds the privacy manifest and App Privacy labels** — both are App Store submission blockers, not polish.
 - **The PII tokenization spec is nailed down** (structured input, broader scrub list, on-device detokenization for letters).
 
+**Backend status — already executed, don't redo it:** Phase 0 and the entire server side were completed in a prior Claude Code session and live in `leaseowl/` in this repo: `docs/architecture.md` (Phase 0 architecture + Edge Function contracts), `supabase/migrations/0001_init.sql` (verified against a scratch Postgres with a two-user RLS isolation test), `supabase/functions/` (analyze-lease with Upstash rate limiting, generate-letter with the server-side 3-letters/month cap, delete-account with the full cascade, send-reminders — all pass `deno check` against the real SDKs), and `prompts/` (drafted fresh — reconcile with the Base44 originals before launch). That covers Phase 0 in full and the backend halves of Phases 2, 3, 6, 7, and 8. This session starts at **Phase 1** and, for those later phases, builds only the Swift side against the contracts in `leaseowl/docs/architecture.md`. No live Supabase project was provisioned — run the deploy steps in `leaseowl/README.md` first.
+
 **One assumption carried over:** unlike the Base44 build (which deliberately excluded any AI/API calls), this native build includes the real Claude integration, since the ask was full scope start to finish without repeating the "no AI yet" constraint. If you actually want AI deferred here too, skip Phase 6's Claude-calling code and stub it the same way the Base44 build does — everything else in this doc is unaffected either way.
 
 ---
