@@ -1,0 +1,162 @@
+# AFUVAI Vendor Price Monitor — Architecture Decisions
+
+Orchestrator: Claude (Fable 5). Spec: `docs/afuvai-vendor-price-monitor-prompt.md`
+(canonical copy also in Google Drive as `afuvai-vendor-price-monitor-prompt.md`).
+Date: 2026-07-17. These decisions are made per the spec's "no approval checkpoint"
+rule; each records its reasoning.
+
+## D1 — Where the system lives
+
+Code, config, canonical price history, and docs live in this repo under
+`afuvai-price-monitor/`, on branch `claude/afuvai-vendor-price-monitor-r5cc8p`.
+The directory is standalone — it is NOT wired into the Twenty/Nx workspace
+(no package.json coupling, no Nx targets). Python 3.11+, stdlib-first; the
+only optional dependency is `openpyxl` for spreadsheet export.
+
+Reasoning: the repo is the user's operational sandbox; git gives versioned
+price history and reviewable config changes for free; Python-stdlib keeps the
+Mac Mini install to "clone + run".
+
+## D2 — Data store: linked sheet + repo CSV canonical history (hybrid)
+
+The spec offered: new tab in the existing Expense Tracker vs. a linked sheet.
+**Decision: a separate linked spreadsheet ("AFUVAI Vendor Price Monitor") in
+the same Drive folder as the Expense Tracker, plus a canonical append-only
+CSV history in this repo (`data/price-log.csv`).**
+
+Why not a tab in the Expense Tracker:
+1. The tracker is formula-dense (capital split, budget math) and its own
+   Read Me warns against structural edits. An automation that writes there
+   risks corrupting expense/equity data — the one thing the spec flags as
+   destructive.
+2. The monitor needs ~8 tabs (price log, vendors, substitutions, recipes,
+   seasonal calendar, comparison, digest, read-me). That swamps the tracker.
+3. Write-isolation: the automation gets a surface it can regenerate freely;
+   the tracker stays human-only.
+
+Why the repo CSV as canonical history:
+- The available Drive tooling (this session and the scheduled agent both use
+  the Google Drive connector) can **create and read** files but cannot
+  reliably edit a spreadsheet in place. Reads are fine; in-place appends are
+  not. So the durable, machine-owned history lives in git (append-only CSV,
+  every change is a commit — which also satisfies the price-change
+  versioning requirement), and the Drive sheet is the human entry/review
+  surface the weekly job **reads from** (Quick Entry, proposal confirmations)
+  and **publishes to** (dated report workbooks).
+
+Flow: Brian types quotes into the sheet's Quick Entry tab (or CLI) →
+weekly job downloads the sheet, merges new/confirmed rows into
+`data/price-log.csv` (committed) → analytics run off the CSV → report
+workbook + digest published back out. One source of truth for history
+(the CSV); one place for hands (the sheet).
+
+## D3 — Config is code
+
+`config/vendors.json` (contacts, rep, terms, minimums, delivery windows,
+standing-order requirements, holiday cutoffs, public-price-page status),
+`config/stems.json` (tracked stems, market-price flags, substitution map,
+unit conversions, grades), `config/tier-recipes.json` (6 bulk tiers +
+add-on: stem composition, retail price, margin target), and
+`config/seasonal-calendar.json` (expected seasonal windows + multipliers,
+holiday order cutoffs). Changing them is a git commit — reviewable and
+versioned.
+
+Note: AFUVAI's real tier recipes live in the website repo's
+`netlify/functions/data/products.json` (structure confirmed via the
+handoff doc; costs are placeholders there too). `tier-recipes.json` ships
+with the 6+add-on structure and default compositions **flagged
+`"placeholder": true`** for Brian to reconcile. Margin math is correct
+regardless; absolute dollar flags become accurate once real recipes are in.
+
+## D4 — Digest surface: email push (with sheet archive)
+
+Options per spec: email digest / Slack-style / sheet tab. **Decision: email.**
+Tradeoff: a sheet tab is pull — it only works if Brian remembers to check,
+which contradicts "only surface output when something needs my attention".
+Slack adds a new integration (spec: no new SaaS). Email is push, already in
+the stack, and degrades gracefully.
+
+Mechanics: the weekly scheduled run generates the digest markdown, commits it
+to `reports/`, publishes the report workbook to Drive, and delivers the
+digest by email/push via the scheduler's completion notification (interim
+cloud Routine) or `mail`/Gmail on the Mac Mini once migrated. A Gmail draft
+copy is also created so the full formatted digest is in the mailbox.
+
+## D5 — Scheduling owner
+
+Spec wants the Nova / Mac Mini stack. That machine is not reachable from this
+build environment, so: (a) ship `scheduling/` with a launchd plist + install
+script + runbook for the Mac Mini (target state), and (b) stand up an
+**interim weekly Routine in the Claude cloud environment** (fresh session,
+email+push completion notifications) so the system is live from day one.
+Migration = run the install script on the Mac Mini, disable the Routine.
+
+## D6 — Ingestion paths
+
+1. **Manual quick-entry**: Quick Entry tab in the sheet, or
+   `python -m pricemonitor add-quote` locally. Free-text paste parsing is
+   handled by the same parser as email bodies.
+2. **Email parsing (agent-driven)**: a Claude agent runbook + deterministic
+   parser. Gmail scope is enforced by construction: queries are built ONLY
+   from vendor addresses/domains in `vendors.json` (never a full-inbox scan),
+   read-only, and extracted quotes land in `data/proposals.csv` + the sheet's
+   Proposals view with status `proposed`. Nothing enters the price log until
+   Brian marks a proposal `confirmed`. The agent never sends email.
+3. **Portal/price-page checks**: only for vendors verified (WS1) to publish
+   prices publicly. Off by default otherwise — no scraping sites without
+   public pricing.
+
+## D7 — Change detection & margin model
+
+- All prices normalized to **per-stem** (`stems.json` unit conversions;
+  vendor-specific bunch counts override defaults).
+- Baseline per (vendor, stem) = trailing median of confirmed quotes within
+  the freshness window, adjusted by the seasonal multiplier for the quote
+  date. Quotes older than 60 days are flagged `aging`; older than 90 days
+  `stale` and excluded from "current" comparisons.
+- A move is flagged by **dollar impact on affected tier margin**: reprice
+  each tier's recipe at current best-available per-stem costs; compute
+  margin vs. its retail price. Severity: WATCH if any tier margin drops
+  below 60% target, ALERT if below the 55% floor (configurable in
+  `config/thresholds.json`) or if a market-price stem (custom-quote flow)
+  moves enough to shift its quoted price band. Percent moves inside the
+  expected seasonal window with margins intact are logged, not alerted.
+- Spike context: disruption annotations (free-text reason tags) attach to
+  price-log rows; digests show them alongside flags.
+- When an ALERT forces a customer-facing price change, the job snapshots
+  tier pricing to `data/tier-price-history.csv` (plus the git commit trail).
+
+## D8 — Cross-vendor comparison
+
+For every tracked stem with ≥2 vendors holding fresh quotes: rank by
+normalized per-stem price at comparable grade (never compare across grades),
+annotate with min order, delivery window, payment terms, and standing-order
+requirements so "cheapest" is decision-ready, not just a number. Output in
+the weekly report + digest.
+
+## D9 — Verification model
+
+Each workstream (WS1 outreach/baseline, WS2 sheet/data model, WS3 email
+ingestion, WS4 margin/seasonality logic, WS5 digest/comparison) is built by
+a dedicated sub-agent and reviewed by a separate paired verifier sub-agent
+against the spec before the orchestrator merges it. Verifier findings are
+fixed (by the builder or orchestrator) and re-checked before sign-off.
+
+## Repo layout
+
+```
+afuvai-price-monitor/
+├── ARCHITECTURE.md          # this file
+├── README.md                # one-page trigger/maintain doc (deliverable 2)
+├── config/                  # vendors, stems/substitutions, tier recipes,
+│                            # seasonal calendar, thresholds
+├── data/                    # price-log.csv (canonical), proposals.csv,
+│                            # tier-price-history.csv
+├── src/pricemonitor/        # normalize, seasonality, margin, detection,
+│                            # comparison, digest, quote_parser, sheet_io, cli
+├── tests/
+├── agents/                  # Claude runbooks: ingestion, weekly digest
+├── outreach/                # Phase 0: vendor research, templates, process
+├── reports/                 # generated weekly digests (committed)
+└── scheduling/              # launchd plist, install.sh, Mac Mini runbook
+```
