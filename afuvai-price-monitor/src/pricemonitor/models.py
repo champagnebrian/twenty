@@ -122,8 +122,16 @@ class PriceLogRow:
     status: str = "confirmed"
 
     def dedupe_key(self) -> tuple:
-        # Merge dedupe key per WS2 spec: (vendor_id, stem_id, date, price_per_stem).
-        return (self.vendor_id, self.stem_id, self.date, round(self.price_per_stem, 4))
+        # Row identity per spec is (vendor, stem/variety, date, ...): variety and
+        # grade are part of the key so two same-priced varieties don't collapse.
+        return (
+            self.vendor_id,
+            self.stem_id,
+            (self.variety or "").strip().lower(),
+            (self.grade or "").strip().lower(),
+            self.date,
+            round(self.price_per_stem, 4),
+        )
 
     def validate(self, vendors_config: dict | None = None, stems_config: dict | None = None) -> None:
         if not self.vendor_id:
@@ -187,6 +195,8 @@ class ProposalRow:
     def validate(self) -> None:
         if self.status not in PROPOSAL_STATUSES:
             raise ValidationError(f"proposal status {self.status!r} not one of {PROPOSAL_STATUSES}")
+        if self.grade not in GRADES:
+            raise ValidationError(f"grade {self.grade!r} not one of {GRADES}")
         if self.quote_unit not in QUOTE_UNITS:
             raise ValidationError(f"quote_unit {self.quote_unit!r} not one of {QUOTE_UNITS}")
         if self.source not in SOURCES:
