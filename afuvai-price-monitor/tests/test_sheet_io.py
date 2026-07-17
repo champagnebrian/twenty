@@ -73,7 +73,7 @@ def test_quick_entry_round_trip_with_normalization_and_dedupe():
 
     bunch_quote = {
         # No units_per_quote_unit → falls back to standard_rose default of 25.
-        "date": "2026-07-16", "vendor_id": "mayesh-wholesale-las-vegas",
+        "date": "2026-07-16", "vendor_id": "mayesh-las-vegas",
         "stem_id": "standard_rose", "variety": "Playa Blanca", "grade": "standard",
         "quoted_price": 22.50, "quote_unit": "bunch", "units_per_quote_unit": "",
         "currency": "USD", "source": "phone", "baseline": "true",
@@ -82,7 +82,7 @@ def test_quick_entry_round_trip_with_normalization_and_dedupe():
     }
     explicit_units_quote = {
         # Explicit per-quote override: hydrangea bunch of 10 (default is 5).
-        "date": "2026-07-16", "vendor_id": "greenleaf-wholesale-sparks",
+        "date": "2026-07-16", "vendor_id": "greenleaf-sparks",
         "stem_id": "hydrangea", "variety": "", "grade": "standard",
         "quoted_price": 30.00, "quote_unit": "bunch", "units_per_quote_unit": 10,
         "currency": "USD", "source": "email", "baseline": "true",
@@ -145,7 +145,7 @@ def test_quick_entry_round_trip_with_normalization_and_dedupe():
 def test_proposals_round_trip_and_confirm_flow():
     _, data_dir, workbook_path = _make_workspace()
     proposal = ProposalRow(
-        id="prop-0001", date="2026-07-14", vendor_id="mayesh-wholesale-las-vegas",
+        id="prop-0001", date="2026-07-14", vendor_id="mayesh-las-vegas",
         stem_id="dahlia", variety="Cornel Bronze", grade="premium",
         quoted_price=32.00, quote_unit="bunch", units_per_quote_unit=10,
         price_per_stem=3.2, source="email", gmail_thread_id="t-123",

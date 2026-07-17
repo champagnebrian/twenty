@@ -1,0 +1,18 @@
+{
+  "_comment": "Google Drive anchors for the price monitor. The quick-entry sheet is the human entry surface (native Google Sheet, created 2026-07-17); the weekly job reads it via the Drive connector and merges rows into data/price-log.csv. Reports are published as new text-based files into the reports folder (Drive connector cannot edit files in place or upload binaries reliably — see ARCHITECTURE.md D2 publishing mechanics).",
+  "quick_entry_sheet": {
+    "file_id": "1Kw9JM3hXlfncQIfWZVvtjnGJW33ceAwW8Eeh_f-i0S0",
+    "title": "AFUVAI Vendor Price Monitor",
+    "url": "https://docs.google.com/spreadsheets/d/1Kw9JM3hXlfncQIfWZVvtjnGJW33ceAwW8Eeh_f-i0S0/edit",
+    "header_row_marker": "date,vendor_id,stem_id"
+  },
+  "folder": {
+    "id": "1d0iv1nPh8OrBYO7_7BnfdCeeU4-LdFmR",
+    "name": "Afuvai Expense Tracking"
+  },
+  "expense_tracker": {
+    "file_id": "1wA7R8FFPR4PRQjgYPMXL3gytAV-MM6BOTBQ_bjkZgs4",
+    "title": "AFUVAI Expense Tracker",
+    "access": "read-only for this system — never write"
+  }
+}
