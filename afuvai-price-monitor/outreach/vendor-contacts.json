@@ -18,6 +18,7 @@
   },
   {
     "id": "las-vegas-floral-plant-wholesale",
+    "alias_of": "lv-floral-wholesale",
     "name": "Las Vegas Floral & Plant Wholesale",
     "branch": "Las Vegas, NV",
     "email": "info@lvfloral.com",
@@ -126,7 +127,7 @@
     "phone": "(702) 873-8806",
     "website": "https://lasvegasflowermarket.com/",
     "address": "Two stores in Las Vegas, NV (site pages 'Store 1' / 'Store 2'; street addresses not confirmed from search results — confirm on first contact)",
-    "account_requirements": "NO business/resale license required — 'listed prices are for everybody'. Wholesale bulk flowers purchased online at $250.00 minimum; delivery via their vehicles $18.95 with $300 minimum on bulk; delivery Mon-Sat 10am-3pm (matches known spec data).",
+    "account_requirements": "NO business/resale license required — 'listed prices are for everybody'. Wholesale bulk flowers purchased online; spec said $250 minimum but LVFM's current FAQ states a $300.00 minimum for all wholesale/bulk flowers (verifier-confirmed Jul 2026) — treat $300 as current; delivery via their vehicles $18.95, Mon-Sat 10am-3pm. Outreach draft asks them to confirm the current minimum.",
     "public_price_page": {
       "has_public_pricing": true,
       "url": "https://lasvegasflowermarket.com/shop-now",
