@@ -1,0 +1,76 @@
+{
+  "_comment": "Year-agnostic seasonal windows (month-day, inclusive) with expected price multipliers per D7. A quote inside a window is compared against baseline * multiplier — expected seasonal lift is logged, not alerted. stem_multipliers override default_multiplier by stem_id. holiday_cutoff_lead_days: how many days before each holiday window's peak date the weekly digest starts surfacing vendor pre-order cutoffs (vendors.json holiday_cutoffs).",
+  "holiday_cutoff_lead_days": 30,
+  "windows": [
+    {
+      "id": "valentines",
+      "name": "Valentine's Day run-up",
+      "start": "01-15",
+      "end": "02-14",
+      "peak_date": "02-14",
+      "is_holiday": true,
+      "default_multiplier": 1.2,
+      "stem_multipliers": {
+        "standard_rose": 2.0,
+        "garden_rose": 2.0,
+        "spray_rose": 2.0
+      },
+      "notes": "Rose prices roughly double; everything else drifts up ~20%."
+    },
+    {
+      "id": "mothers_day",
+      "name": "Mother's Day run-up",
+      "start": "04-20",
+      "end": "05-14",
+      "peak_date": "05-14",
+      "is_holiday": true,
+      "default_multiplier": 1.3,
+      "stem_multipliers": {
+        "standard_rose": 1.5,
+        "garden_rose": 1.5,
+        "spray_rose": 1.5
+      },
+      "notes": "2nd Sunday of May; May 14 is the latest it can fall, so the window is encoded Apr 20 - May 14."
+    },
+    {
+      "id": "wedding_season",
+      "name": "Wedding season",
+      "start": "05-01",
+      "end": "10-31",
+      "peak_date": null,
+      "is_holiday": false,
+      "default_multiplier": 1.15,
+      "stem_multipliers": {
+        "peony": 1.0,
+        "dahlia": 1.0
+      },
+      "notes": "General ~15% demand lift. Peonies are IN season Apr 15 - Jun 30 (multiplier 1.0 — no expected lift while supply is up); dahlias are in season Jul-Oct (multiplier 1.0). Out-of-season quotes for these market-price stems are handled by the custom-quote flow, not the seasonal multiplier."
+    },
+    {
+      "id": "peony_in_season",
+      "name": "Peony domestic season",
+      "start": "04-15",
+      "end": "06-30",
+      "peak_date": null,
+      "is_holiday": false,
+      "default_multiplier": 1.0,
+      "stem_multipliers": {
+        "peony": 1.0
+      },
+      "notes": "Informational window: peony supply is up, prices at baseline. Outside this window peony is market-price."
+    },
+    {
+      "id": "dahlia_in_season",
+      "name": "Dahlia domestic season",
+      "start": "07-01",
+      "end": "10-31",
+      "peak_date": null,
+      "is_holiday": false,
+      "default_multiplier": 1.0,
+      "stem_multipliers": {
+        "dahlia": 1.0
+      },
+      "notes": "Informational window: dahlia supply is up, prices at baseline. Outside this window dahlia is market-price."
+    }
+  ]
+}

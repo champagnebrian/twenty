@@ -1,0 +1,119 @@
+{
+  "_comment": "Tracked stems for the price monitor. market_price=true stems (dahlia, peony, garden rose) go through the custom-quote flow, not fixed tier pricing. units.bunch_default_count is the floral-industry grower-bunch default used to normalize bunch quotes to per-stem when a quote does not specify units_per_quote_unit — always overridable per quote row. box_default_count is null until a vendor's box pack counts are known. Substitutes may reference stems not yet tracked (noted); add them to this list before relying on them in comparisons.",
+  "default_grade_levels": ["premium", "standard", "economy"],
+  "stems": [
+    {
+      "id": "standard_rose",
+      "display_name": "Standard Rose",
+      "market_price": false,
+      "default_grade_levels": ["premium", "standard", "economy"],
+      "units": { "per_stem": 1, "bunch_default_count": 25, "box_default_count": null },
+      "substitutes": [],
+      "notes": "25-stem grower bunch is the wholesale standard."
+    },
+    {
+      "id": "garden_rose",
+      "display_name": "Garden Rose",
+      "market_price": true,
+      "default_grade_levels": ["premium", "standard", "economy"],
+      "units": { "per_stem": 1, "bunch_default_count": 12, "box_default_count": null },
+      "substitutes": [
+        { "stem_id": "standard_rose", "note": "Pair with spray roses to approximate garden-rose fullness." },
+        { "stem_id": "spray_rose", "note": "Use alongside standard roses as combined substitute." }
+      ],
+      "notes": "Often sold in 12-stem bunches; some growers use 24/25. Override per quote."
+    },
+    {
+      "id": "spray_rose",
+      "display_name": "Spray Rose",
+      "market_price": false,
+      "default_grade_levels": ["premium", "standard", "economy"],
+      "units": { "per_stem": 1, "bunch_default_count": 10, "box_default_count": null },
+      "substitutes": [],
+      "notes": null
+    },
+    {
+      "id": "dahlia",
+      "display_name": "Dahlia",
+      "market_price": true,
+      "default_grade_levels": ["premium", "standard", "economy"],
+      "units": { "per_stem": 1, "bunch_default_count": 10, "box_default_count": null },
+      "substitutes": [
+        { "stem_id": "garden_rose", "note": "Closest year-round substitute for form and size." },
+        { "stem_id": "chrysanthemum", "note": "Not yet a tracked stem. Seasonal; large-bloom mums approximate dahlia form." },
+        { "stem_id": "zinnia", "note": "Not yet a tracked stem. Seasonal (summer) substitute." }
+      ],
+      "notes": "In season roughly Jul-Oct domestically; market-price outside that window."
+    },
+    {
+      "id": "peony",
+      "display_name": "Peony",
+      "market_price": true,
+      "default_grade_levels": ["premium", "standard", "economy"],
+      "units": { "per_stem": 1, "bunch_default_count": 10, "box_default_count": null },
+      "substitutes": [
+        { "stem_id": "garden_rose", "note": "Primary out-of-season substitute." },
+        { "stem_id": "ranunculus", "note": "Smaller bloom; use higher count to match volume." }
+      ],
+      "notes": "In season roughly Apr 15 - Jun 30 domestically; steep market pricing outside."
+    },
+    {
+      "id": "ranunculus",
+      "display_name": "Ranunculus",
+      "market_price": false,
+      "default_grade_levels": ["premium", "standard", "economy"],
+      "units": { "per_stem": 1, "bunch_default_count": 10, "box_default_count": null },
+      "substitutes": [],
+      "notes": null
+    },
+    {
+      "id": "lisianthus",
+      "display_name": "Lisianthus",
+      "market_price": false,
+      "default_grade_levels": ["premium", "standard", "economy"],
+      "units": { "per_stem": 1, "bunch_default_count": 10, "box_default_count": null },
+      "substitutes": [],
+      "notes": null
+    },
+    {
+      "id": "hydrangea",
+      "display_name": "Hydrangea",
+      "market_price": false,
+      "default_grade_levels": ["premium", "standard", "economy"],
+      "units": { "per_stem": 1, "bunch_default_count": 5, "box_default_count": null },
+      "substitutes": [],
+      "notes": "Commonly sold in 5-stem bunches; some vendors use 10. Override per quote."
+    },
+    {
+      "id": "stock",
+      "display_name": "Stock",
+      "market_price": false,
+      "default_grade_levels": ["premium", "standard", "economy"],
+      "units": { "per_stem": 1, "bunch_default_count": 10, "box_default_count": null },
+      "substitutes": [],
+      "notes": null
+    },
+    {
+      "id": "eucalyptus",
+      "display_name": "Eucalyptus",
+      "market_price": false,
+      "default_grade_levels": ["premium", "standard", "economy"],
+      "units": { "per_stem": 1, "bunch_default_count": 10, "box_default_count": null },
+      "substitutes": [
+        { "stem_id": "greenery_ruscus", "note": "Interchangeable greenery in most tier recipes." }
+      ],
+      "notes": "Actually sold by bunch weight (~8 oz grower bunch); 10 stems/bunch is a working approximation for per-stem normalization. Override per quote when the vendor states stem count."
+    },
+    {
+      "id": "greenery_ruscus",
+      "display_name": "Ruscus (Greenery)",
+      "market_price": false,
+      "default_grade_levels": ["premium", "standard", "economy"],
+      "units": { "per_stem": 1, "bunch_default_count": 10, "box_default_count": null },
+      "substitutes": [
+        { "stem_id": "eucalyptus", "note": "Interchangeable greenery in most tier recipes." }
+      ],
+      "notes": null
+    }
+  ]
+}

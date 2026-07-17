@@ -1,0 +1,10 @@
+{
+  "_comment": "Alerting thresholds per D7. margin_watch_below: any tier margin under this is a WATCH flag. margin_alert_below: ALERT floor — forces digest alert and, if a customer-facing price change results, a tier-price-history snapshot. quote_aging_days/quote_stale_days: quotes older than 60d are flagged aging; older than 90d are stale and excluded from current comparisons. min_tier_dollar_impact_usd: minimum per-tier repricing delta (dollars of COGS movement) that counts as a meaningful move. market_price_band_move_pct: per-stem move on a market-price flower that triggers a custom-quote-flow reprice.",
+  "margin_target": 0.6,
+  "margin_watch_below": 0.6,
+  "margin_alert_below": 0.55,
+  "quote_aging_days": 60,
+  "quote_stale_days": 90,
+  "min_tier_dollar_impact_usd": 25,
+  "market_price_band_move_pct": 0.15
+}

@@ -1,0 +1,115 @@
+{
+  "_comment": "AFUVAI's 6 bulk tiers + greenery add-on. Real recipes and retail prices live in the website repo's netlify/functions/data/products.json (not available in this repo) — every tier here is placeholder=true with a sensible default composition so margin math runs end to end. Reconcile counts/retail prices with products.json, then flip placeholder to false. margin_target per D7: 0.60 target, 0.55 alert floor (see thresholds.json).",
+  "margin_target": 0.6,
+  "tiers": [
+    {
+      "tier_id": "tier-1",
+      "name": "Tier 1 — Petite Arrangement",
+      "retail_price_usd": null,
+      "margin_target": 0.6,
+      "recipe": [
+        { "stem_id": "standard_rose", "count": 10, "grade": "standard" },
+        { "stem_id": "greenery_ruscus", "count": 3, "grade": "standard" },
+        { "stem_id": "eucalyptus", "count": 2, "grade": "standard" }
+      ],
+      "placeholder": true,
+      "notes": "~15 stems, mostly standard roses + greenery. Reconcile with website products.json."
+    },
+    {
+      "tier_id": "tier-2",
+      "name": "Tier 2 — Classic Arrangement",
+      "retail_price_usd": null,
+      "margin_target": 0.6,
+      "recipe": [
+        { "stem_id": "standard_rose", "count": 15, "grade": "standard" },
+        { "stem_id": "spray_rose", "count": 5, "grade": "standard" },
+        { "stem_id": "greenery_ruscus", "count": 3, "grade": "standard" },
+        { "stem_id": "eucalyptus", "count": 2, "grade": "standard" }
+      ],
+      "placeholder": true,
+      "notes": "~25 stems. Reconcile with website products.json."
+    },
+    {
+      "tier_id": "tier-3",
+      "name": "Tier 3 — Deluxe Arrangement",
+      "retail_price_usd": null,
+      "margin_target": 0.6,
+      "recipe": [
+        { "stem_id": "standard_rose", "count": 20, "grade": "standard" },
+        { "stem_id": "spray_rose", "count": 7, "grade": "standard" },
+        { "stem_id": "lisianthus", "count": 5, "grade": "standard" },
+        { "stem_id": "stock", "count": 3, "grade": "standard" },
+        { "stem_id": "greenery_ruscus", "count": 3, "grade": "standard" },
+        { "stem_id": "eucalyptus", "count": 2, "grade": "standard" }
+      ],
+      "placeholder": true,
+      "notes": "~40 stems. Reconcile with website products.json."
+    },
+    {
+      "tier_id": "tier-4",
+      "name": "Tier 4 — Premium Arrangement",
+      "retail_price_usd": null,
+      "margin_target": 0.6,
+      "recipe": [
+        { "stem_id": "standard_rose", "count": 25, "grade": "premium" },
+        { "stem_id": "spray_rose", "count": 10, "grade": "standard" },
+        { "stem_id": "lisianthus", "count": 8, "grade": "standard" },
+        { "stem_id": "hydrangea", "count": 4, "grade": "standard" },
+        { "stem_id": "stock", "count": 5, "grade": "standard" },
+        { "stem_id": "greenery_ruscus", "count": 5, "grade": "standard" },
+        { "stem_id": "eucalyptus", "count": 3, "grade": "standard" }
+      ],
+      "placeholder": true,
+      "notes": "~60 stems, adds hydrangea. Reconcile with website products.json."
+    },
+    {
+      "tier_id": "tier-5",
+      "name": "Tier 5 — Luxe Collection",
+      "retail_price_usd": null,
+      "margin_target": 0.6,
+      "recipe": [
+        { "stem_id": "standard_rose", "count": 30, "grade": "premium" },
+        { "stem_id": "garden_rose", "count": 10, "grade": "premium" },
+        { "stem_id": "spray_rose", "count": 12, "grade": "standard" },
+        { "stem_id": "ranunculus", "count": 10, "grade": "standard" },
+        { "stem_id": "lisianthus", "count": 10, "grade": "standard" },
+        { "stem_id": "hydrangea", "count": 6, "grade": "standard" },
+        { "stem_id": "greenery_ruscus", "count": 7, "grade": "standard" },
+        { "stem_id": "eucalyptus", "count": 5, "grade": "standard" }
+      ],
+      "placeholder": true,
+      "notes": "~90 stems, introduces garden roses (market-price stem). Reconcile with website products.json."
+    },
+    {
+      "tier_id": "tier-6",
+      "name": "Tier 6 — Grand Install",
+      "retail_price_usd": null,
+      "margin_target": 0.6,
+      "recipe": [
+        { "stem_id": "standard_rose", "count": 50, "grade": "premium" },
+        { "stem_id": "garden_rose", "count": 15, "grade": "premium" },
+        { "stem_id": "spray_rose", "count": 20, "grade": "standard" },
+        { "stem_id": "ranunculus", "count": 15, "grade": "standard" },
+        { "stem_id": "lisianthus", "count": 15, "grade": "standard" },
+        { "stem_id": "hydrangea", "count": 10, "grade": "standard" },
+        { "stem_id": "stock", "count": 10, "grade": "standard" },
+        { "stem_id": "greenery_ruscus", "count": 10, "grade": "standard" },
+        { "stem_id": "eucalyptus", "count": 8, "grade": "standard" }
+      ],
+      "placeholder": true,
+      "notes": "~150 stems, large install mix incl. hydrangea + garden roses. Reconcile with website products.json."
+    },
+    {
+      "tier_id": "addon-greenery",
+      "name": "Add-On — Greenery Bundle",
+      "retail_price_usd": null,
+      "margin_target": 0.6,
+      "recipe": [
+        { "stem_id": "eucalyptus", "count": 10, "grade": "standard" },
+        { "stem_id": "greenery_ruscus", "count": 10, "grade": "standard" }
+      ],
+      "placeholder": true,
+      "notes": "Greenery add-on bundle. Reconcile with website products.json."
+    }
+  ]
+}
