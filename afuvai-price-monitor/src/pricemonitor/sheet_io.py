@@ -340,17 +340,14 @@ def _sheet_rows_as_dicts(sheet, headers: list[str], header_row: int) -> list[dic
     return rows
 
 
-def parse_quick_entry_tab(
-    workbook_path: Path,
-    stems_config: dict | None = None,
-    config_dir: Path = CONFIG_DIR,
+def quick_entry_entries_to_rows(
+    entries: list[dict[str, str]],
+    stems_config: dict,
 ) -> list[PriceLogRow]:
-    # Quick Entry layout: row 1 note, row 2 headers, data from row 3.
-    stems_config = stems_config or load_stems(config_dir)
-    workbook = load_workbook(workbook_path, data_only=True)
-    sheet = workbook[TAB_QUICK_ENTRY]
+    # Shared by the xlsx tab parser, the Google Sheet CSV-download parser, and
+    # the CLI add-quote path so normalization/defaulting happens in one place.
     parsed: list[PriceLogRow] = []
-    for entry in _sheet_rows_as_dicts(sheet, QUICK_ENTRY_COLUMNS, header_row=2):
+    for entry in entries:
         if not entry.get("vendor_id") or not entry.get("stem_id"):
             continue
         base = dict(entry)
@@ -369,6 +366,49 @@ def parse_quick_entry_tab(
             row.notes = f"{row.notes}; {default_note}" if row.notes else default_note
         parsed.append(row)
     return parsed
+
+
+def parse_quick_entry_tab(
+    workbook_path: Path,
+    stems_config: dict | None = None,
+    config_dir: Path = CONFIG_DIR,
+) -> list[PriceLogRow]:
+    # Quick Entry layout: row 1 note, row 2 headers, data from row 3.
+    stems_config = stems_config or load_stems(config_dir)
+    workbook = load_workbook(workbook_path, data_only=True)
+    sheet = workbook[TAB_QUICK_ENTRY]
+    entries = _sheet_rows_as_dicts(sheet, QUICK_ENTRY_COLUMNS, header_row=2)
+    return quick_entry_entries_to_rows(entries, stems_config)
+
+
+def parse_quick_entry_csv(
+    csv_path: Path,
+    stems_config: dict | None = None,
+    config_dir: Path = CONFIG_DIR,
+) -> list[PriceLogRow]:
+    # The D2 entry surface is a native Google Sheet downloaded as CSV. Legend
+    # lines may precede the header; locate it via the date,vendor_id,stem_id
+    # marker (config/drive.json header_row_marker) and read rows below it.
+    stems_config = stems_config or load_stems(config_dir)
+    with open(csv_path, newline="", encoding="utf-8") as handle:
+        raw_rows = list(csv.reader(handle))
+    header_index = next(
+        (
+            index for index, cells in enumerate(raw_rows)
+            if [cell.strip().lower() for cell in cells[:3]] == ["date", "vendor_id", "stem_id"]
+        ),
+        None,
+    )
+    if header_index is None:
+        raise ValueError(f"{csv_path}: no Quick Entry header row (date,vendor_id,stem_id) found")
+    entries = []
+    for cells in raw_rows[header_index + 1:]:
+        values = [(cell or "").strip() for cell in cells[: len(QUICK_ENTRY_COLUMNS)]]
+        if not any(values):
+            continue
+        padding = [""] * (len(QUICK_ENTRY_COLUMNS) - len(values))
+        entries.append(dict(zip(QUICK_ENTRY_COLUMNS, values + padding)))
+    return quick_entry_entries_to_rows(entries, stems_config)
 
 
 def parse_proposals_tab(workbook_path: Path) -> list[ProposalRow]:

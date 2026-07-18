@@ -1,0 +1,4 @@
+{
+  "_comment": "State for the WS3 email-ingestion agent (agents/ingestion-agent.md). last_run is the ISO timestamp of the last completed ingestion sweep; Gmail date windows start from its date. null = never run (first sweep uses a 30-day window). The agent rewrites this file at the end of every successful run.",
+  "last_run": null
+}

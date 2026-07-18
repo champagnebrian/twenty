@@ -18,7 +18,8 @@ DATA_DIR = PACKAGE_ROOT / "data"
 QUOTE_UNITS = ("stem", "bunch", "box")
 SOURCES = ("email", "phone", "manual", "portal")
 PRICE_LOG_STATUSES = ("confirmed", "sample")
-PROPOSAL_STATUSES = ("proposed", "confirmed", "rejected")
+# expired = proposed >21 days with no Quick Entry confirmation (WS3 loop).
+PROPOSAL_STATUSES = ("proposed", "confirmed", "rejected", "expired")
 GRADES = ("premium", "standard", "economy")
 
 PRICE_LOG_COLUMNS = [
