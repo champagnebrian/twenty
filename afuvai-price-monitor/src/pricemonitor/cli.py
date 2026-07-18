@@ -20,6 +20,7 @@ from pathlib import Path
 from pricemonitor.models import (
     CONFIG_DIR,
     DATA_DIR,
+    PACKAGE_ROOT,
     ProposalRow,
     ValidationError,
     load_stems,
@@ -232,6 +233,37 @@ def cmd_expire_proposals(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_weekly_digest(args: argparse.Namespace) -> int:
+    from .analysis import run_analysis
+    from .digest import write_digest
+    from .sheet_io import read_price_log, read_proposals
+
+    today = date.fromisoformat(args.today)
+    data_dir = Path(args.data_dir)
+    log_rows = [row for row in read_price_log(data_dir / "price-log.csv")
+                if row.status == "confirmed"]
+    proposals = read_proposals(data_dir / "proposals.csv")
+    result = run_analysis(log_rows, today)
+    output = Path(args.output) if args.output else (
+        PACKAGE_ROOT / "reports" / f"digest-{today.isoformat()}.md")
+    write_digest(result, proposals, today, output)
+    print(f"digest written to {output}")
+    return 0
+
+
+def cmd_export_accountant(args: argparse.Namespace) -> int:
+    from .digest import write_accountant_export
+    from .sheet_io import read_price_log
+
+    data_dir = Path(args.data_dir)
+    log_rows = read_price_log(data_dir / "price-log.csv")
+    output = Path(args.output) if args.output else (
+        PACKAGE_ROOT / "reports" / f"cogs-export-{args.year or 'all'}.csv")
+    write_accountant_export(log_rows, output, year=args.year)
+    print(f"accountant export written to {output}")
+    return 0
+
+
 # --- Parser wiring --------------------------------------------------------------
 
 def _add_common(parser: argparse.ArgumentParser) -> None:
@@ -298,6 +330,22 @@ def build_parser() -> argparse.ArgumentParser:
     expire.add_argument("--today", default=today, help=argparse.SUPPRESS)
     _add_common(expire)
     expire.set_defaults(func=cmd_expire_proposals)
+
+    weekly = subparsers.add_parser(
+        "weekly-digest", help="run the analysis and write the weekly digest markdown")
+    weekly.add_argument("--output", default=None,
+                        help="output path (default reports/digest-<date>.md)")
+    weekly.add_argument("--today", default=today, help=argparse.SUPPRESS)
+    _add_common(weekly)
+    weekly.set_defaults(func=cmd_weekly_digest)
+
+    export = subparsers.add_parser(
+        "export-accountant", help="COGS-ready CSV export matching Expense Tracker categories")
+    export.add_argument("--year", type=int, default=None, help="restrict to one tax year")
+    export.add_argument("--output", default=None,
+                        help="output path (default reports/cogs-export-<year>.csv)")
+    _add_common(export)
+    export.set_defaults(func=cmd_export_accountant)
 
     return parser
 

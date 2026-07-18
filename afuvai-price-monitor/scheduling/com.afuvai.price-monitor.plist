@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.afuvai.price-monitor</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/bash</string>
+        <string>__REPO_DIR__/afuvai-price-monitor/scheduling/run-weekly.sh</string>
+        <string>agent</string>
+    </array>
+    <!-- Mondays 07:00 local (before the LV wholesale week gets moving). -->
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Weekday</key>
+        <integer>1</integer>
+        <key>Hour</key>
+        <integer>7</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    <key>StandardOutPath</key>
+    <string>/tmp/afuvai-price-monitor.log</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/afuvai-price-monitor.err</string>
+    <!-- Run missed jobs on wake — Mac Minis sleep. -->
+    <key>RunAtLoad</key>
+    <false/>
+</dict>
+</plist>
