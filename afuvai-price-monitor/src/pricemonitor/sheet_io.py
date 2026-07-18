@@ -28,6 +28,7 @@ from pricemonitor.models import (
     load_tier_recipes,
     load_vendors,
     normalize_price_per_stem,
+    resolve_vendor_alias,
 )
 
 WORKBOOK_NAME = "AFUVAI Vendor Price Monitor.xlsx"
@@ -65,13 +66,13 @@ READ_ME_LINES = [
     ("and feeds the 6-tier bulk margin model (60% target). The canonical history lives in the", False),
     ("repo's data/price-log.csv (git); this workbook is the hands-on entry and review surface.", False),
     ("", False),
-    ("How to use it — the only two tabs you edit", True),
+    ("How to use it — the only tab you edit is Quick Entry", True),
     ("1. 'Quick Entry' — paste a quote you got by phone/email: one row per (vendor, stem, date).", False),
     ("   Leave units_per_quote_unit blank on bunch quotes to use the stem's default bunch count.", False),
     ("   The weekly run picks these rows up, computes per-stem price, and merges them into the log.", False),
-    ("2. 'Proposals' — quotes the email agent extracted from Gmail. Change the status column to", False),
-    ("   'confirmed' to accept a row into the price log, or 'rejected' to discard it. Nothing", False),
-    ("   enters the log until you confirm it.", False),
+    ("2. 'Proposals' — read-only view of quotes the email agent extracted from Gmail. To ACCEPT one,", False),
+    ("   paste the pre-formatted row from the weekly digest into 'Quick Entry' — that paste IS the", False),
+    ("   confirmation. Ignored proposals expire after 21 days. Nothing enters the log otherwise.", False),
     ("", False),
     ("Everything else is generated", True),
     ("'Price Log', 'Vendors', 'Substitutions & Units', 'Tier Recipes', 'Seasonal Calendar',", False),
@@ -444,6 +445,7 @@ def merge_rows_into_price_log(
     skipped: list[PriceLogRow] = []
     sequence = len(existing)
     for row in new_rows:
+        row.vendor_id = resolve_vendor_alias(vendors_config, row.vendor_id)
         key = row.dedupe_key()
         if key in seen:
             skipped.append(row)

@@ -261,6 +261,9 @@ def cmd_export_accountant(args: argparse.Namespace) -> int:
         PACKAGE_ROOT / "reports" / f"cogs-export-{args.year or 'all'}.csv")
     write_accountant_export(log_rows, output, year=args.year)
     print(f"accountant export written to {output}")
+    print("note: rows are confirmed QUOTES (per-stem cost reference), not "
+          "purchases — actual spend lives in the Expense Tracker; do not "
+          "import this file there as expenses")
     return 0
 
 

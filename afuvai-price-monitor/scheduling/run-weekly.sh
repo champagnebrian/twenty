@@ -16,8 +16,12 @@ cd "$REPO_DIR"
 git pull --ff-only || echo "WARN: git pull failed; running on local state"
 
 if [ "$MODE" = "agent" ]; then
+    # mcp__* covers the Gmail + Google Drive connector tools the runbooks
+    # need — without it, headless mode denies the sweep/download/draft steps.
+    # The connectors themselves must be authorized once on this machine
+    # (run `claude` interactively and check /mcp before first scheduled run).
     claude -p "You are running the scheduled weekly job for the AFUVAI vendor price monitor. Working directory: $REPO_DIR. Follow agents/ingestion-agent.md (email sweep) and then agents/weekly-digest-agent.md (merge, analysis, digest, publish) exactly. Respect every prohibition in those runbooks." \
-        --allowedTools "Bash,Read,Write,Edit,Glob,Grep" \
+        --allowedTools "Bash,Read,Write,Edit,Glob,Grep,mcp__*" \
         --permission-mode acceptEdits
 else
     shopt -s nullglob
@@ -29,6 +33,7 @@ else
     (cd src && python3 -m pricemonitor weekly-digest --output "../reports/digest-$(date +%F).md")
 fi
 
+mkdir -p reports data
 git add -A data reports
 git commit -m "weekly run $(date +%F) [$MODE mode]" || echo "nothing to commit"
 git push || echo "WARN: push failed; digest is committed locally"

@@ -30,10 +30,12 @@ Drive writes = new files only; never touch the Expense Tracker).
    - Create a Gmail DRAFT to altmannbrian@gmail.com, subject
      `AFUVAI price digest <date>`, body = the digest markdown. Draft only —
      never send.
-7. **Surface** — end the session with a concise summary of the digest's
-   "Needs attention" line; the Routine's completion notification (email +
-   push) carries it to Brian. If the week is quiet, the notification says so
-   in one line — no noise beyond that.
+7. **Surface** — send the digest's "Needs attention" line as a push via the
+   session's PushNotification tool (one line, under 200 chars; quiet week →
+   "AFUVAI prices: quiet week."), then end the session with the same
+   summary. If PushNotification is unavailable at fire time, say so
+   explicitly in the closing summary — the Gmail draft is the fallback
+   surface until the Mac Mini migration fixes push properly.
 
 ## Failure handling
 

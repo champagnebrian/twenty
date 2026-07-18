@@ -45,8 +45,9 @@ For each vendor in `config/vendors.json` with `active: true` and non-empty
    --date <received YYYY-MM-DD> --body-file <saved-body.txt>
    --message-id <gmail message id> --thread-id <gmail thread id> --append`
    - `--append` writes to `data/proposals.csv` and dedupes on
-     (vendor, stem, date, per-stem price) + message id, so re-running a
-     window never double-appends.
+     (vendor, date, stem, quoted price, quote unit) + gmail message id, so
+     re-running a window never double-appends. ALWAYS pass `--message-id`
+     — an append without it followed by a re-run with it would not dedupe.
    - The parser resolves vendor from the sender address via vendors.json
      (alias-aware), extracts stem/variety/grade/price/unit, normalizes to
      per-stem, and grades confidence high/medium/low.

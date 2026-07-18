@@ -19,6 +19,7 @@ from pricemonitor.models import (
     ProposalRow,
     ValidationError,
     find_stem,
+    find_vendor,
     load_stems,
     load_vendors,
     normalize_price_per_stem,
@@ -89,6 +90,19 @@ UNIT_PATTERN = re.compile(
 )
 # "$2.10 each" / "$2.10 ea"
 EACH_PATTERN = re.compile(r"\$" + _PRICE + r"\s*(?:each|ea)\b\.?", re.IGNORECASE)
+# "$1.10-$1.30/stem" / "$4 to $5 per stem" — a quoted range, not two quotes.
+RANGE_PATTERN = re.compile(
+    r"\$?(?P<low>\d{1,4}(?:\.\d{1,2})?)\s*(?:-|–|—|\bto\b)\s*"
+    r"\$?(?P<high>\d{1,4}(?:\.\d{1,2})?)",
+    re.IGNORECASE,
+)
+# Vendor-name words too generic to identify a competitor mention.
+GENERIC_VENDOR_WORDS = {
+    "wholesale", "wholesaler", "florist", "floral", "flower", "flowers",
+    "supply", "supplies", "market", "plant", "trade", "center", "inc",
+    "las", "vegas", "san", "diego", "sparks", "hayward", "santa", "ana",
+    "upland",
+}
 # "$3.25" with no unit at all → unit must be inferred (low confidence).
 BARE_PATTERN = re.compile(r"\$" + _PRICE + r"\b")
 
@@ -207,19 +221,25 @@ def build_gmail_queries(
     # One Gmail query per active in-scope vendor (clean attribution). Terms
     # come exclusively from vendors.json; `after` is Gmail-format YYYY/MM/DD.
     vendors_config = vendors_config or load_vendors()
-    queries: dict[str, str] = {}
+    # Terms accumulate per alias target so an alias entry with its own
+    # domains WIDENS its target's query instead of clobbering it.
+    terms_by_target: dict[str, list[str]] = {}
     for vendor in iter_scoped_vendors(vendors_config):
         if vendor.get("active") is False:
             continue
         domains, addresses = vendor_match_terms(vendor)
-        terms = domains + addresses
+        target = vendor.get("alias_of") or vendor["id"]
+        bucket = terms_by_target.setdefault(target, [])
+        bucket.extend(term for term in domains + addresses if term not in bucket)
+    queries: dict[str, str] = {}
+    for target, terms in terms_by_target.items():
         if not terms:
             continue
         clause = terms[0] if len(terms) == 1 else "(" + " OR ".join(terms) + ")"
         query = f"from:{clause}"
         if after:
             query += f" after:{after}"
-        queries[vendor.get("alias_of") or vendor["id"]] = query
+        queries[target] = query
     return queries
 
 
@@ -304,10 +324,64 @@ class _PriceMatch:
     count: float | None
     span: tuple[int, int]
     unit_inferred_nearby: bool = False
+    range_note: str | None = None
 
 
 def _overlaps(span: tuple[int, int], taken: list[tuple[int, int]]) -> bool:
     return any(span[0] < end and start < span[1] for start, end in taken)
+
+
+def _find_price_ranges(line: str) -> list[tuple[tuple[int, int], float, float]]:
+    # Quoted ranges ("$1.10-$1.30/stem"). The endpoints must both look like
+    # prices with the high end above the low end; date-like "10-15" pairs are
+    # filtered by requiring a $ somewhere in the match.
+    ranges = []
+    for match in RANGE_PATTERN.finditer(line):
+        if "$" not in match.group(0):
+            continue
+        low, high = float(match.group("low")), float(match.group("high"))
+        if 0 < low < high:
+            ranges.append((match.span(), low, high))
+    return ranges
+
+
+def _apply_ranges(
+    price_matches: list["_PriceMatch"],
+    ranges: list[tuple[tuple[int, int], float, float]],
+) -> list["_PriceMatch"]:
+    # Collapse a range to ONE match at the upper bound (conservative for cost
+    # planning), flagged for review — never two confident quotes.
+    if not ranges:
+        return price_matches
+    kept: list[_PriceMatch] = []
+    for price_match in price_matches:
+        containing = next((r for r in ranges if r[0][0] <= price_match.span[0] < r[0][1]), None)
+        if containing is None:
+            kept.append(price_match)
+            continue
+        _, low, high = containing
+        if price_match.price == high:
+            price_match.range_note = f"price range ${low:g}-${high:g} quoted; using upper bound"
+            kept.append(price_match)
+        # low endpoint (and any mid-match) dropped silently — covered by the note.
+    return kept
+
+
+def _foreign_vendor_mention(
+    line: str, own_vendor_id: str, vendors_config: dict,
+) -> str | None:
+    # A line naming ANOTHER configured vendor is likely quoting their price
+    # ("Heard Mayesh has garden roses at $2.40") — never high-confidence.
+    own = find_vendor(vendors_config, own_vendor_id) or {}
+    own_group = own.get("company_group") or own_vendor_id
+    lowered = line.lower()
+    for vendor in vendors_config.get("vendors", []):
+        if (vendor.get("company_group") or vendor["id"]) == own_group:
+            continue
+        for word in re.findall(r"[a-z]+", vendor.get("name", "").lower()):
+            if len(word) > 3 and word not in GENERIC_VENDOR_WORDS and word in lowered:
+                return vendor["name"]
+    return None
 
 
 def _find_prices(line: str) -> list[_PriceMatch]:
@@ -381,9 +455,17 @@ def _build_candidate(
     valid_until: str | None,
     source_line: str,
     cross_line: bool = False,
+    foreign_vendor: str | None = None,
 ) -> QuoteCandidate:
     info_notes: list[str] = []
     review_notes: list[str] = []
+    if getattr(price_match, "range_note", None):
+        review_notes.append(price_match.range_note)
+    if foreign_vendor:
+        review_notes.append(
+            f"line mentions another vendor ({foreign_vendor}) — price may be "
+            "theirs, not the sender's"
+        )
     unit = price_match.unit
     count = price_match.count
     explicit_unit = unit is not None and not price_match.unit_inferred_nearby
@@ -525,9 +607,10 @@ def parse_quote_email(
         if SKIP_LINE_PATTERN.search(stripped):
             # Money talk that is not a quote (invoices, totals, fees, minimums).
             continue
-        price_matches = _find_prices(stripped)
+        price_matches = _apply_ranges(_find_prices(stripped), _find_price_ranges(stripped))
         if price_matches:
             prices_seen = True
+        foreign_vendor = _foreign_vendor_mention(stripped, vendor_id, vendors_config)
 
         if stem_matches and price_matches:
             for price_match in price_matches:
@@ -538,9 +621,15 @@ def parse_quote_email(
                 variety = _extract_variety(stripped, stem_span)
                 candidates.append(_build_candidate(
                     stems_config, stem_id, variety, grade, price_match,
-                    valid_until, stripped,
+                    valid_until, stripped, foreign_vendor=foreign_vendor,
                 ))
-            last_stem_context = None
+            # Keep the stem as context: a follow-up line like "we'll do them
+            # for $2.10 if you commit" still belongs to this stem.
+            stem_id, stem_span = stem_matches[-1]
+            last_stem_context = (
+                line_index, stem_id, _extract_variety(stripped, stem_span),
+                grade_matches[-1][0] if grade_matches else "standard",
+            )
         elif stem_matches:
             stem_id, stem_span = stem_matches[-1]
             grade = grade_matches[-1][0] if grade_matches else "standard"
@@ -551,6 +640,7 @@ def parse_quote_email(
                 candidates.append(_build_candidate(
                     stems_config, stem_id, variety, grade, price_match,
                     valid_until, stripped, cross_line=True,
+                    foreign_vendor=foreign_vendor,
                 ))
             last_stem_context = None
 

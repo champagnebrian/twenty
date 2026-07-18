@@ -18,11 +18,10 @@ from .models import (
     find_stem,
 )
 
-QUICK_ENTRY_PASTE_COLUMNS = [
-    "date", "vendor_id", "stem_id", "variety", "grade", "quoted_price",
-    "quote_unit", "units_per_quote_unit", "currency", "source", "baseline",
-    "valid_until", "disruption_tag", "notes", "entered_by",
-]
+# Single source of truth for the paste-row columns: the Quick Entry sheet
+# header itself. A drift between digest paste rows and the sheet would break
+# the confirmation loop silently.
+from .sheet_io import QUICK_ENTRY_COLUMNS as QUICK_ENTRY_PASTE_COLUMNS
 
 SEVERITY_ORDER = {"ALERT": 0, "WATCH": 1, "INFO": 2}
 
@@ -79,9 +78,10 @@ def render_digest(
     add("## What moved")
     if not flagged:
         add("No moves crossed the dollar-impact or margin thresholds this week.")
-        seasonal = [m for m in result.moves if m.classification == "expected-seasonal"]
-        if seasonal:
-            add(f"({len(seasonal)} expected-seasonal move(s) logged without alarm.)")
+    seasonal = [m for m in result.moves if m.classification == "expected-seasonal"]
+    if seasonal:
+        add(f"({len(seasonal)} expected-seasonal move(s) logged without alarm: "
+            + ", ".join(f"{m.stem_id} @ {m.vendor_id}" for m in seasonal) + ".)")
     for move in flagged:
         impact_bits = ", ".join(
             f"{impact.tier_name}: {_fmt_money(impact.dollar_impact_usd)}"
@@ -216,9 +216,12 @@ def write_accountant_export(
     stems_config: dict | None = None,
     year: int | None = None,
 ) -> Path:
-    # COGS-ready export matching Expense Tracker categories exactly — no
-    # second source of truth (spec). One row per confirmed quote-turned-cost;
-    # category comes from stems.json expense_tracker_category.
+    # COGS-ready export whose category column matches Expense Tracker
+    # categories exactly. IMPORTANT CAVEAT: rows are confirmed QUOTES, not
+    # purchases — this export is a reference for per-stem costs at tax time,
+    # not a ledger. Actual spend lives in the Expense Tracker; never import
+    # this file there as expenses (that would create the second source of
+    # truth the spec forbids).
     stems_config = stems_config or load_stems()
     output_path = Path(output_path)
     output_path.parent.mkdir(parents=True, exist_ok=True)

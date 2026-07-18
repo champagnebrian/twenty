@@ -372,6 +372,16 @@ def find_vendor(vendors_config: dict, vendor_id: str) -> dict | None:
     return None
 
 
+def resolve_vendor_alias(vendors_config: dict, vendor_id: str) -> str:
+    # Duplicate spec entries carry alias_of ("never log quotes under this
+    # id"). Every write/analysis path resolves through here so one company
+    # can never appear as two vendors in the log or the comparisons.
+    vendor = find_vendor(vendors_config, vendor_id)
+    if vendor and vendor.get("alias_of"):
+        return vendor["alias_of"]
+    return vendor_id
+
+
 def find_stem(stems_config: dict, stem_id: str) -> dict | None:
     for stem in stems_config["stems"]:
         if stem["id"] == stem_id:

@@ -89,11 +89,19 @@ which contradicts "only surface output when something needs my attention".
 Slack adds a new integration (spec: no new SaaS). Email is push, already in
 the stack, and degrades gracefully.
 
-Mechanics: the weekly scheduled run generates the digest markdown, commits it
-to `reports/`, publishes the report workbook to Drive, and delivers the
-digest by email/push via the scheduler's completion notification (interim
-cloud Routine) or `mail`/Gmail on the Mac Mini once migrated. A Gmail draft
-copy is also created so the full formatted digest is in the mailbox.
+Mechanics (amended after WS5 verification): the weekly scheduled run
+generates the digest markdown, commits it to `reports/`, publishes a new
+dated Google Doc to Drive, and creates a Gmail draft copy. The push leg:
+the Routine is **session-bound** (it fires into the build session, which
+holds the Gmail/Drive connectors — a fresh-session Routine would run
+without them), and session-bound Routines cannot carry completion
+notifications; instead the run itself sends the one-line "Needs attention"
+summary via the session's PushNotification tool (verified available in the
+bound session — reaches desktop, and phone when Remote Control is
+connected). On the Mac Mini, push migrates to macOS notifications or
+`mail`. If the push tool is ever unavailable at fire time, the run's
+closing summary and the Gmail draft remain the fallback — and that
+degradation is called out in the summary so it gets fixed, not ignored.
 
 ## D5 — Scheduling owner
 

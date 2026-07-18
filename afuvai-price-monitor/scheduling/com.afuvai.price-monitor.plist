@@ -24,7 +24,9 @@
     <string>/tmp/afuvai-price-monitor.log</string>
     <key>StandardErrorPath</key>
     <string>/tmp/afuvai-price-monitor.err</string>
-    <!-- Run missed jobs on wake — Mac Minis sleep. -->
+    <!-- launchd coalesces a missed StartCalendarInterval into one run on
+         wake; RunAtLoad stays false so (re)loading the plist never triggers
+         an immediate off-schedule run. -->
     <key>RunAtLoad</key>
     <false/>
 </dict>

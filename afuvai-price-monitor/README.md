@@ -55,10 +55,11 @@ weekly digest. Only the digest interrupts you; everything else is logged.
 - New vendor → add to `config/vendors.json` (id, email_domains, terms);
   new stem → `config/stems.json` (bunch count, substitutes, category).
 - Thresholds feel noisy/quiet → `config/thresholds.json`.
-- Tax time → `cd src && python3 -m pricemonitor export-accountant --year 2026`
-  (categories match the Expense Tracker exactly).
-- Tests: `python3 tests/test_sheet_io.py && python3 tests/test_quote_parser.py
-  && python3 tests/test_analysis.py && python3 tests/test_digest.py`.
+- Tax time → `cd src && python3 -m pricemonitor export-accountant --year 2026`.
+  Categories match the Expense Tracker exactly, but rows are confirmed
+  QUOTES (a per-stem cost reference), not purchases — actual spend stays in
+  the Expense Tracker; never import this CSV there as expenses.
+- Tests: `for t in tests/test_*.py; do python3 "$t"; done`.
 
 ## Guardrails baked in
 

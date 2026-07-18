@@ -18,6 +18,7 @@ from pricemonitor.models import (
     load_thresholds,
     load_tier_recipes,
     load_vendors,
+    resolve_vendor_alias,
 )
 from pricemonitor.detection import (
     FRESHNESS_AGING,
@@ -114,7 +115,7 @@ def _vendor_quote_info(
         price_per_stem=row.price_per_stem,
         quote_date=row.date,
         age_days=age,
-        freshness=classify_freshness(age, thresholds),
+        freshness=classify_freshness(age, thresholds, row.valid_until, today),
         min_order_usd=vendor.get("min_order_usd"),
         payment_terms=vendor.get("payment_terms"),
         delivery_days=delivery.get("days"),
@@ -171,7 +172,7 @@ def _build_reminders(
     aging: list[QuoteReminder] = []
     for row in latest_quotes_per_vendor(confirmed_rows).values():
         age = quote_age_days(row.date, today)
-        freshness = classify_freshness(age, thresholds)
+        freshness = classify_freshness(age, thresholds, row.valid_until, today)
         if freshness not in (FRESHNESS_STALE, FRESHNESS_AGING):
             continue
         vendor = find_vendor(vendors_config, row.vendor_id) or {}
@@ -208,6 +209,10 @@ def run_analysis(
     thresholds = thresholds or load_thresholds(config_dir)
 
     confirmed = [row for row in price_log_rows if row.status == "confirmed"]
+    # Defense in depth: alias ids are normalized on write, but historical or
+    # hand-edited rows still resolve here so one company never ranks twice.
+    for row in confirmed:
+        row.vendor_id = resolve_vendor_alias(vendors_config, row.vendor_id)
     current_rows, _stale_rows = partition_current_rows(confirmed, today, thresholds)
 
     best_prices = select_best_prices(current_rows)

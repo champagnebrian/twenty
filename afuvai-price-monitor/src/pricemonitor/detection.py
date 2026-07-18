@@ -77,9 +77,18 @@ def quote_age_days(quote_date: str, today: date) -> int:
     return (today - date.fromisoformat(quote_date)).days
 
 
-def classify_freshness(age_days: int, thresholds: dict) -> str:
+def classify_freshness(
+    age_days: int,
+    thresholds: dict,
+    valid_until: str | None = None,
+    today: date | None = None,
+) -> str:
     # fresh < aging_days; aging_days..stale_days inclusive = aging;
-    # > stale_days = stale (excluded from "current" comparisons).
+    # > stale_days = stale (excluded from "current" comparisons). A quote past
+    # its vendor-stated valid_until is stale regardless of age — the vendor
+    # itself said the price no longer holds.
+    if valid_until and today and date.fromisoformat(valid_until) < today:
+        return FRESHNESS_STALE
     if age_days < thresholds["quote_aging_days"]:
         return FRESHNESS_FRESH
     if age_days > thresholds["quote_stale_days"]:
@@ -99,7 +108,9 @@ def partition_current_rows(
     for row in rows:
         if row.status != "confirmed":
             continue
-        freshness = classify_freshness(quote_age_days(row.date, today), thresholds)
+        freshness = classify_freshness(
+            quote_age_days(row.date, today), thresholds, row.valid_until, today,
+        )
         (stale if freshness == FRESHNESS_STALE else current).append(row)
     return current, stale
 
@@ -174,18 +185,25 @@ def detect_moves(
             pricing_by_tier[impact.tier_id]
             for impact in impacts if impact.tier_id in pricing_by_tier
         ]
-        # Only a price increase gets blamed for a margin breach.
+        # A price at or above seasonal expectation gets blamed for a margin
+        # breach (>= not >: an exactly-as-expected seasonal price that still
+        # blows the floor is a breach, not a quiet week). A price DROP with a
+        # breached margin isn't this move's fault — tier table still shows it.
         alert_breaches = [
             pricing for pricing in affected
-            if delta_per_stem > 0 and pricing.margin is not None
+            if delta_per_stem >= 0 and pricing.margin is not None
             and pricing.margin < thresholds["margin_alert_below"]
         ]
         watch_breaches = [
             pricing for pricing in affected
-            if delta_per_stem > 0 and pricing.margin is not None
+            if delta_per_stem >= 0 and pricing.margin is not None
             and pricing.margin < thresholds["margin_watch_below"]
             and pricing not in alert_breaches
         ]
+        margins_hold = all(
+            pricing.margin is None or pricing.margin >= thresholds["margin_watch_below"]
+            for pricing in affected
+        )
 
         stem_config = find_stem(stems_config, stem_id) or {}
         market_price_stem = bool(stem_config.get("market_price"))
@@ -241,11 +259,16 @@ def detect_moves(
             )
             if in_window_and_expected:
                 classification = CLASSIFICATION_EXPECTED_SEASONAL
+                margin_text = (
+                    "and margins hold; logged, not alerted" if margins_hold
+                    else "(note: an affected tier's margin is below target for "
+                         "reasons other than this move — see tier table)"
+                )
                 reasons.append(
                     f"within expected seasonal window "
                     f"({context.driving_window_id or ','.join(context.window_ids)}) — "
                     f"raw {raw_move_pct:+.1%} move consistent with x{context.multiplier:.2f} "
-                    "multiplier and margins hold; logged, not alerted"
+                    f"multiplier {margin_text}"
                 )
             elif (
                 abs(raw_move_pct) < MIN_NOTEWORTHY_MOVE_PCT
